@@ -1,0 +1,10 @@
+# Handle text files
+* text=auto
+
+# Force Unix-style for code
+*.py text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
