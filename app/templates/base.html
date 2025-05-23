@@ -11,12 +11,19 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
     <!-- Navigation Bar -->
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="{{ url_for('main.index') }}" class="text-xl font-semibold text-indigo-600">
-                Paper Analyze
-            </a>
-        </div>
+    <nav class="flex gap-x-6 p-4 bg-white shadow-md">
+      <a class="inline-flex items-center gap-x-2 text-sm whitespace-nowrap text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 dark:text-blue-500 dark:focus:text-blue-400" href="#">
+        Link
+      </a>
+      <a class="inline-flex items-center gap-x-2 text-sm font-semibold whitespace-nowrap text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 dark:text-blue-500 dark:focus:text-blue-400" href="#" aria-current="page">
+        Active
+      </a>
+      <a class="inline-flex items-center gap-x-2 text-sm whitespace-nowrap text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 dark:text-blue-500 dark:focus:text-blue-400" href="#">
+        Link
+      </a>
+      <a class="inline-flex items-center gap-x-2 text-sm whitespace-nowrap text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 opacity-50 pointer-events-none dark:text-blue-500 dark:focus:text-blue-400" href="#">
+        Disabled
+      </a>
     </nav>
 
     <!-- Main Content -->
@@ -30,5 +37,6 @@
     </footer>
 
     {% block scripts %}{% endblock %}
+    <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
 </body>
 </html>

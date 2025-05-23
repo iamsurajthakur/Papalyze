@@ -8,6 +8,7 @@ def create_app(config_class=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'pap.sqlite'),
+        DEBUG=True,
     )
     
     # Load the instance config, if it exists
@@ -29,4 +30,6 @@ def create_app(config_class=None):
     from app.blueprints.analyzer import bp as analyzer_bp
     app.register_blueprint(analyzer_bp, url_prefix='/analyzer')
     
+    app.debug = True
+
     return app
