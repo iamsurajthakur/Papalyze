@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+
+/* npx @tailwindcss/cli -i ./app/static/css/src/input.css -o ./app/static/css/output.css --watch */

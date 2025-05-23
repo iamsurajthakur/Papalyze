@@ -1,0 +1,11 @@
+{
+  "name": "papalyze",
+  "version": "1.0.0",
+  "scripts": {
+    "tailwind": "tailwindcss -i ./app/static/css/src/input.css -o ./app/static/css/output.css --watch"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.7",
+    "tailwindcss": "^4.1.7"
+  }
+}

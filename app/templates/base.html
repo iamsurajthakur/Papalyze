@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Paper Analyzer{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="{{ url_for('main.index') }}" class="text-xl font-semibold text-indigo-600">
+                Paper Analyze
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto p-6">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-10 py-4 text-center text-sm text-gray-500">
+        &copy; 2025 Paper Analyze
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
