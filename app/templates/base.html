@@ -1,42 +1,34 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Paper Analyzer{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Paper Analyzer{% endblock %}</title>
 
-    <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
-    {% block head %}{% endblock %}
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+  <script src="{{ url_for('static', filename='js/preline.js') }}"></script>
+
+  <!-- Preline + Flowbite -->
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+  <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
+
+  {% block head %}{% endblock %}
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
-    <!-- Navigation Bar -->
-    <nav class="flex gap-x-6 p-4 bg-white shadow-md">
-      <a class="inline-flex items-center gap-x-2 text-sm whitespace-nowrap text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 dark:text-blue-500 dark:focus:text-blue-400" href="#">
-        Link
-      </a>
-      <a class="inline-flex items-center gap-x-2 text-sm font-semibold whitespace-nowrap text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 dark:text-blue-500 dark:focus:text-blue-400" href="#" aria-current="page">
-        Active
-      </a>
-      <a class="inline-flex items-center gap-x-2 text-sm whitespace-nowrap text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 dark:text-blue-500 dark:focus:text-blue-400" href="#">
-        Link
-      </a>
-      <a class="inline-flex items-center gap-x-2 text-sm whitespace-nowrap text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 opacity-50 pointer-events-none dark:text-blue-500 dark:focus:text-blue-400" href="#">
-        Disabled
-      </a>
-    </nav>
+<body class="text-gray-800 font-sans bg-gray-50">
 
-    <!-- Main Content -->
-    <main class="max-w-5xl mx-auto p-6">
-        {% block content %}{% endblock %}
-    </main>
+  <!-- Navbar (conditionally rendered) -->
+  {% if session.get('user_id') %}
+    {% include 'partials/navbar_logged_in.html' %}
+  {% else %}
+    {% include 'partials/navbar_guest.html' %}
+  {% endif %}
 
-    <!-- Footer -->
-    <footer class="bg-white border-t mt-10 py-4 text-center text-sm text-gray-500">
-        &copy; 2025 Paper Analyze
-    </footer>
+  <!-- Page Content -->
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    {% block content %}{% endblock %}
+  </main>
 
-    {% block scripts %}{% endblock %}
-    <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>
