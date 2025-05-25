@@ -267,6 +267,42 @@
   .end-2 {
     inset-inline-end: calc(var(--spacing) * 2);
   }
+  .-top-2 {
+    top: calc(var(--spacing) * -2);
+  }
+  .-top-3 {
+    top: calc(var(--spacing) * -3);
+  }
+  .-top-4 {
+    top: calc(var(--spacing) * -4);
+  }
+  .-top-5 {
+    top: calc(var(--spacing) * -5);
+  }
+  .-top-6 {
+    top: calc(var(--spacing) * -6);
+  }
+  .-top-7 {
+    top: calc(var(--spacing) * -7);
+  }
+  .-top-8 {
+    top: calc(var(--spacing) * -8);
+  }
+  .-top-9 {
+    top: calc(var(--spacing) * -9);
+  }
+  .-top-10 {
+    top: calc(var(--spacing) * -10);
+  }
+  .-top-11 {
+    top: calc(var(--spacing) * -11);
+  }
+  .-top-12 {
+    top: calc(var(--spacing) * -12);
+  }
+  .-top-13 {
+    top: calc(var(--spacing) * -13);
+  }
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
@@ -288,8 +324,23 @@
   .bottom-full {
     bottom: 100%;
   }
+  .-left-4 {
+    left: calc(var(--spacing) * -4);
+  }
+  .-left-5 {
+    left: calc(var(--spacing) * -5);
+  }
+  .-left-8 {
+    left: calc(var(--spacing) * -8);
+  }
   .left-0 {
     left: calc(var(--spacing) * 0);
+  }
+  .left-8 {
+    left: calc(var(--spacing) * 8);
+  }
+  .left-10 {
+    left: calc(var(--spacing) * 10);
   }
   .z-10 {
     z-index: 10;
@@ -347,6 +398,18 @@
   }
   .ms-2\.5 {
     margin-inline-start: calc(var(--spacing) * 2.5);
+  }
+  .ms-4 {
+    margin-inline-start: calc(var(--spacing) * 4);
+  }
+  .ms-6 {
+    margin-inline-start: calc(var(--spacing) * 6);
+  }
+  .ms-10 {
+    margin-inline-start: calc(var(--spacing) * 10);
+  }
+  .ms-14 {
+    margin-inline-start: calc(var(--spacing) * 14);
   }
   .me-1 {
     margin-inline-end: calc(var(--spacing) * 1);
@@ -459,6 +522,27 @@
   .h-10 {
     height: calc(var(--spacing) * 10);
   }
+  .h-12 {
+    height: calc(var(--spacing) * 12);
+  }
+  .h-20 {
+    height: calc(var(--spacing) * 20);
+  }
+  .h-25 {
+    height: calc(var(--spacing) * 25);
+  }
+  .h-\[60px\] {
+    height: 60px;
+  }
+  .h-\[70px\] {
+    height: 70px;
+  }
+  .h-\[80px\] {
+    height: 80px;
+  }
+  .h-auto {
+    height: auto;
+  }
   .h-full {
     height: 100%;
   }
@@ -498,8 +582,32 @@
   .w-150 {
     width: calc(var(--spacing) * 150);
   }
+  .w-\[60px\] {
+    width: 60px;
+  }
+  .w-\[70px\] {
+    width: 70px;
+  }
+  .w-\[80px\] {
+    width: 80px;
+  }
+  .w-\[90px\] {
+    width: 90px;
+  }
+  .w-\[100px\] {
+    width: 100px;
+  }
+  .w-\[110px\] {
+    width: 110px;
+  }
+  .w-\[150px\] {
+    width: 150px;
+  }
   .w-\[calc\(100\%-32px\)\] {
     width: calc(100% - 32px);
+  }
+  .w-auto {
+    width: auto;
   }
   .w-full {
     width: 100%;
@@ -573,6 +681,12 @@
     --tw-scale-x: 100%;
     --tw-scale-y: 100%;
     --tw-scale-z: 100%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+  }
+  .scale-125 {
+    --tw-scale-x: 125%;
+    --tw-scale-y: 125%;
+    --tw-scale-z: 125%;
     scale: var(--tw-scale-x) var(--tw-scale-y);
   }
   .transform {
@@ -674,6 +788,9 @@
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .overflow-visible {
+    overflow: visible;
   }
   .overflow-x-auto {
     overflow-x: auto;
@@ -968,6 +1085,11 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
+  .transition-transform {
+    transition-property: transform, translate, scale, rotate;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
   .duration-150 {
     --tw-duration: 150ms;
     transition-duration: 150ms;
@@ -1081,6 +1203,30 @@
         --tw-scale-y: 110%;
         --tw-scale-z: 110%;
         scale: var(--tw-scale-x) var(--tw-scale-y);
+      }
+    }
+  }
+  .hover\:scale-150 {
+    &:hover {
+      @media (hover: hover) {
+        --tw-scale-x: 150%;
+        --tw-scale-y: 150%;
+        --tw-scale-z: 150%;
+        scale: var(--tw-scale-x) var(--tw-scale-y);
+      }
+    }
+  }
+  .hover\:rotate-3 {
+    &:hover {
+      @media (hover: hover) {
+        rotate: 3deg;
+      }
+    }
+  }
+  .hover\:rotate-6 {
+    &:hover {
+      @media (hover: hover) {
+        rotate: 6deg;
       }
     }
   }
@@ -1437,6 +1583,14 @@
   .md\:w-auto {
     @media (width >= 48rem) {
       width: auto;
+    }
+  }
+  .md\:scale-150 {
+    @media (width >= 48rem) {
+      --tw-scale-x: 150%;
+      --tw-scale-y: 150%;
+      --tw-scale-z: 150%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
   .md\:flex-row {
