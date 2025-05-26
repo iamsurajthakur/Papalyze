@@ -1,7 +1,52 @@
 {% extends 'base.html' %}
-{% block title %}Home - Paper Analyzer{% endblock %}
+{% block title %}Home - Papalyze{% endblock %}
 
 {% block content %}
+
+<video autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover z-[-1]">
+  <source src="{{ url_for('static', filename='videos/background.mp4') }}" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<div
+  class="absolute top-[50%] left-[5%] transform -translate-y-1/2 text-white max-w-xl space-y-4"
+>
+  <h1
+    class="text-4xl cursor-pointer md:text-5xl font-bold leading-tight transition duration-300 ease-in-out hover:scale-105 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r from-blue-400 to-purple-500"
+  >
+    Last Minute! We Got You.
+  </h1>
+  <p
+    class="text-lg md:text-xl text-blue-200"
+  >
+    Stop digging through piles of papers. Get key exam topics from past
+    questions — fast, accurate, and stress-free.
+  </p>
+  <a
+  class="group relative inline-flex items-center overflow-hidden rounded-sm bg-indigo-600 px-8 py-3 text-white focus:ring-3 focus:outline-hidden"
+  href="/login.html"
+>
+  <span class="absolute -start-full transition-all group-hover:start-4">
+    <svg
+      class="size-5 shadow-sm rtl:rotate-180"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M17 8l4 4m0 0l-4 4m4-4H3"
+      />
+    </svg>
+  </span>
+
+  <span class="text-sm font-medium transition-all group-hover:ms-4"> Get Started </span>
+</a>
+
+</div>
 
 
 

@@ -7,22 +7,30 @@
 
   <!-- Tailwind CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
   <script src="{{ url_for('static', filename='js/preline.js') }}"></script>
 
   <!-- Preline + Flowbite -->
   <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
   <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   {% block head %}{% endblock %}
 </head>
 <body class="text-gray-800 font-sans bg-gray-50">
 
   <!-- Navbar (conditionally rendered) -->
+{% if show_navbar is not defined or show_navbar %}
   {% if session.get('user_id') %}
     {% include 'partials/navbar_logged_in.html' %}
   {% else %}
     {% include 'partials/navbar_guest.html' %}
   {% endif %}
+{% endif %}
+
 
   <!-- Page Content -->
   <main class="max-w-5xl mx-auto px-4 py-8">
@@ -30,5 +38,10 @@
   </main>
 
   {% block scripts %}{% endblock %}
+
+  <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
 </body>
 </html>
