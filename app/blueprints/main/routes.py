@@ -1,12 +1,20 @@
-from flask import render_template
+from flask import render_template, request, redirect, flash, url_for
 from app.blueprints.main import bp
 
 @bp.route('/')
 def index():
     return render_template('main/index.html', title='Home')
 
-@bp.route('/contact.html')
+@bp.route('/contact.html', methods=["GET","POST"])
 def contact():
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        message = request.form.get("message")
+
+        flash("Thanks! Your message has been sent.", "success")
+        return redirect(url_for("main.contact"))
+
     return render_template('main/contact.html', title='Contact')
 
 @bp.route('/about.html')

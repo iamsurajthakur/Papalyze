@@ -3,10 +3,11 @@
 
 {% block content %}
 
-<video autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover z-[-1]">
-  <source src="{{ url_for('static', filename='videos/background.mp4') }}" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<div class="relative w-full h-screen overflow-hidden"></div>
+<video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-[-1]">
+    <source src="{{ url_for('static', filename='videos/background.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
 <div
   class="absolute top-[50%] left-[5%] transform -translate-y-1/2 text-white max-w-xl space-y-4"
@@ -47,6 +48,7 @@
 </a>
 
 </div>
+<div class="relative w-full h-screen overflow-hidden"></div>
 
 
 

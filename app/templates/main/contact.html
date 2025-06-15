@@ -1,11 +1,92 @@
-{% extends "base.html" %}
-{% block title %}contact - Papalyze{% endblock %}
+{% extends "base.html" %} {% block title %}contact - Papalyze{% endblock %} {%
+block content %}
 
-{% block content %}
+<section class="mt-5 bg-gradient-to-r py-12 px-4">
+  <div
+    class="max-w-4xl mx-auto rounded-2xl p-10 bg-gradient-to-br from-[#142551] to-[#1e3c91] border border-blue-200/20 shadow-[0_0_20px_rgba(0,188,255,0.2)]"
+  >
+    <h1 class="text-4xl font-bold text-center text-white mb-8">
+      📬 Get in Touch
+    </h1>
+    <p class="text-center text-white mb-6">
+      We'd love to hear from you! Whether you have a question, suggestion, or
+      just want to say hi, send us a message below.
+    </p>
 
-<div class="pt-20">
-  <h1 class="text-3xl font-bold">Welcome to Papalyze</h1>
-  <p>This page is under construction</p>
-</div>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="mb-6 text-center">
+      {% for category, message in messages %}
+      <p class="text-green-600 font-medium">{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
 
+    <form method="POST" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="name" class="block mb-2 text-sm font-medium text-white"
+            >Your Name</label
+          >
+          <input
+            type="text"
+            name="name"
+            id="name"
+            required
+            class="w-full px-4 py-3 border border-gray-300 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="block mb-2 text-sm font-medium text-white"
+            >Your Email</label
+          >
+          <input
+            type="email"
+            name="email"
+            id="email"
+            required
+            class="w-full px-4 py-3 border text-white border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="message" class="block mb-2 text-sm font-medium text-white"
+          >Your Message</label
+        >
+        <textarea
+          name="message"
+          id="message"
+          rows="6"
+          required
+          class="w-full px-4 py-3 border border-gray-300 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+        ></textarea>
+      </div>
+
+      <div class="text-center">
+        <button
+          type="submit"
+          class="inline-flex items-center gap-2 bg-gradient-to-r cursor-pointer from-blue-600 to-sky-500 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:from-blue-700 hover:to-sky-600 transition duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.6)]"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 0a2 2 0 002-2V8a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2h2l3 3 3-3h2z"
+            />
+          </svg>
+          Send Message
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
 {% endblock %}
