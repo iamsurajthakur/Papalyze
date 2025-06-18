@@ -6,6 +6,7 @@
     <title>{% block title %}Paper Analyzer{% endblock %}</title>
 
     <!-- Tailwind CSS -->
+     
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/output.css') }}"
@@ -27,7 +28,7 @@
     {% block head %}{% endblock %}
   </head>
   <body
-    class="flex flex-col min-h-screen text-gray-800 font-sans"
+    class="flex flex-col overflow-x-hidden min-h-screen text-gray-800 font-sans"
     style="background-color: #10141e"
   >
     <!-- Navbar (conditionally rendered) -->

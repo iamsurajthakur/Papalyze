@@ -25,3 +25,6 @@ def about():
 def login():
     return render_template('main/login.html', show_navbar=False)
 
+@bp.route('/signin.html')
+def signin():
+    return render_template('main/signin.html', show_navbar=False)

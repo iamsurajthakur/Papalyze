@@ -1,11 +1,291 @@
-{% extends "base.html" %}
-{% block title %}Login - Papalyze{% endblock %}
+{% extends "base.html" %} {% block title %}Login - Papalyze{% endblock %} {%
+block content %}
 
-{% block content %}
+<!-- Fullscreen Background Container -->
+<div
+  class="min-h-screen w-full flex justify-center px-4 overflow-x-hidden"
+  style="background-color: #10141e"
+>
+  <!-- Content Wrapper (Responsive Grid) -->
+  <div
+    class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-x-10rounded-lg shadow-lg overflow-hidden"
+    style="background-color: #1f2937"
+  >
+    <!-- Left Section: Form -->
+    <div class="p-8 md:p-12 flex items-center justify-center">
+      <form>
+        <div class="relative h-20">
+          <a
+            href="/"
+            class="absolute -top-6 -left-10 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
+          >
+            <img
+              src="{{ url_for('static', filename='images/papalyze.svg') }}"
+              alt="logo"
+              class="h-27 w-auto object-contain"
+            />
+            <span class="-ml-7">Papalyze</span>
+          </a>
+        </div>
 
-<div class="pt-20">
-  <h1 class="text-3xl font-bold">Welcome to Papalyze</h1>
-  <p>This login page is under construction</p>
+        <div>
+          <h1
+            class="text-xl -mt-6 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+          >
+            Welcome back
+          </h1>
+        </div>
+
+        <div>
+          <p class="text-sm mb-6 font-sans text-gray-500 dark:text-gray-400">
+            AI for Exam Success. Don't have an account?
+            <a
+              href="/signin.html"
+              class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+            >
+              Sign up
+            </a>
+          </p>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 mb-6">
+          <!-- Email Input -->
+          <div class="w-full md:w-1/2">
+            <label
+              for="email"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="name@company.com"
+              required
+            />
+          </div>
+
+          <!-- Password Input -->
+          <div class="w-full md:w-1/2">
+            <label
+              for="password"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="•••••••••"
+              required
+            />
+          </div>
+        </div>
+
+        <span class="flex items-center">
+          <span
+            class="h-px flex-1 bg-gradient-to-r from-transparent to-gray-300 dark:to-gray-600"
+          ></span>
+
+          <span class="shrink-0 px-4 text-gray-900 dark:text-white">or</span>
+
+          <span
+            class="h-px flex-1 bg-gradient-to-l from-transparent to-gray-300 dark:to-gray-600"
+          ></span>
+        </span>
+
+        <button
+          type="submit"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Log in to your account
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Section: Image (Hidden on Mobile) -->
+    <div class="hidden lg:flex items-center justify-center bg-gray-900">
+      <ol class="relative border-s border-gray-200 dark:border-gray-700">
+        <li class="mb-10 ms-6">
+          <span
+            class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+          >
+            <svg
+              class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+              />
+            </svg>
+          </span>
+          <h3
+            class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white"
+          >
+            AI Paper Analyzer v1.0
+            <span
+              class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300 ms-3"
+              >Latest</span
+            >
+          </h3>
+          <time
+            class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
+            >Released on May 15th, 2025</time
+          >
+          <p
+            class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400"
+          >
+            Upload exam papers in any format and get a detailed breakdown by
+            topic, marks, and question type using OCR + NLP.
+          </p>
+
+          <button
+            data-popover-target="popover-user-profile"
+            type="button"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Creator Info
+          </button>
+
+          <div
+            data-popover
+            id="popover-user-profile"
+            role="tooltip"
+            class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600"
+          >
+            <div class="p-3">
+              <div class="flex items-center justify-between mb-2">
+                <a href="https://www.linkedin.com/in/suraj-thakur7/">
+                  <img
+                    class="w-10 h-10 rounded-full"
+                    src="{{ url_for('static', filename='images/profile.jpg') }}"
+                    alt="suraj thakur"
+                  />
+                </a>
+                <div>
+                  <button
+                    type="button"
+                    onclick="window.open('https://www.linkedin.com/in/suraj-thakur7/', '_blank')"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  >
+                    Follow
+                  </button>
+                </div>
+              </div>
+              <p
+                class="text-base font-semibold leading-none text-gray-900 dark:text-white"
+              >
+                <a href="https://www.linkedin.com/in/suraj-thakur7/"
+                  >Suraj Thakur</a
+                >
+              </p>
+              <p class="mb-3 text-sm font-normal">
+                <a
+                  href="https://www.linkedin.com/in/suraj-thakur7/"
+                  class="hover:underline"
+                  >@surajthakur</a
+                >
+              </p>
+              <p class="mb-4 text-sm">
+                Founder & Developer. Building
+                <a
+                  href="/"
+                  class="text-blue-600 dark:text-blue-500 hover:underline"
+                  >papalyze.com</a
+                >.
+              </p>
+              <ul class="flex text-sm">
+                <li class="me-2">
+                  <a
+                    href="https://www.linkedin.com/in/suraj-thakur7/"
+                    class="hover:underline"
+                  >
+                    <span class="font-semibold text-gray-900 dark:text-white"
+                      >475</span
+                    >
+                    <span>Following</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/suraj-thakur7/"
+                    class="hover:underline"
+                  >
+                    <span class="font-semibold text-gray-900 dark:text-white"
+                      >2,498</span
+                    >
+                    <span>Followers</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div data-popper-arrow></div>
+          </div>
+        </li>
+        <li class="mb-10 ms-6">
+          <span
+            class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+          >
+            <svg
+              class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+              />
+            </svg>
+          </span>
+          <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+            AI-Driven Topic Forecasting Engine v1.0
+          </h3>
+          <time
+            class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
+            >Released on June 5th, 2025</time
+          >
+          <p class="text-base font-normal text-gray-500 dark:text-gray-400">
+            Leverages natural language processing (NLP) and frequency-weighted
+            topic modeling to analyze past exam questions and generate
+            high-probability predictions of future topics.
+          </p>
+        </li>
+        <li class="ms-6">
+          <span
+            class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+          >
+            <svg
+              class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+              />
+            </svg>
+          </span>
+          <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+            Automated Notes Summarization v1.0
+          </h3>
+          <time
+            class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
+            >Released on June 18th, 2025</time
+          >
+          <p class="text-base font-normal text-gray-500 dark:text-gray-400">
+            Automatically condenses lengthy lecture notes or study material into
+            concise summaries using transformer-based models. Ensures high
+            retention and quick revision without losing core concepts.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  {% endblock %}
 </div>
-
-{% endblock %}
