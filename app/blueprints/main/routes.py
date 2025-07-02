@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, flash, url_for
+from flask import render_template, request, redirect, flash, url_for, session
 from app.blueprints.main import bp
 
 @bp.route('/')
@@ -31,5 +31,14 @@ def signin():
 
 @bp.route('/features')
 def feature():
+    if not session.get('user_id'):
+        flash("You must be logged in to access this feature.", "warning")
+        return redirect(url_for('main.login'))
+
     feature_name = request.args.get('type', 'upload')
     return render_template('main/features.html', feature=feature_name)
+
+@bp.route('/logout')
+def logout():
+    session.pop('user_id', None)  # clear user_id from session
+    return redirect(url_for('main.index'))  # redirect where you want
