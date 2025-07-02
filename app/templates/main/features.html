@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if feature == 'upload' %}Upload{% elif feature == 'predict' %}Prediction{% elif feature == 'charts' %}Charts{% elif feature == 'summarize' %}Summary{% else %}Feature{% endif %} | Papalyze
+{% endblock %}
+
+{% block content %}
+  
+    {% if feature == 'upload' %}
+    <div class="pt-20 mt-5">
+    <p class="text-4xl font-bold text-gray-900 dark:text-white">Page for paper upload and analysis</p>
+
+    </div>
+    {% elif feature == 'predict' %}
+      <div class="pt-20 mt-5">
+    <p class="text-4xl font-bold text-gray-900 dark:text-white">Page for important topic prediction</p>
+
+    </div>
+
+    {% elif feature == 'charts' %}
+      <div class="pt-20 mt-5">
+    <p class="text-4xl font-bold text-gray-900 dark:text-white">Page for visual report and charts</p>
+
+    </div>
+
+    {% else %}
+      <div class="pt-20 mt-5">
+    <p class="text-4xl font-bold text-gray-900 dark:text-white">Page for notes to summary</p>
+
+    </div>
+    {% endif %}
+
+{% endblock %}

@@ -28,3 +28,8 @@ def login():
 @bp.route('/signin.html')
 def signin():
     return render_template('main/signin.html', show_navbar=False)
+
+@bp.route('/features')
+def feature():
+    feature_name = request.args.get('type', 'upload')
+    return render_template('main/features.html', feature=feature_name)
