@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, flash, url_for, session
+from flask import render_template, request, redirect, flash, url_for, session, jsonify
 from app.blueprints.main import bp
 
 @bp.route('/')
@@ -42,3 +42,7 @@ def feature():
 def logout():
     session.pop('user_id', None)  # clear user_id from session
     return redirect(url_for('main.index'))  # redirect where you want
+
+@bp.route('/ping')
+def ping():
+    return jsonify({"status": "ok"}), 200
