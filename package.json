@@ -2,7 +2,8 @@
   "name": "papalyze",
   "version": "1.0.0",
   "scripts": {
-    "tailwind": "tailwindcss -i ./app/static/css/src/input.css -o ./app/static/css/output.css --watch"
+    "tailwind": "tailwindcss -i ./app/static/css/src/input.css -o ./app/static/css/output.css --watch",
+    "build:css": "npx tailwindcss -i ./app/static/css/src/input.css -o ./app/static/css/output.css --minify"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.7",

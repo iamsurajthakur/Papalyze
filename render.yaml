@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: papalyze
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      npm install
+      npm run build:css
+    startCommand: gunicorn run:app
