@@ -6,7 +6,7 @@
     <title>{% block title %}Paper Analyzer{% endblock %}</title>
 
     <!-- Tailwind CSS -->
-     
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/output.css') }}"
@@ -32,38 +32,33 @@
     style="background-color: #10141e"
   >
     <!-- Navbar (conditionally rendered) -->
-    {% if show_navbar is not defined or show_navbar %}
-    {% if session.get('user_id') %}
-        {% include 'partials/navbar_logged_in.html' %}
-    {% else %}
-        {% include 'partials/navbar_guest.html' %}
-    {% endif %}
-{% endif %}
-
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-     <div class="flex justify-center mt-5">
-  <div id="alert-login" class="inline-flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800 transition-opacity duration-1000 ease-in-out opacity-100" role="alert">
-    <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-    </svg>
-    <div>
-      <span class="font-medium">Warning alert!</span> {{ message }}
+    {% if show_navbar is not defined or show_navbar %} {% if
+    session.get('user_id') %} {% include 'partials/navbar_logged_in.html' %} {%
+    else %} {% include 'partials/navbar_guest.html' %} {% endif %} {% endif %}
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for
+    message in messages %}
+    <div class="flex justify-center mt-5">
+      <div
+        id="alert-login"
+        class="inline-flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800 transition-opacity duration-1000 ease-in-out opacity-100"
+        role="alert"
+      >
+        <svg
+          class="shrink-0 inline w-4 h-4 me-3"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+          />
+        </svg>
+        <div><span class="font-medium">Warning alert!</span> {{ message }}</div>
+      </div>
     </div>
-  </div>
-</div>
 
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-
-
-
-
-
-
+    {% endfor %} {% endif %} {% endwith %}
 
     <!-- Page Content -->
     <main class="max-w-5xl mx-auto px-4 pt-8">
@@ -76,10 +71,7 @@
     <footer class="bg-white rounded-lg shadow-sm dark:bg-gray-900 m-4">
       <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
         <div class="sm:flex sm:items-center sm:justify-between">
-          <a
-            href="/"
-            class="flex items-center gap-0 mb-4 sm:mb-0"
-          >
+          <a href="/" class="flex items-center gap-0 mb-4 sm:mb-0">
             <div class="h-15 flex items-center">
               <img
                 src="{{ url_for('static', filename='images/papalyze.svg') }}"
@@ -96,7 +88,9 @@
             class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400"
           >
             <li>
-              <a href="/about.html" class="hover:underline me-4 md:me-6">About</a>
+              <a href="/about.html" class="hover:underline me-4 md:me-6"
+                >About</a
+              >
             </li>
             <li>
               <a href="/" class="hover:underline me-4 md:me-6"
@@ -116,9 +110,8 @@
         />
         <span
           class="block text-sm text-gray-500 sm:text-center dark:text-gray-400"
-          >© 2025
-          <a href="/" class="hover:underline">Papalyze™</a>.
-          All Rights Reserved.</span
+          >© 2025 <a href="/" class="hover:underline">Papalyze™</a>. All Rights
+          Reserved.</span
         >
       </div>
     </footer>
@@ -128,18 +121,32 @@
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
     <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const alertBox = document.getElementById('alert-login');
-    if (alertBox) {
-      setTimeout(() => {
-        alertBox.classList.remove('opacity-100');
-        alertBox.classList.add('opacity-0');
-        setTimeout(() => {
-          alertBox.remove(); 
-        }, 1000);
-      }, 3000); 
-    }
-  });
-</script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const alertBox = document.getElementById("alert-login");
+        if (alertBox) {
+          setTimeout(() => {
+            alertBox.classList.remove("opacity-100");
+            alertBox.classList.add("opacity-0");
+            setTimeout(() => {
+              alertBox.remove();
+            }, 1000);
+          }, 3000);
+        }
+      });
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7RHG8736TN"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-7RHG8736TN");
+    </script>
   </body>
 </html>
