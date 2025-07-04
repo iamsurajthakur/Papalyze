@@ -30,31 +30,30 @@ block content %}
 
         <div>
           <h1
-            class="text-xl -mt-6 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+            class="text-xl -mt-6 mb-2 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
           >
-            Welcome back
+            Create your account
           </h1>
         </div>
 
         <div>
           <p class="text-sm mb-6 font-sans text-gray-500 dark:text-gray-400">
-            AI for Exam Success. Don't have an account?
+            AI for Exam Success. Already have an account?
             <a
-              href="/signin.html"
+              href="{{ url_for('auth.login') }}"
               class="font-medium text-primary-600 hover:underline dark:text-primary-500 text-blue-600"
             >
-              Sign up
-            </a>
+              Login here</a>.
           </p>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <div class="flex flex-row md:flex-row gap-4 mb-6">
           <!-- Email Input -->
           <div class="w-full md:w-1/2">
             <label
               for="email"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Email</label
+              >Your email</label
             >
             <input
               type="email"
@@ -65,7 +64,25 @@ block content %}
             />
           </div>
 
-          <!-- Password Input -->
+          <!-- name Input -->
+          <div class="w-full md:w-1/2">
+            <label
+              for="name"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Full Name</label
+            >
+            <input
+              type="text"
+              id="name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="e.g. Suraj Thakur"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-row md:flex-row gap-4 mb-6">
+          <!-- password Input -->
           <div class="w-full md:w-1/2">
             <label
               for="password"
@@ -80,7 +97,24 @@ block content %}
               required
             />
           </div>
+
+          <!-- confirm password Input -->
+          <div class="w-full md:w-1/2">
+            <label
+              for="confirmPassword"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="confirmPassword"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="•••••••••"
+              required
+            />
+          </div>
         </div>
+
 
         <span class="flex items-center">
           <span
@@ -114,51 +148,53 @@ block content %}
           Sign in with Github
         </button>
 
-        <div class="flex items-center mb-5 justify-between">
-          <div class="flex items-start">
-  <div class="flex items-center h-5 relative">
-    <!-- Custom checkbox -->
-    <input
-      id="remember"
-      type="checkbox"
-      class="peer appearance-none w-4 h-4 border border-gray-300 bg-gray-50 rounded-sm checked:bg-blue-600 checked:border-blue-600 focus:ring-2 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-      required=""
-    />
-    <!-- SVG checkmark, only visible when checked -->
-    <svg
-      class="absolute w-2.5 h-2.5 text-white left-1 top-1 hidden peer-checked:block pointer-events-none"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-        clip-rule="evenodd"
+        
+<div class="flex items-center mb-5">
+  <div class="flex items-start">
+    <div class="flex items-center h-5 relative">
+      <!-- Custom checkbox -->
+      <input
+        id="link-checkbox"
+        type="checkbox"
+        class="peer appearance-none w-4 h-4 border border-gray-300 bg-gray-50 rounded-sm checked:bg-blue-600 checked:border-blue-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+        required
       />
-    </svg>
-  </div>
+      <!-- SVG checkmark, shown only when checked -->
+      <svg
+        class="absolute w-2.5 h-2.5 text-white left-1 top-1 hidden peer-checked:block pointer-events-none"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </div>
 
-  <div class="ml-2 text-sm">
-    <label for="remember" class="text-gray-500 dark:text-gray-300 cursor-pointer">
-      Remember me
-    </label>
+    <div class="ml-2 text-sm">
+      <label for="link-checkbox" class="text-gray-500 dark:text-gray-300 cursor-pointer">
+        By signing up, you are creating a Papalyze account, and you agree to Papalyze 
+        <a
+          href="#"
+          class="text-blue-600 dark:text-blue-500 hover:underline"
+        >
+          terms and conditions
+        </a>.
+      </label>
+    </div>
   </div>
 </div>
 
 
-          <a
-            href="#"
-            class="text-sm font-medium text-blue-600 hover:underline dark:text-primary-500"
-            >Forgot password?</a
-          >
-        </div>
 
         <button
           type="submit"
           class="text-white cursor-pointer w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          Sign in to your account
+          Create an account
         </button>
       </form>
     </div>

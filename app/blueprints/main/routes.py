@@ -21,27 +21,14 @@ def contact():
 def about():
     return render_template('main/about.html', title='About')
 
-@bp.route('/login.html')
-def login():
-    return render_template('main/login.html', show_navbar=False)
-
-@bp.route('/signin.html')
-def signin():
-    return render_template('main/signin.html', show_navbar=False)
-
 @bp.route('/features')
 def feature():
     if not session.get('user_id'):
         flash("You must be logged in to access this feature.", "warning")
-        return redirect(url_for('main.login'))
+        return redirect(url_for('auth.login'))
 
     feature_name = request.args.get('type', 'upload')
     return render_template('main/features.html', feature=feature_name)
-
-@bp.route('/logout')
-def logout():
-    session.pop('user_id', None)  # clear user_id from session
-    return redirect(url_for('main.index'))  # redirect where you want
 
 @bp.route('/ping')
 def ping():
