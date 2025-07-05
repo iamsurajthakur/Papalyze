@@ -1,5 +1,7 @@
 from flask import render_template, request, redirect, flash, url_for, session, jsonify
 from app.blueprints.main import bp
+from app.extensions import db
+from sqlalchemy import text
 
 @bp.route('/')
 def index():
@@ -33,3 +35,9 @@ def feature():
 @bp.route('/ping')
 def ping():
     return jsonify({"status": "ok"}), 200
+
+@bp.route('/db_test')
+def db_test():
+    result = db.session.execute(text('SELECT current_database()'))
+    db_name = result.scalar()
+    return f"Connected to: {db_name}"
