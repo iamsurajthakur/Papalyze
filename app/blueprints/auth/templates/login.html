@@ -13,7 +13,7 @@ block content %}
   >
     <!-- Left Section: Form -->
     <div class="p-8 md:p-12 flex items-center justify-center">
-      <form>
+      <form method="POST">
         <div class="relative h-20">
           <a
             href="/"
@@ -59,6 +59,7 @@ block content %}
             <input
               type="email"
               id="email"
+              name="email"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="name@company.com"
               required
@@ -75,6 +76,7 @@ block content %}
             <input
               type="password"
               id="password"
+              name="password"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="•••••••••"
               required

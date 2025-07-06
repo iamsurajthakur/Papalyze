@@ -35,6 +35,10 @@ def feature():
     feature_name = request.args.get('type', 'upload')
     return render_template('main/features.html', feature=feature_name)
 
+@bp.route('/dashboard.html')
+def dashboard():
+    return render_template('main/dashboard.html', title='Dashboard')
+
 @bp.route('/ping')
 def ping():
     return jsonify({"status": "ok"}), 200
