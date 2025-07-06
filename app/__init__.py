@@ -17,7 +17,7 @@ def create_app(config_class=None):
     
     # Initialize extensions
     db.init_app(app)
-
+    
     # Ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)

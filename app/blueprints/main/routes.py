@@ -1,15 +1,10 @@
 from flask import render_template, request, redirect, flash, url_for, session, jsonify, abort
-from tenacity import retry, stop_after_attempt, wait_fixed
 from app.blueprints.main import bp
 from app.extensions import db
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
+from app.utils.helpers import ping_database
 import os
-
-@retry(stop=stop_after_attempt(5), wait=wait_fixed(3))
-def ping_database():
-    return db.session.execute(text("SELECT 1"))
-
 
 @bp.route('/')
 def index():
@@ -47,7 +42,7 @@ def ping():
 @bp.route('/db_test')
 def db_test():
     try:
-        ping_database()  # wakes DB if needed
+        ping_database() 
         result = db.session.execute(text('SELECT current_database()'))
         db_name = result.scalar()
         return f"Connected to: {db_name}"
