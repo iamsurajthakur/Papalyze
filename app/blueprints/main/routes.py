@@ -1,9 +1,15 @@
 from flask import render_template, request, redirect, flash, url_for, session, jsonify, abort
+from tenacity import retry, stop_after_attempt, wait_fixed
 from app.blueprints.main import bp
 from app.extensions import db
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 import os
+
+@retry(stop=stop_after_attempt(5), wait=wait_fixed(3))
+def ping_database():
+    return db.session.execute(text("SELECT 1"))
+
 
 @bp.route('/')
 def index():
@@ -40,23 +46,29 @@ def ping():
 
 @bp.route('/db_test')
 def db_test():
-    result = db.session.execute(text('SELECT current_database()'))
-    db_name = result.scalar()
-    return f"Connected to: {db_name}"
+    try:
+        ping_database()  # wakes DB if needed
+        result = db.session.execute(text('SELECT current_database()'))
+        db_name = result.scalar()
+        return f"Connected to: {db_name}"
+    except OperationalError:
+        return "Database is waking up or unavailable. Please refresh in a few seconds.", 503
+
 
 @bp.route('/admin/db_check')
 def db_check():
     token = request.args.get('token')
     secret_token = os.getenv('DB_CHECK_TOKEN')  
 
-    # Decode if needed:
     from urllib.parse import unquote
     decoded_token = unquote(secret_token)  
 
     if token != decoded_token:
-        abort(403)  # Forbidden if token invalid
+        abort(403)
 
     try:
+        ping_database()  # wakes DB if needed
+
         db_name = db.session.execute(text('SELECT current_database()')).scalar()
         db_user = db.session.execute(text('SELECT current_user')).scalar()
         db_version = db.session.execute(text('SHOW server_version')).scalar()
@@ -64,17 +76,14 @@ def db_check():
             SELECT inet_client_addr() as client_ip, inet_server_addr() as server_ip
         """)).first()
 
-        client_ip = conn_info.client_ip
-        server_ip = conn_info.server_ip
-
         return (
             f"<h3>Database Connection Info</h3>"
             f"<ul>"
             f"<li>Connected Database: <b>{db_name}</b></li>"
             f"<li>Current DB User: <b>{db_user}</b></li>"
             f"<li>PostgreSQL Version: <b>{db_version}</b></li>"
-            f"<li>Client IP: <b>{client_ip}</b></li>"
-            f"<li>Server IP: <b>{server_ip}</b></li>"
+            f"<li>Client IP: <b>{conn_info.client_ip}</b></li>"
+            f"<li>Server IP: <b>{conn_info.server_ip}</b></li>"
             f"</ul>"
         )
     except OperationalError as oe:
