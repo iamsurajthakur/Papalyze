@@ -4,10 +4,13 @@ from werkzeug.security import generate_password_hash
 from sqlalchemy.exc import OperationalError
 from app.utils.helpers import ping_database
 from app.blueprints.auth import auth_bp
-from app.extensions import db
+from app.extensions import db, limiter
 from app.models import User
+import re
+
 
 @auth_bp.route('/login.html', methods=['GET', 'POST'])
+@limiter.limit("5 per 5 minutes")
 def login():
     try:
         ping_database()
@@ -17,6 +20,15 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+
+        if not email or not password:
+            flash('Email and password are required.', 'danger')
+            return redirect(url_for('auth.login'))
+        
+        email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        if not re.match(email_regex, email):
+            flash('Invalid email format.', 'danger')
+            return redirect(url_for('auth.login'))
 
         user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password_hash, password):
@@ -39,6 +51,16 @@ def signin():
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
+
+        pattern = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$'
+
+        if not re.match(pattern, password):
+            flash('Password with at least 8 characters and include a letter, a number, and a symbol.', 'danger')
+            return redirect(url_for('auth.signin'))
+        
+        if not email or not fullname or not password:
+            flash('Please fill out the all information','danger')
+            return redirect(url_for('auth.signin'))
 
         if password != confirm_password:
             flash("Passwords do not match.", "warning")
