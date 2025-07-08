@@ -3,8 +3,12 @@ from app.blueprints.main import bp
 from app.extensions import db
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
-from app.utils.helpers import ping_database
+from app.utils.token import generate_reset_token
+from app.utils.send_email import send_reset_email
+from app.utils.helpers import ping_database, login_required
+from app.models import User
 import os
+
 
 @bp.route('/')
 def index():
@@ -36,6 +40,7 @@ def feature():
     return render_template('main/features.html', feature=feature_name)
 
 @bp.route('/dashboard.html')
+@login_required
 def dashboard():
     return render_template('main/dashboard.html', title='Dashboard')
 
@@ -96,3 +101,26 @@ def db_check():
             "<h3 style='color:red;'>Unexpected Error</h3>"
             f"<p>{e}</p>"
         )
+@bp.route('/forgot_password.html', methods=["GET", "POST"])
+def forgot_password():
+    reset_url = None
+    email = None  # <-- Ensure email is always defined
+
+    if request.method == "POST":
+        email = request.form.get("email")
+
+        if not email:
+            flash("Please enter your email address.", "warning")
+            return redirect(url_for("main.forgot_password"))
+
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            token = generate_reset_token(email)
+            reset_url = url_for('auth.reset_password', token=token, _external=True)
+            return render_template('main/forgot_password.html', reset_url=reset_url, email=email, show_navbar=False)
+
+        flash("No account found with that email.", "warning")
+        return redirect(url_for("main.forgot_password"))
+
+    return render_template('main/forgot_password.html', reset_url=reset_url, email=email, show_navbar=False)

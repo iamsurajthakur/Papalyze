@@ -32,40 +32,43 @@
     style="background-color: #10141e"
   >
     <!-- Navbar (conditionally rendered) -->
-    {% if show_navbar is not defined or show_navbar %} 
-    {% if
-    session.get('user_id') %} 
-    {% include 'partials/navbar_logged_in.html' %}
-     {%
-    else %}
-     {% include 'partials/navbar_guest.html' %} 
-     {% endif %} 
-     {% endif %}
-
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      {% set alert_classes = {
-        'info': 'text-blue-800 border border-blue-300 bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800',
-        'danger': 'text-red-800 border border-red-300 bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800',
-        'error': 'text-red-800 border border-red-300 bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800',
-        'success': 'text-green-800 border border-green-300 bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800',
-        'warning': 'text-yellow-800 border border-yellow-300 bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800',
-        'dark': 'text-gray-800 border border-gray-300 bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600'
-      } %}
-      {% set icon_paths = {
-        'info': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z',
-        'danger': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z',
-        'error': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9 7h2v6H9V7Zm0 8h2v2H9v-2Z',
-        'success': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z',
-        'warning': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z',
-        'dark': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z'
-      } %}
-      <div class="flex justify-center mt-5">
+    {% if show_navbar is not defined or show_navbar %} {% if
+    session.get('user_id') %} {% include 'partials/navbar_logged_in.html' %} {%
+    else %} {% include 'partials/navbar_guest.html' %} {% endif %} {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <!-- Relative container to position absolute alerts inside -->
+    <div class="relative w-full flex justify-center mt-5">
+      <!-- Alert container -->
+      <div class="absolute flex flex-col gap-3 w-full max-w-md z-50">
+        {% set alert_classes = { 'info': 'text-blue-800 border border-blue-300
+        bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800',
+        'danger': 'text-red-800 border border-red-300 bg-red-50 dark:bg-gray-800
+        dark:text-red-400 dark:border-red-800', 'error': 'text-red-800 border
+        border-red-300 bg-red-50 dark:bg-gray-800 dark:text-red-400
+        dark:border-red-800', 'success': 'text-green-800 border border-green-300
+        bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800',
+        'warning': 'text-yellow-800 border border-yellow-300 bg-yellow-50
+        dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800', 'dark':
+        'text-gray-800 border border-gray-300 bg-gray-50 dark:bg-gray-800
+        dark:text-gray-300 dark:border-gray-600' } %} {% set icon_paths = {
+        'info': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5
+        1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1
+        0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z', 'danger': 'M10 .5a9.5 9.5 0 1 0
+        9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1
+        0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1
+        0 0 1 0 2Z', 'error': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10
+        .5ZM9 7h2v6H9V7Zm0 8h2v2H9v-2Z', 'success': 'M10 .5a9.5 9.5 0 1 0 9.5
+        9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12
+        15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0
+        2Z', 'warning': 'M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5
+        4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1
+        0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z', 'dark': 'M10 .5a9.5 9.5 0
+        1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1
+        0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1
+        0 0 1 0 2Z' } %} {% for category, message in messages %}
         <div
-          id="alert-login"
-          class="flex items-center p-4 mb-4 text-sm rounded-lg transition-opacity duration-1000 ease-in-out opacity-100 {{ alert_classes.get(category, alert_classes['dark']) }}"
+          class="alert-box flex items-center p-4 text-sm rounded-lg transition-opacity duration-1000 ease-in-out opacity-100 mx-4 sm:mx-auto sm:max-w-md {{ alert_classes.get(category, alert_classes['dark']) }}"
           role="alert"
         >
           <svg
@@ -79,14 +82,14 @@
           </svg>
           <span class="sr-only">{{ category|capitalize }}</span>
           <div>
-            <span class="font-medium">{{ category|capitalize }} alert!</span> {{ message }}
+            <span class="font-medium">{{ category|capitalize }} alert!</span> {{
+            message }}
           </div>
         </div>
+        {% endfor %}
       </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-
+    </div>
+    {% endif %} {% endwith %}
 
     <!-- Page Content -->
     <main class="max-w-5xl mx-auto px-4 pt-8">
@@ -144,24 +147,46 @@
       </div>
     </footer>
 
+    <audio
+      id="alert-sound"
+      src="{{ url_for('static', filename='sound/alert.mp3') }}"
+      preload="auto"
+    ></audio>
+
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
-        const alertBox = document.getElementById("alert-login");
-        if (alertBox) {
+        const alertSound = document.getElementById("alert-sound");
+        const alertBoxes = document.querySelectorAll(".alert-box");
+
+        if (alertBoxes.length > 0 && alertSound) {
+          // Play sound once immediately for the first alert
+          alertSound.currentTime = 0;
+          alertSound.play().catch((err) => {
+            console.warn("Sound autoplay blocked:", err);
+          });
+        }
+
+        alertBoxes.forEach((alertBox, index) => {
+          const delay = 3000 * index;
+
+          // Remove sound play inside here
+
+          // Fade and remove alert
           setTimeout(() => {
             alertBox.classList.remove("opacity-100");
             alertBox.classList.add("opacity-0");
             setTimeout(() => {
               alertBox.remove();
             }, 1000);
-          }, 3000);
-        }
+          }, delay + 3000);
+        });
       });
     </script>
+
     <!-- Google tag (gtag.js) -->
     <script
       async

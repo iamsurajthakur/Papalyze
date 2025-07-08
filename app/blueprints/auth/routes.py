@@ -2,15 +2,18 @@ from flask import render_template, redirect, url_for, session, request, flash
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from sqlalchemy.exc import OperationalError
-from app.utils.helpers import ping_database
+from app.utils.helpers import ping_database, login_required
 from app.blueprints.auth import auth_bp
 from app.extensions import db, limiter
+from datetime import timedelta
 from app.models import User
+from app.utils.token import confirm_reset_token
+from flask import current_app
 import re
 
 
 @auth_bp.route('/login.html', methods=['GET', 'POST'])
-@limiter.limit("5 per 5 minutes")
+@limiter.limit("5 per 5 minutes", methods=["POST"])
 def login():
     try:
         ping_database()
@@ -20,6 +23,7 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        remember = request.form.get('remember_me')  
 
         if not email or not password:
             flash('Email and password are required.', 'danger')
@@ -33,15 +37,20 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password_hash, password):
             session['user_id'] = user.id
+            
+            if remember == 'on':
+                session.permanent = True
+                current_app.permanent_session_lifetime = timedelta(days=30)
+            else:
+                session.permanent = False
+            
             flash('Login successful!', 'success')
             return redirect(url_for('main.dashboard'))  
         else:
             flash('Invalid email or password', 'danger')
             return redirect(url_for('auth.login'))
 
-
     return render_template('login.html', show_navbar=False)
-
 
 
 @auth_bp.route('/signin.html', methods=['GET', 'POST'])
@@ -90,3 +99,27 @@ def logout():
     session.pop('user_id', None)
     flash("You have been logged out.", "info")
     return redirect(url_for('auth.login'))
+
+@auth_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    email = confirm_reset_token(token)
+    if not email:
+        flash('The reset link is invalid or expired.', 'danger')
+        return redirect(url_for('auth.login'))
+
+    if request.method == 'POST':
+        new_password = request.form.get('password')
+        confirm = request.form.get('confirm_password')
+
+        if new_password != confirm:
+            flash("Passwords do not match.", "warning")
+            return redirect(request.url)
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            user.password_hash = generate_password_hash(new_password)
+            db.session.commit()
+            flash("Password reset successful! You can now log in.", "success")
+            return redirect(url_for('auth.login'))
+
+    return render_template('reset_password.html', email=email, token=token, show_navbar=False)

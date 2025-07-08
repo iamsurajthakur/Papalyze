@@ -4,28 +4,27 @@ from flask import flash, redirect, url_for
 from datetime import datetime, timezone
 import re
 
+
 app = create_app(Config)
+
 
 @app.errorhandler(429)
 def ratelimit_handler(e):
     print(">>> Entered 429 error handler")
 
-    # Print full exception description
     print(f">>> Exception description: {e.description}")
     print(f">>> Exception type: {type(e)}")
     
-    # Fallback value
     cooldown_seconds = 300
     print(">>> Default fallback cooldown: 300 seconds")
 
-    # Try parsing from description like '5 per 5 minute'
     if hasattr(e, "description"):
         match = re.search(r'(\d+)\s+per\s+(\d+)\s+(second|minute|hour)', str(e.description))
         print(f">>> Regex match result: {match}")
         if match:
-            limit_count = int(match.group(1))     # e.g. 5
-            time_value = int(match.group(2))      # e.g. 5
-            time_unit = match.group(3)            # e.g. 'minute'
+            limit_count = int(match.group(1))     
+            time_value = int(match.group(2))     
+            time_unit = match.group(3)            
 
             print(f">>> Parsed values - limit_count: {limit_count}, time_value: {time_value}, time_unit: {time_unit}")
 
@@ -42,7 +41,6 @@ def ratelimit_handler(e):
     else:
         print(">>> No description found on exception.")
 
-    # Convert to readable format
     minutes = cooldown_seconds // 60
     seconds = cooldown_seconds % 60
 
