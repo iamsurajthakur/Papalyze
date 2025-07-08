@@ -18,6 +18,7 @@ def send_reset_email(to_email, reset_url):
         sg = SendGridAPIClient(os.getenv('SENDGRID_API_KEY'))
         response = sg.send(message)
         print(f"Email sent, status code: {response.status_code}")
+        print(f"Response headers: {response.headers}")
         return True
     except Exception as e:
         print(f"Error sending email: {e}")
