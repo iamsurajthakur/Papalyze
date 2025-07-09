@@ -1,272 +1,315 @@
-<!-- Navigation Bar -->
-<nav
-  class="bg-white border-gray-200 dark:bg-gray-900 fixed z-50 w-full shadow-md"
-  role="navigation"
-  aria-label="Main navigation"
->
-  <div
-    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
-  >
-    <!-- Logo and brand name -->
-    <a
-      href="/"
-      class="relative flex items-center space-x-3 rtl:space-x-reverse"
-    >
-      <img
+ <nav class="bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 fixed z-50 w-full shadow-sm" 
+         role="navigation" 
+         aria-label="Main navigation"
+         x-data="{ 
+            userMenuOpen: false,
+            profileModalOpen: false,
+            servicesOpen: false,
+            user: {
+                name: '{{ user.fullname | escape }}',
+                email: '{{ user.email | escape }}',
+                avatar: null
+            }
+         }">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-3">
+            
+            <!-- Logo and brand name -->
+            <a href="/dashboard.html" class="logo-container space-x-3 group">
+                <div class="flex items-center space-x-3">
+                    <!-- Placeholder for logo -->
+                    <div class="w-8 h-8 flex items-center justify-center">
+                       <img
         src="{{ url_for('static', filename='images/papalyze.svg') }}"
-        class="h-25 absolute -top-8 -left-4"
+        class="h-25 absolute -top-8 -left-8"
         alt="Papalyze Logo"
       />
-      <span
-        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white ms-14"
-        >Papalyze</span
-      >
-    </a>
+                    </div>
+                    <span class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+                        Papalyze
+                    </span>
+                </div>
+            </a>
 
-    <!-- Search bar toggle & hamburger menu (on small screens) -->
-    <div class="flex md:order-2">
-      <!-- Mobile search toggle button -->
-      <button
-        type="button"
-        data-collapse-toggle="navbar-search"
-        aria-controls="navbar-search"
-        aria-expanded="false"
-        class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 me-1"
-      >
-        <!-- Search icon SVG -->
-        <svg
-          class="w-5 h-5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 20 20"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-          />
-        </svg>
-        <span class="sr-only">Search</span>
-      </button>
+            <!-- Right side: User Account + Mobile menu -->
+            <div class="flex items-center space-x-3 md:order-2">
+                
+                <!-- User Account Box -->
+                <div class="relative">
+                    <button @click="userMenuOpen = !userMenuOpen"
+                            class="flex items-center space-x-3 p-1.5 text-sm bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600 transition-all duration-200 transform hover:scale-105"
+                            aria-expanded="false">
+                        <!-- User Avatar -->
+                        <div class="w-8 h-8 rounded-full user-avatar flex items-center justify-center text-white font-semibold text-sm">
+                            <span x-text="user.name.split(' ').map(n => n[0]).join('')"></span>
+                        </div>
+                        <!-- User Info (hidden on mobile) -->
+                        <div class="hidden md:block text-left">
+                            <div class="font-medium text-gray-900 dark:text-white text-sm" x-text="user.name"></div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-32" x-text="user.email"></div>
+                        </div>
+                        <!-- Dropdown Arrow -->
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-200" 
+                             :class="userMenuOpen ? 'rotate-180' : ''"
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
 
-      <!-- Search input (visible on md+ screens) -->
-      <div class="relative hidden md:block">
-        <div
-          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-        >
-          <!-- Icon inside the search box -->
-          <svg
-            class="w-4 h-4 text-gray-500 dark:text-gray-400"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
-          <span class="sr-only">Search icon</span>
+                    <!-- User Dropdown Menu -->
+                    <div x-show="userMenuOpen"
+                         x-cloak
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         @click.away="userMenuOpen = false"
+                         class="absolute right-0 top-full z-50 mt-2 w-64
+           backdrop-blur-md bg-white/30 dark:bg-gray-800/30
+           rounded-lg shadow-lg border border-gray-200 dark:border-gray-600">
+                        
+                        <!-- User Info Header -->
+                        <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full user-avatar flex items-center justify-center text-white font-semibold">
+                                    <span x-text="user.name.split(' ').map(n => n[0]).join('')"></span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-900 dark:text-white" x-text="user.name"></div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400" x-text="user.email"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Menu Items -->
+                        <div class="py-2">
+                            <button @click="profileModalOpen = true; userMenuOpen = false"
+                                    class="dropdown-item flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                Profile Settings
+                            </button>
+                            
+                            <a href="/dashboard.html" 
+                               class="dropdown-item flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                Dashboard
+                            </a>
+                            
+                            <a href="/preferences" 
+                               class="dropdown-item flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                Preferences
+                            </a>
+                            
+                            <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                            
+                            <a href="/auth/logout" 
+                               class="dropdown-item flex items-center px-4 py-2 text-sm text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile menu toggle -->
+                <button data-collapse-toggle="navbar-menu"
+                        type="button" 
+                        class="inline-flex items-center justify-center p-2 w-10 h-10 text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 transition-colors duration-200"
+                        aria-controls="navbar-menu" 
+                        aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-menu">
+                <ul class="flex flex-col p-4 md:p-0 mt-4 md:mt-0 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+                    
+                    <!-- Home -->
+                    <li>
+                        <a href="/dashboard.html" 
+                           class="nav-link block py-2 px-3 text-gray-700 rounded-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-400 font-medium transition-colors duration-200">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <!-- Services Dropdown -->
+                    <li x-data="{ servicesOpen: false }" 
+                        @mouseenter="if (window.innerWidth >= 768) servicesOpen = true"
+                        @mouseleave="if (window.innerWidth >= 768) servicesOpen = false"
+                        class="relative">
+                        
+                        <button @click="servicesOpen = !servicesOpen"
+                                class="nav-link flex items-center justify-between w-full py-2 px-3 text-gray-700 rounded-lg hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 md:w-auto dark:text-gray-300 md:dark:hover:text-blue-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent font-medium transition-colors duration-200">
+                            Services
+                            <svg class="w-2.5 h-2.5 ml-2 transition-transform duration-200" 
+                                 :class="servicesOpen ? 'rotate-180' : ''"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div x-show="servicesOpen"
+                             x-cloak
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-95"
+                             @click.away="servicesOpen = false"
+                             class="absolute top-full left-0 z-50 mt-1 w-64 bg-white rounded-lg shadow-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-600">
+                            
+                            <ul class="py-2 text-sm">
+                                <li>
+                                    <a href="/features?type=upload" @click="servicesOpen = false" 
+                                       class="dropdown-item flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+                                        <svg class="w-4 h-4 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        <div>
+                                            <div class="font-medium">Paper Upload & Analysis</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Upload and analyze research papers</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/features?type=predict" @click="servicesOpen = false"
+                                       class="dropdown-item flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+                                        <svg class="w-4 h-4 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        </svg>
+                                        <div>
+                                            <div class="font-medium">Topic Prediction</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Predict important research topics</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/features?type=charts" @click="servicesOpen = false"
+                                       class="dropdown-item flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+                                        <svg class="w-4 h-4 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                        <div>
+                                            <div class="font-medium">Visual Reports</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Generate charts and reports</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/features?type=summarize" @click="servicesOpen = false"
+                                       class="dropdown-item flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+                                        <svg class="w-4 h-4 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        <div>
+                                            <div class="font-medium">Notes to Summary</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Convert notes to summaries</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- About -->
+                    <li>
+                        <a href="/about.html" 
+                           class="nav-link block py-2 px-3 text-gray-700 rounded-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-400 font-medium transition-colors duration-200">
+                            About
+                        </a>
+                    </li>
+
+                    <!-- Contact -->
+                    <li>
+                        <a href="/contact.html" 
+                           class="nav-link block py-2 px-3 text-gray-700 rounded-lg hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-400 font-medium transition-colors duration-200">
+                            Contact
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <!-- Input field -->
-        <input
-          type="text"
-          id="search-navbar-desktop"
-          class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Search..."
-        />
-      </div>
 
-      <!-- Login button (placed next to the search bar on md+ screens) -->
-      <!-- Login button with animation (next to search bar) -->
-      <a
-  href="/auth/logout"
-  class="ml-4 cursor-pointer px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg transform transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400 active:scale-95"
->
-  Logout
-</a>
+        <!-- Profile Settings Modal -->
+        <div x-show="profileModalOpen"
+             x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 backdrop-blur-sm bg-black/50 z-50 flex items-center justify-center p-4"
+             @click.self="profileModalOpen = false">
+            
+            <div x-show="profileModalOpen"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+                
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Profile Settings</h3>
+                    <button @click="profileModalOpen = false"
+                            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
 
+                <!-- Modal Content -->
+                <div class="p-6">
+                    <div class="flex flex-col items-center space-y-4 mb-6">
+                        <div class="w-20 h-20 rounded-full user-avatar flex items-center justify-center text-white font-bold text-2xl">
+                            <span x-text="user.name.split(' ').map(n => n[0]).join('')"></span>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="font-semibold text-gray-900 dark:text-white" x-text="user.name"></h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400" x-text="user.email"></p>
+                        </div>
+                    </div>
 
-      <!-- Hamburger menu button for mobile -->
-      <button
-        data-collapse-toggle="navbar-search"
-        type="button"
-        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-        aria-controls="navbar-search"
-        aria-expanded="false"
-      >
-        <span class="sr-only">Open main menu</span>
-        <!-- Hamburger icon -->
-        <svg
-          class="w-5 h-5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 17 14"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M1 1h15M1 7h15M1 13h15"
-          />
-        </svg>
-      </button>
-    </div>
-
-    <!-- Collapsible part: navbar links + search for mobile -->
-    <div
-      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-      id="navbar-search"
-    >
-      <!-- Search field (only visible on mobile) -->
-      <div class="relative mt-3 md:hidden">
-        <div
-          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-        >
-          <svg
-            class="w-4 h-4 text-gray-500 dark:text-gray-400"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
+                    <!-- Quick Actions -->
+                    <div class="space-y-3">
+                        <a href="/profile/edit" 
+                           class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-all duration-200 transform hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit Profile
+                        </a>
+                        
+                        <a href="/auth/logout" 
+                           class="w-full flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 transition-all duration-200 transform hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Sign Out
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <input
-          type="text"
-          id="search-navbar-mobile"
-          class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Search..."
-        />
-      </div>
-
-      <!-- Navigation Links -->
-      <ul
-        class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
-      >
-        <!-- Home link -->
-        <li>
-          <a
-            href="/"
-            class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-            >Home</a
-          >
-        </li>
-        <!-- Contact -->
-        <li>
-          <a
-            href="/contact.html"
-            class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-            >Contact</a
-          >
-        </li>
-        <!-- About link -->
-        <li>
-          <a
-            href="/about.html"
-            class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-            >About</a
-          >
-        </li>
-
-        <!-- Services with Dropdown Menu -->
-        <li
-          x-data="{ open: false }"
-          x-init="() => {
-                const handleMouseEnter = () => { if (window.innerWidth >= 768) open = true };
-                const handleMouseLeave = () => { if (window.innerWidth >= 768) open = false };
-                $el.addEventListener('mouseenter', handleMouseEnter);
-                $el.addEventListener('mouseleave', handleMouseLeave);
-              }"
-          class="relative"
-        >
-          <!-- Button to toggle dropdown -->
-          <button
-            @click.prevent="open = !open"
-            class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm md:w-auto hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-          >
-            Services
-            <!-- Down arrow -->
-            <svg
-              class="w-2.5 h-2.5 ml-2.5"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-
-          <!-- Dropdown menu (Alpine.js controlled) -->
-          <div
-            x-show="open"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 translate-y-1"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 translate-y-1"
-            class="absolute top-full left-0 z-50 mt-1 min-w-[200px] bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-600"
-            @click.away="open = false"
-          >
-            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-              <li>
-                <a
-                  href="/features?type=upload"
-                  onclick="handleFeatureClick('/features?type=upload')"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >Paper Upload & Analysis</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/features?type=predict"
-                  onclick="handleFeatureClick('/features?type=predict')"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >Important Topics Prediction</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/features?type=charts"
-                  onclick="handleFeatureClick('/features?type=charts')"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >Visual Reports & Charts</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/features?type=summarize"
-                  onclick="handleFeatureClick('/features?type=summarize')"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >Notes to Summary</a
-                >
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<h1 class="text-white">navbar for logged in users</h1>
+    </nav>

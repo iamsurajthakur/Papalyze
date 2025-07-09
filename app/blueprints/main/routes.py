@@ -12,7 +12,10 @@ import os
 
 @bp.route('/')
 def index():
-    return render_template('main/index.html', title='Home')
+    if 'user_id' in session:
+        return redirect(url_for('main.dashboard'))
+    user = User.query.get(session.get('user_id')) if 'user_id' in session else None
+    return render_template('main/index.html',user=user, title='Home')
 
 @bp.route('/contact.html', methods=["GET","POST"])
 def contact():
@@ -42,7 +45,8 @@ def feature():
 @bp.route('/dashboard.html')
 @login_required
 def dashboard():
-    return render_template('main/dashboard.html', title='Dashboard')
+    user = User.query.get(session["user_id"])
+    return render_template('main/dashboard.html', title='Dashboard', user=user)
 
 @bp.route('/ping')
 def ping():

@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Paper Analyzer{% endblock %}</title>
+      
+
 
     <!-- Tailwind CSS -->
 
@@ -24,9 +26,67 @@
       defer
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
-
+    <style>
+      @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        /* Smooth transitions */
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .nav-link:hover {
+            transform: translateY(-1px);
+        }
+        
+        /* Logo positioning fix */
+        .logo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 40px;
+        }
+        
+        /* Search input improvements */
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Dropdown improvements */
+        .dropdown-item {
+            transition: all 0.15s ease-in-out;
+        }
+        
+        .dropdown-item:hover {
+            background-color: hsl(215, 28%, 22%);
+            padding-left: 1.25rem;
+        }
+        
+        /* Mobile menu improvements */
+        .mobile-menu {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .dark .mobile-menu {
+            background: rgba(17, 24, 39, 0.95);
+        }
+        .user-avatar {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+        }
+         [x-cloak] {
+    display: none !important;
+  }
+    </style>
     {% block head %}{% endblock %}
   </head>
+
   <body
     class="flex flex-col overflow-x-hidden min-h-screen text-gray-800 font-sans"
     style="background-color: #10141e"
@@ -152,11 +212,25 @@
       src="{{ url_for('static', filename='sound/alert.mp3') }}"
       preload="auto"
     ></audio>
-
+    
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
+    <script>
+        // Initialize Flowbite collapse functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Flowbite components if available
+            if (typeof Flowbite !== 'undefined') {
+                Flowbite.initCollapses();
+            }
+        });
+
+        // Handle feature navigation
+        function handleFeatureClick(url) {
+            window.location.href = url;
+        }
+    </script>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         const alertSound = document.getElementById("alert-sound");
@@ -201,5 +275,6 @@
 
       gtag("config", "G-7RHG8736TN");
     </script>
+
   </body>
 </html>

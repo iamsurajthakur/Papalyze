@@ -1,6 +1,7 @@
 import os
-from flask import Flask
+from flask import Flask, session
 from dotenv import load_dotenv
+from app.models import User
 from app.extensions import db, limiter
 
 load_dotenv()
@@ -34,6 +35,13 @@ def create_app(config_class=None):
     
     from app.blueprints.auth.routes import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')  
+
+    @app.context_processor
+    def inject_user():
+        user = None
+        if 'user_id' in session:
+            user = User.query.get(session['user_id'])
+        return dict(user=user)
     
     app.debug = True
 
