@@ -2,13 +2,113 @@
 {% block title %}Dashboard - Papalyze{% endblock %}
 
 {% block content %}
-
 <div class="pt-20 mt-5"></div>
 
+<!-- Header -->
+<header class="bg-[#0F172A] border-b border-[#374965]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-[#1E293B] rounded-xl flex items-center justify-center">
+            <i data-lucide="brain" class="w-6 h-6 text-[#6C5CE7]"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-white">Welcome, Suraj Thakur</h1>
+            <p class="text-slate-400 mt-1">AI-Powered Exam Paper Analysis</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-3">
+          <div class="hidden md:flex items-center space-x-2 bg-[#1E293B] rounded-lg px-4 py-2 border border-[#334155]">
+            <i data-lucide="user" class="w-4 h-4 text-slate-400"></i>
+            <span class="text-sm text-slate-300">Welcome back!</span>
+          </div>
+          <button class="p-2 bg-[#1E293B] rounded-lg hover:bg-[#334155] transition-colors border border-[#334155]">
+            <i data-lucide="settings" class="w-5 h-5 text-slate-300"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<h1 class="text-5xl font-extrabold dark:text-white">Dashboard under construction</h1>
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="bg-[#1E293B] rounded-xl p-6 hover:border-[#6C5CE7] border border-[#334155] hover:shadow-md transition">
+        <p class="text-sm text-slate-400 mb-1">Papers Analyzed</p>
+        <p class="text-3xl font-bold text-white">42</p>
+      </div>
+      <div class="bg-[#1E293B] rounded-xl p-6 hover:border-[#6C5CE7] border border-[#334155] transition">
+        <p class="text-sm text-slate-400 mb-1">Topics Predicted</p>
+        <p class="text-3xl font-bold text-white">128</p>
+      </div>
+      <div class="bg-[#1E293B] rounded-xl p-6 hover:border-[#6C5CE7] border border-[#334155] transition">
+        <p class="text-sm text-slate-400 mb-1">Reports Generated</p>
+        <p class="text-3xl font-bold text-white">35</p>
+      </div>
+      <div class="bg-[#1E293B] rounded-xl p-6 hover:border-[#6C5CE7] border border-[#334155] transition">
+        <p class="text-sm text-slate-400 mb-1">Notes Summarized</p>
+        <p class="text-3xl font-bold text-white">89</p>
+      </div>
+    </div>
 
-
-</div>
-
+    <!-- Main Features -->
+    <h2 class="text-2xl font-bold text-white mb-8">Main Features</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Repeat this block for each feature -->
+      <a href="/features?type=upload" class="block group">
+        <div class="bg-[#1E293B] rounded-xl p-6 border border-[#334155] hover:bg-[#334155] transition group-hover:shadow-md">
+          <div class="w-16 h-16 bg-[#334155] rounded-xl flex items-center justify-center mb-4">
+            <i data-lucide="search" class="w-8 h-8 text-[#6C5CE7]"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Upload & Analysis</h3>
+          <p class="text-slate-400 text-sm mb-4">Analyze exam papers using OCR and NLP technology</p>
+          <div class="flex items-center text-[#6C5CE7] group-hover:text-indigo-400 transition">
+            <span class="text-sm font-medium">Start Analysis</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+          </div>
+        </div>
+      </a>
+      <!-- Repeat others like Topic Prediction, Reports, Summary -->
+       <a href="/features?type=predict" class="block group">
+        <div class="bg-[#1E293B] rounded-xl p-6 border border-[#334155] hover:bg-[#334155] transition group-hover:shadow-md">
+          <div class="w-16 h-16 bg-[#334155] rounded-xl flex items-center justify-center mb-4">
+            <i data-lucide="search" class="w-8 h-8 text-[#6C5CE7]"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Topic Prediction</h3>
+          <p class="text-slate-400 text-sm mb-4">Analyze exam papers using OCR and NLP technology</p>
+          <div class="flex items-center text-[#6C5CE7] group-hover:text-indigo-400 transition">
+            <span class="text-sm font-medium">Start Prediction</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+          </div>
+        </div>
+      </a>
+      <a href="/features?type=charts" class="block group">
+        <div class="bg-[#1E293B] rounded-xl p-6 border border-[#334155] hover:bg-[#334155] transition group-hover:shadow-md">
+          <div class="w-16 h-16 bg-[#334155] rounded-xl flex items-center justify-center mb-4">
+            <i data-lucide="search" class="w-8 h-8 text-[#6C5CE7]"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Visual Report</h3>
+          <p class="text-slate-400 text-sm mb-4">Analyze exam papers using OCR and NLP technology</p>
+          <div class="flex items-center text-[#6C5CE7] group-hover:text-indigo-400 transition">
+            <span class="text-sm font-medium">View Report</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+          </div>
+        </div>
+      </a>
+      <a href="/features?type=summarize" class="block group">
+        <div class="bg-[#1E293B] rounded-xl p-6 border border-[#334155] hover:bg-[#334155] transition group-hover:shadow-md">
+          <div class="w-16 h-16 bg-[#334155] rounded-xl flex items-center justify-center mb-4">
+            <i data-lucide="search" class="w-8 h-8 text-[#6C5CE7]"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Summarize</h3>
+          <p class="text-slate-400 text-sm mb-4">Analyze exam papers using OCR and NLP technology</p>
+          <div class="flex items-center text-[#6C5CE7] group-hover:text-indigo-400 transition">
+            <span class="text-sm font-medium">Start Summarize</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+  </main>
 {% endblock %}

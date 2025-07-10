@@ -46,7 +46,12 @@ def feature():
 @login_required
 def dashboard():
     user = User.query.get(session["user_id"])
-    return render_template('main/dashboard.html', title='Dashboard', user=user)
+    recent_activities = [
+        {"icon": "file-text", "message": "Math Paper 2023 analyzed", "time": "2 hours ago"},
+        {"icon": "target", "message": "Physics topics predicted", "time": "5 hours ago"},
+        {"icon": "bar-chart-3", "message": "Chemistry report generated", "time": "1 day ago"}
+    ]
+    return render_template('main/dashboard.html',recent_activities=recent_activities, title='Dashboard', user=user)
 
 @bp.route('/ping')
 def ping():

@@ -4,8 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Paper Analyzer{% endblock %}</title>
-      
-
 
     <!-- Tailwind CSS -->
 
@@ -28,61 +26,96 @@
     ></script>
     <style>
       @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
         }
-        
-        .animate-fadeIn {
-            animation: fadeIn 0.3s ease-out;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        /* Smooth transitions */
-        .nav-link {
-            transition: all 0.2s ease-in-out;
-        }
-        
-        .nav-link:hover {
-            transform: translateY(-1px);
-        }
-        
-        /* Logo positioning fix */
-        .logo-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            min-height: 40px;
-        }
-        
-        /* Search input improvements */
-        .search-input:focus {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        /* Dropdown improvements */
-        .dropdown-item {
-            transition: all 0.15s ease-in-out;
-        }
-        
-        .dropdown-item:hover {
-            background-color: hsl(215, 28%, 22%);
-            padding-left: 1.25rem;
-        }
-        
-        /* Mobile menu improvements */
-        .mobile-menu {
+      }
+
+      .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      /* Smooth transitions */
+      .nav-link {
+        transition: all 0.2s ease-in-out;
+      }
+
+      .nav-link:hover {
+        transform: translateY(-1px);
+      }
+
+      /* Logo positioning fix */
+      .logo-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-height: 40px;
+      }
+
+      /* Search input improvements */
+      .search-input:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      /* Dropdown improvements */
+      .dropdown-item {
+        transition: all 0.15s ease-in-out;
+      }
+
+      .dropdown-item:hover {
+        background-color: hsl(215, 28%, 22%);
+        padding-left: 1.25rem;
+      }
+
+      /* Mobile menu improvements */
+      .mobile-menu {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .dark .mobile-menu {
+        background: rgba(17, 24, 39, 0.95);
+      }
+      .user-avatar {
+        background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+      }
+      [x-cloak] {
+        display: none !important;
+      }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .stat-card-2 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .stat-card-3 {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .stat-card-4 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
         }
         
-        .dark .mobile-menu {
-            background: rgba(17, 24, 39, 0.95);
-        }
-        .user-avatar {
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-        }
-         [x-cloak] {
-    display: none !important;
-  }
+      
     </style>
     {% block head %}{% endblock %}
   </head>
@@ -212,24 +245,24 @@
       src="{{ url_for('static', filename='sound/alert.mp3') }}"
       preload="auto"
     ></audio>
-    
+
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
     <script>
-        // Initialize Flowbite collapse functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Flowbite components if available
-            if (typeof Flowbite !== 'undefined') {
-                Flowbite.initCollapses();
-            }
-        });
-
-        // Handle feature navigation
-        function handleFeatureClick(url) {
-            window.location.href = url;
+      // Initialize Flowbite collapse functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Flowbite components if available
+        if (typeof Flowbite !== "undefined") {
+          Flowbite.initCollapses();
         }
+      });
+
+      // Handle feature navigation
+      function handleFeatureClick(url) {
+        window.location.href = url;
+      }
     </script>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
@@ -275,6 +308,48 @@
 
       gtag("config", "G-7RHG8736TN");
     </script>
+    <script>
+        // Initialize Feather icons
+        feather.replace();
 
+        // Add some interactive functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // File upload area interactions
+            const uploadArea = document.querySelector('.border-dashed');
+            
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('border-indigo-400', 'bg-indigo-50');
+            });
+            
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('border-indigo-400', 'bg-indigo-50');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('border-indigo-400', 'bg-indigo-50');
+                // Handle file drop logic here
+                console.log('Files dropped:', e.dataTransfer.files);
+            });
+
+            // Add click handler for upload button
+            document.querySelector('button:contains("Choose File")').addEventListener('click', function() {
+                // Create hidden file input
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = '.pdf,.jpg,.jpeg,.png,.docx';
+                fileInput.multiple = true;
+                
+                fileInput.addEventListener('change', function(e) {
+                    console.log('Files selected:', e.target.files);
+                    // Handle file selection logic here
+                });
+                
+                fileInput.click();
+            });
+        });
+    </script>
   </body>
 </html>
