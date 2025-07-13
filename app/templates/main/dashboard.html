@@ -1,371 +1,535 @@
-{% extends "base.html" %}
-{% block title %}Dashboard - Papalyze{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Dashboard - Papalyze{% endblock %} {%
+block content %}
 <div class="pt-20 mt-5"></div>
 
 <!-- Header -->
- 
-<header class="relative gradient-bg border-b border-slate-700/50 backdrop-blur-sm slide-in">
-        <!-- Subtle top highlight -->
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto px-6 py-6">
-            <div class="flex items-center justify-between">
-                <!-- Left Section -->
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <div class="w-12 h-12 bg-[#1d4ed8] rounded-xl flex items-center justify-center glow-effect shadow-lg">
-                            <i data-lucide="brain" class="w-6 h-6 text-white">logo</i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <h1 class="text-2xl font-bold text-white tracking-tight">Welcome, Suraj Thakur</h1>
-                        </div>
-                        <p class="text-slate-400 mt-1 font-medium">AI-Powered Exam Paper Analysis</p>
-                        <div class="flex items-center space-x-4 mt-2">
-                            <div class="flex items-center space-x-1">
-                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
-                                <span class="text-xs text-slate-400">Online</span>
-                            </div>
-                            <div class="flex items-center space-x-1">
-                                <i data-lucide="zap" class="w-3 h-3 text-yellow-400"></i>
-                                <span class="text-xs text-slate-400">Fast Processing</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Right Section -->
-                <div class="flex items-center space-x-3">
-                    <!-- Stats Cards -->
-                    <div class="hidden lg:flex items-center space-x-3">
-                        <div class="glass-effect rounded-lg px-4 py-3">
-                            <div class="flex items-center space-x-2">
-                                <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
-                                <div>
-                                    <p class="text-xs text-slate-400">Papers Analyzed</p>
-                                    <p class="text-sm font-semibold text-white">247</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="glass-effect rounded-lg px-4 py-3">
-                            <div class="flex items-center space-x-2">
-                                <i data-lucide="trending-up" class="w-4 h-4 text-green-400"></i>
-                                <div>
-                                    <p class="text-xs text-slate-400">Accuracy</p>
-                                    <p class="text-sm font-semibold text-white">97.8%</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Welcome Message -->
-                    <div class="hidden md:flex items-center space-x-2 glass-effect rounded-lg px-4 py-3">
-                        <i data-lucide="user" class="w-4 h-4 text-slate-400"></i>
-                        <span class="text-sm text-slate-300 font-medium">Welcome back!</span>
-                        <div class="w-2 h-2 bg-blue-400 rounded-full pulse-dot"></div>
-                    </div>
-                    
-                    <!-- Notifications -->
-                    <div class="relative">
-                        <button class="p-3 glass-effect rounded-lg hover:bg-slate-700/50 transition-all duration-300 group">
-                            <i data-lucide="bell" class="w-5 h-5 text-slate-400 group-hover:text-white"></i>
-                        </button>
-                        <div class="absolute -top-1 -right-1 w-5 h-5 notification-badge rounded-full flex items-center justify-center">
-                            <span class="text-xs font-bold text-white">3</span>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-        
-        <!-- Bottom gradient line -->
-        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-    </header>
 
+<header
+  class="relative gradient-bg border-b border-slate-700/50 backdrop-blur-sm slide-in"
+>
+  <!-- Subtle top highlight -->
+  <div
+    class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"
+  ></div>
 
-  <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <!-- Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <!-- Papers Analyzed Card -->
-        <div class="group relative card-entrance" style="animation-delay: 0.1s;">
-            <div class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"></div>
-            <div class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="file-text" class="w-6 h-6 text-blue-400 icon-bounce"></i>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <div class="w-1 h-1 bg-green-400 rounded-full"></div>
-                        <span class="text-xs text-slate-500">Active</span>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-400 mb-2 font-medium">Papers Analyzed</p>
-                <div class="flex items-end justify-between">
-                    <p class="text-4xl font-bold text-white number-counter">42</p>
-                    <div class="flex items-center space-x-1 text-green-400">
-                        <i data-lucide="trending-up" class="w-4 h-4"></i>
-                        <span class="text-xs font-medium">+12%</span>
-                    </div>
-                </div>
-                <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
-                    <div class="progress-bar h-full rounded-full" style="--progress-width: 65%;"></div>
-                </div>
-            </div>
+  <div class="max-w-7xl mx-auto px-6 py-6">
+    <div class="flex items-center justify-between">
+      <!-- Left Section -->
+      <div class="flex items-center space-x-4">
+        <div class="relative">
+          <div
+            class="w-12 h-12 bg-[#1d4ed8] rounded-xl flex items-center justify-center glow-effect shadow-lg"
+          >
+            <i data-lucide="brain" class="w-6 h-6 text-white">logo</i>
+          </div>
         </div>
-
-        <!-- Topics Predicted Card -->
-        <div class="group relative card-entrance" style="animation-delay: 0.2s;">
-            <div class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"></div>
-            <div class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="brain" class="w-6 h-6 text-purple-400 icon-bounce" style="animation-delay: 0.5s;"></i>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <div class="w-1 h-1 bg-purple-400 rounded-full animate-pulse"></div>
-                        <span class="text-xs text-slate-500">Processing</span>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-400 mb-2 font-medium">Topics Predicted</p>
-                <div class="flex items-end justify-between">
-                    <p class="text-4xl font-bold text-white number-counter">128</p>
-                    <div class="flex items-center space-x-1 text-purple-400">
-                        <i data-lucide="zap" class="w-4 h-4"></i>
-                        <span class="text-xs font-medium">+24%</span>
-                    </div>
-                </div>
-                <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
-                    <div class="progress-bar h-full rounded-full" style="--progress-width: 85%;"></div>
-                </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-2xl font-bold text-white tracking-tight">
+              Welcome, Suraj Thakur
+            </h1>
+          </div>
+          <p class="text-slate-400 mt-1 font-medium">
+            AI-Powered Exam Paper Analysis
+          </p>
+          <div class="flex items-center space-x-4 mt-2">
+            <div class="flex items-center space-x-1">
+              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+              <span class="text-xs text-slate-400">Online</span>
             </div>
-        </div>
-
-        <!-- Reports Generated Card -->
-        <div class="group relative card-entrance" style="animation-delay: 0.3s;">
-            <div class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"></div>
-            <div class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="bar-chart-3" class="w-6 h-6 text-emerald-400 icon-bounce" style="animation-delay: 1s;"></i>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <div class="w-1 h-1 bg-emerald-400 rounded-full"></div>
-                        <span class="text-xs text-slate-500">Ready</span>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-400 mb-2 font-medium">Reports Generated</p>
-                <div class="flex items-end justify-between">
-                    <p class="text-4xl font-bold text-white number-counter">20</p>
-                    <div class="flex items-center space-x-1 text-emerald-400">
-                        <i data-lucide="arrow-up" class="w-4 h-4"></i>
-                        <span class="text-xs font-medium">+8%</span>
-                    </div>
-                </div>
-                <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
-                    <div class="progress-bar h-full rounded-full" style="--progress-width: 45%;"></div>
-                </div>
+            <div class="flex items-center space-x-1">
+              <i data-lucide="zap" class="w-3 h-3 text-yellow-400"></i>
+              <span class="text-xs text-slate-400">Fast Processing</span>
             </div>
+          </div>
         </div>
-
-        <!-- Notes Summarized Card -->
-        <div class="group relative card-entrance" style="animation-delay: 0.4s;">
-            <div class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"></div>
-            <div class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="file-edit" class="w-6 h-6 text-orange-400 icon-bounce" style="animation-delay: 1.5s;"></i>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <div class="w-1 h-1 bg-orange-400 rounded-full"></div>
-                        <span class="text-xs text-slate-500">Complete</span>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-400 mb-2 font-medium">Notes Summarized</p>
-                <div class="flex items-end justify-between">
-                    <p class="text-4xl font-bold text-white number-counter">89</p>
-                    <div class="flex items-center space-x-1 text-orange-400">
-                        <i data-lucide="target" class="w-4 h-4"></i>
-                        <span class="text-xs font-medium">+18%</span>
-                    </div>
-                </div>
-                <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
-                    <div class="progress-bar h-full rounded-full" style="--progress-width: 75%;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Features -->
-     <div class="max-w-7xl mx-auto">
-        <!-- Enhanced Header -->
-        <div class="mb-12 text-center">
-            <div class="inline-flex items-center space-x-3 mb-4">
-                <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                    <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
-                </div>
-                <h2 class="text-4xl font-bold text-white">Main Features</h2>
-            </div>
-            <p class="text-slate-400 text-lg max-w-2xl mx-auto">Discover powerful AI-driven tools designed to revolutionize your exam preparation and analysis workflow</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Upload & Analysis -->
-           <a href="/features?type=upload" class="block group card-entrance h-full" style="animation-delay: 0.1s;">
-  <div class="relative h-full">
-    <div class="absolute inset-0 gradient-border transition-all duration-500 rounded-xl"></div>
-    
-    <div class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 feature-glow flex flex-col justify-between">
-      <!-- Icon -->
-      <div class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
-        <i data-lucide="upload" class="w-8 h-8 text-purple-400 floating-icon icon-glow"></i>
-        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
       </div>
 
-      <!-- Text Content -->
-      <div class="mb-6">
-        <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-shimmer transition-all duration-300">
-          Upload & Analysis
-        </h3>
-        <p class="text-slate-400 text-sm leading-relaxed">
-          Advanced OCR and NLP technology to analyze exam papers with precision and extract valuable insights
-        </p>
-      </div>
-
-      <!-- Footer Actions -->
-      <div class="flex items-center justify-between mt-auto">
-        <div class="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors duration-300">
-          <span class="text-sm font-semibold">Start Analysis</span>
-          <i data-lucide="arrow-right" class="w-4 h-4 ml-2 arrow-slide"></i>
+      <!-- Right Section -->
+      <div class="flex items-center space-x-3">
+        <!-- Stats Cards -->
+        <div class="hidden lg:flex items-center space-x-3">
+          <div class="glass-effect rounded-lg px-4 py-3">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
+              <div>
+                <p class="text-xs text-slate-400">Papers Analyzed</p>
+                <p class="text-sm font-semibold text-white">247</p>
+              </div>
+            </div>
+          </div>
+          <div class="glass-effect rounded-lg px-4 py-3">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="trending-up" class="w-4 h-4 text-green-400"></i>
+              <div>
+                <p class="text-xs text-slate-400">Accuracy</p>
+                <p class="text-sm font-semibold text-white">97.8%</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="flex items-center space-x-1">
-          <div class="w-1 h-1 bg-green-400 rounded-full"></div>
-          <span class="text-xs text-slate-500">Active</span>
+
+        <!-- Welcome Message -->
+        <div
+          class="hidden md:flex items-center space-x-2 glass-effect rounded-lg px-4 py-3"
+        >
+          <i data-lucide="user" class="w-4 h-4 text-slate-400"></i>
+          <span class="text-sm text-slate-300 font-medium">Welcome back!</span>
+          <div class="w-2 h-2 bg-blue-400 rounded-full pulse-dot"></div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="relative">
+          <button
+            class="p-3 glass-effect rounded-lg hover:bg-slate-700/50 transition-all duration-300 group"
+          >
+            <i
+              data-lucide="bell"
+              class="w-5 h-5 text-slate-400 group-hover:text-white"
+            ></i>
+          </button>
+          <div
+            class="absolute -top-1 -right-1 w-5 h-5 notification-badge rounded-full flex items-center justify-center"
+          >
+            <span class="text-xs font-bold text-white">3</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</a>
 
+  <!-- Bottom gradient line -->
+  <div
+    class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"
+  ></div>
+</header>
 
-            <!-- Topic Prediction -->
-            <a href="/features?type=upload" class="block group card-entrance h-full" style="animation-delay: 0.1s;">
-  <div class="relative h-full">
-    <div class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"></div>
-    
-    <div class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 feature-glow flex flex-col justify-between">
-
-      <!-- Icon -->
-      <div class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
-                            <i data-lucide="brain" class="w-8 h-8 text-blue-400 floating-icon icon-glow" style="animation-delay: 0.5s;"></i>
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                        </div>
-
-      <!-- Text Content -->
-      <div class="mb-6">
-        <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-shimmer transition-all duration-300">
-          Topic Prediction
-        </h3>
-        <p class="text-slate-400 text-sm leading-relaxed">
-          AI-powered prediction algorithms to forecast exam topics based on historical patterns and trends
-        </p>
-      </div>
-
-      <!-- Footer Actions -->
-      <div class="flex items-center justify-between mt-auto">
-        <div class="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors duration-300">
-          <span class="text-sm font-semibold">Predict</span>
-          <i data-lucide="arrow-right" class="w-4 h-4 ml-2 arrow-slide"></i>
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <!-- Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <!-- Papers Analyzed Card -->
+    <div class="group relative card-entrance" style="animation-delay: 0.1s">
+      <div
+        class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"
+      ></div>
+      <div
+        class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <div
+            class="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+          >
+            <i
+              data-lucide="file-text"
+              class="w-6 h-6 text-blue-400 icon-bounce"
+            ></i>
+          </div>
+          <div class="flex items-center space-x-1">
+            <div class="w-1 h-1 bg-green-400 rounded-full"></div>
+            <span class="text-xs text-slate-500">Active</span>
+          </div>
         </div>
-        <div class="flex items-center space-x-1">
-          <div class="w-1 h-1 bg-green-400 rounded-full"></div>
-          <span class="text-xs text-slate-500">Active</span>
+        <p class="text-sm text-slate-400 mb-2 font-medium">Papers Analyzed</p>
+        <div class="flex items-end justify-between">
+          <p class="text-4xl font-bold text-white number-counter">42</p>
+          <div class="flex items-center space-x-1 text-green-400">
+            <i data-lucide="trending-up" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">+12%</span>
+          </div>
+        </div>
+        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
+          <div
+            class="progress-bar h-full rounded-full"
+            style="--progress-width: 65%"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Topics Predicted Card -->
+    <div class="group relative card-entrance" style="animation-delay: 0.2s">
+      <div
+        class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"
+      ></div>
+      <div
+        class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <div
+            class="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+          >
+            <i
+              data-lucide="brain"
+              class="w-6 h-6 text-purple-400 icon-bounce"
+              style="animation-delay: 0.5s"
+            ></i>
+          </div>
+          <div class="flex items-center space-x-1">
+            <div class="w-1 h-1 bg-purple-400 rounded-full animate-pulse"></div>
+            <span class="text-xs text-slate-500">Processing</span>
+          </div>
+        </div>
+        <p class="text-sm text-slate-400 mb-2 font-medium">Topics Predicted</p>
+        <div class="flex items-end justify-between">
+          <p class="text-4xl font-bold text-white number-counter">128</p>
+          <div class="flex items-center space-x-1 text-purple-400">
+            <i data-lucide="zap" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">+24%</span>
+          </div>
+        </div>
+        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
+          <div
+            class="progress-bar h-full rounded-full"
+            style="--progress-width: 85%"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports Generated Card -->
+    <div class="group relative card-entrance" style="animation-delay: 0.3s">
+      <div
+        class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"
+      ></div>
+      <div
+        class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <div
+            class="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+          >
+            <i
+              data-lucide="bar-chart-3"
+              class="w-6 h-6 text-emerald-400 icon-bounce"
+              style="animation-delay: 1s"
+            ></i>
+          </div>
+          <div class="flex items-center space-x-1">
+            <div class="w-1 h-1 bg-emerald-400 rounded-full"></div>
+            <span class="text-xs text-slate-500">Ready</span>
+          </div>
+        </div>
+        <p class="text-sm text-slate-400 mb-2 font-medium">Reports Generated</p>
+        <div class="flex items-end justify-between">
+          <p class="text-4xl font-bold text-white number-counter">20</p>
+          <div class="flex items-center space-x-1 text-emerald-400">
+            <i data-lucide="arrow-up" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">+8%</span>
+          </div>
+        </div>
+        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
+          <div
+            class="progress-bar h-full rounded-full"
+            style="--progress-width: 45%"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes Summarized Card -->
+    <div class="group relative card-entrance" style="animation-delay: 0.4s">
+      <div
+        class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"
+      ></div>
+      <div
+        class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <div
+            class="w-12 h-12 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+          >
+            <i
+              data-lucide="file-edit"
+              class="w-6 h-6 text-orange-400 icon-bounce"
+              style="animation-delay: 1.5s"
+            ></i>
+          </div>
+          <div class="flex items-center space-x-1">
+            <div class="w-1 h-1 bg-orange-400 rounded-full"></div>
+            <span class="text-xs text-slate-500">Complete</span>
+          </div>
+        </div>
+        <p class="text-sm text-slate-400 mb-2 font-medium">Notes Summarized</p>
+        <div class="flex items-end justify-between">
+          <p class="text-4xl font-bold text-white number-counter">89</p>
+          <div class="flex items-center space-x-1 text-orange-400">
+            <i data-lucide="target" class="w-4 h-4"></i>
+            <span class="text-xs font-medium">+18%</span>
+          </div>
+        </div>
+        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
+          <div
+            class="progress-bar h-full rounded-full"
+            style="--progress-width: 75%"
+          ></div>
         </div>
       </div>
     </div>
   </div>
-</a>
 
-            <!-- Visual Report -->
-            <a href="/features?type=upload" class="block group card-entrance h-full" style="animation-delay: 0.1s;">
-  <div class="relative h-full">
-    <div class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"></div>
-    
-    <div class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 feature-glow flex flex-col justify-between">
-
-      <!-- Icon -->
-     <div class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
-                            <i data-lucide="bar-chart-3" class="w-8 h-8 text-emerald-400 floating-icon icon-glow" style="animation-delay: 1s;"></i>
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                        </div>
-
-      <!-- Text Content -->
-      <div class="mb-6">
-        <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-shimmer transition-all duration-300">
-          Visual Reports
-        </h3>
-        <p class="text-slate-400 text-sm leading-relaxed">
-          Interactive charts and visualizations to present analysis results in an intuitive format
-        </p>
-      </div>
-
-      <!-- Footer Actions -->
-      <div class="flex items-center justify-between mt-auto">
-        <div class="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors duration-300">
-          <span class="text-sm font-semibold">View Report</span>
-          <i data-lucide="arrow-right" class="w-4 h-4 ml-2 arrow-slide"></i>
+  <!-- Main Features -->
+  <div class="max-w-7xl mx-auto">
+    <!-- Enhanced Header -->
+    <div class="mb-12 text-center">
+      <div class="inline-flex items-center space-x-3 mb-4">
+        <div
+          class="w-8 h-8 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center"
+        >
+          <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
         </div>
-        <div class="flex items-center space-x-1">
-          <div class="w-1 h-1 bg-green-400 rounded-full"></div>
-          <span class="text-xs text-slate-500">Active</span>
-        </div>
+        <h2 class="text-4xl font-bold text-white">Main Features</h2>
       </div>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+        Discover powerful AI-driven tools designed to revolutionize your exam
+        preparation and analysis workflow
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Upload & Analysis -->
+      <a
+        href="/features?type=upload"
+        class="block group card-entrance h-full"
+        style="animation-delay: 0.1s"
+      >
+        <div class="relative h-full">
+          <div
+            class="absolute inset-0 gradient-border transition-all duration-500 rounded-xl"
+          ></div>
+
+          <div
+            class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 feature-glow flex flex-col justify-between"
+          >
+            <!-- Icon -->
+            <div
+              class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden"
+            >
+              <i
+                data-lucide="upload"
+                class="w-8 h-8 text-purple-400 floating-icon icon-glow"
+              ></i>
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+              ></div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="mb-6">
+              <h3
+                class="text-xl font-semibold text-white mb-2 group-hover:text-shimmer transition-all duration-300"
+              >
+                Upload & Analysis
+              </h3>
+              <p class="text-slate-400 text-sm leading-relaxed">
+                Advanced OCR and NLP technology to analyze exam papers with
+                precision and extract valuable insights
+              </p>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="flex items-center justify-between mt-auto">
+              <div
+                class="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors duration-300"
+              >
+                <span class="text-sm font-semibold">Start Analysis</span>
+                <i
+                  data-lucide="arrow-right"
+                  class="w-4 h-4 ml-2 arrow-slide"
+                ></i>
+              </div>
+              <div class="flex items-center space-x-1">
+                <div class="w-1 h-1 bg-green-400 rounded-full"></div>
+                <span class="text-xs text-slate-500">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Topic Prediction -->
+      <a
+        href="/features?type=upload"
+        class="block group card-entrance h-full"
+        style="animation-delay: 0.1s"
+      >
+        <div class="relative h-full">
+          <div
+            class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"
+          ></div>
+
+          <div
+            class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 feature-glow flex flex-col justify-between"
+          >
+            <!-- Icon -->
+            <div
+              class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden"
+            >
+              <i
+                data-lucide="brain"
+                class="w-8 h-8 text-blue-400 floating-icon icon-glow"
+                style="animation-delay: 0.5s"
+              ></i>
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+              ></div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="mb-6">
+              <h3
+                class="text-xl font-semibold text-white mb-2 group-hover:text-shimmer transition-all duration-300"
+              >
+                Topic Prediction
+              </h3>
+              <p class="text-slate-400 text-sm leading-relaxed">
+                AI-powered prediction algorithms to forecast exam topics based
+                on historical patterns and trends
+              </p>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="flex items-center justify-between mt-auto">
+              <div
+                class="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors duration-300"
+              >
+                <span class="text-sm font-semibold">Predict</span>
+                <i
+                  data-lucide="arrow-right"
+                  class="w-4 h-4 ml-2 arrow-slide"
+                ></i>
+              </div>
+              <div class="flex items-center space-x-1">
+                <div class="w-1 h-1 bg-green-400 rounded-full"></div>
+                <span class="text-xs text-slate-500">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Visual Report -->
+      <a
+        href="/features?type=upload"
+        class="block group card-entrance h-full"
+        style="animation-delay: 0.1s"
+      >
+        <div class="relative h-full">
+          <div
+            class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"
+          ></div>
+
+          <div
+            class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 feature-glow flex flex-col justify-between"
+          >
+            <!-- Icon -->
+            <div
+              class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden"
+            >
+              <i
+                data-lucide="bar-chart-3"
+                class="w-8 h-8 text-emerald-400 floating-icon icon-glow"
+                style="animation-delay: 1s"
+              ></i>
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+              ></div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="mb-6">
+              <h3
+                class="text-xl font-semibold text-white mb-2 group-hover:text-shimmer transition-all duration-300"
+              >
+                Visual Reports
+              </h3>
+              <p class="text-slate-400 text-sm leading-relaxed">
+                Interactive charts and visualizations to present analysis
+                results in an intuitive format
+              </p>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="flex items-center justify-between mt-auto">
+              <div
+                class="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors duration-300"
+              >
+                <span class="text-sm font-semibold">View Report</span>
+                <i
+                  data-lucide="arrow-right"
+                  class="w-4 h-4 ml-2 arrow-slide"
+                ></i>
+              </div>
+              <div class="flex items-center space-x-1">
+                <div class="w-1 h-1 bg-green-400 rounded-full"></div>
+                <span class="text-xs text-slate-500">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      <!-- Summarize -->
+      <a
+        href="/features?type=upload"
+        class="block group card-entrance h-full"
+        style="animation-delay: 0.1s"
+      >
+        <div class="relative h-full">
+          <div
+            class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"
+          ></div>
+
+          <div
+            class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 feature-glow flex flex-col justify-between"
+          >
+            <!-- Icon -->
+            <div
+              class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden"
+            >
+              <i
+                data-lucide="file-text"
+                class="w-8 h-8 text-orange-400 floating-icon icon-glow"
+                style="animation-delay: 1.5s"
+              ></i>
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+              ></div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="mb-6">
+              <h3
+                class="text-xl font-semibold text-white mb-2 group-hover:text-shimmer transition-all duration-300"
+              >
+                Smart Summarize
+              </h3>
+              <p class="text-slate-400 text-sm leading-relaxed">
+                Generate concise summaries of complex study materials using
+                advanced natural language processing
+              </p>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="flex items-center justify-between mt-auto">
+              <div
+                class="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors duration-300"
+              >
+                <span class="text-sm font-semibold">Summarize</span>
+                <i
+                  data-lucide="arrow-right"
+                  class="w-4 h-4 ml-2 arrow-slide"
+                ></i>
+              </div>
+              <div class="flex items-center space-x-1">
+                <div class="w-1 h-1 bg-green-400 rounded-full"></div>
+                <span class="text-xs text-slate-500">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
     </div>
   </div>
-</a>
-            <!-- Summarize -->
-            <a href="/features?type=upload" class="block group card-entrance h-full" style="animation-delay: 0.1s;">
-  <div class="relative h-full">
-    <div class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"></div>
-    
-    <div class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 feature-glow flex flex-col justify-between">
+</main>
 
-      <!-- Icon -->
-     <div class="icon-container w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
-                            <i data-lucide="file-text" class="w-8 h-8 text-orange-400 floating-icon icon-glow" style="animation-delay: 1.5s;"></i>
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                        </div>
-
-      <!-- Text Content -->
-      <div class="mb-6">
-        <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-shimmer transition-all duration-300">
-          Smart Summarize
-        </h3>
-        <p class="text-slate-400 text-sm leading-relaxed">
-          Generate concise summaries of complex study materials using advanced natural language processing
-        </p>
-      </div>
-
-      <!-- Footer Actions -->
-      <div class="flex items-center justify-between mt-auto">
-        <div class="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors duration-300">
-          <span class="text-sm font-semibold">Summarize</span>
-          <i data-lucide="arrow-right" class="w-4 h-4 ml-2 arrow-slide"></i>
-        </div>
-        <div class="flex items-center space-x-1">
-          <div class="w-1 h-1 bg-green-400 rounded-full"></div>
-          <span class="text-xs text-slate-500">Active</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</a>
-        </div>
-    </div>
-  </main>
-  
 {% endblock %}

@@ -25,8 +25,8 @@
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-      
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -89,160 +89,201 @@
       [x-cloak] {
         display: none !important;
       }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .stat-card {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+      .stat-card-2 {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+      .stat-card-3 {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      }
+      .stat-card-4 {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      }
+
+      .glass-effect {
+        backdrop-filter: blur(10px);
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .glow-effect {
+        box-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
+      }
+
+      .pulse-dot {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        50% {
+          opacity: 0.5;
         }
-        .card-hover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .slide-in {
+        animation: slideIn 0.8s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
         }
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        to {
+          transform: translateY(0);
+          opacity: 1;
         }
-        .stat-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+
+      .notification-badge {
+        background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
         }
-        .stat-card-2 {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        40% {
+          transform: translateY(-3px);
         }
-        .stat-card-3 {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        60% {
+          transform: translateY(-2px);
         }
-        .stat-card-4 {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      }
+      .gradient-border {
+        background: linear-gradient(135deg, #334155, #475569);
+        padding: 1px;
+        border-radius: 0.75rem;
+      }
+
+      .gradient-border-hover {
+        background: linear-gradient(135deg, #6c5ce7, #8b7cf5);
+        padding: 1px;
+        border-radius: 0.75rem;
+      }
+
+      .feature-glow {
+        box-shadow: 0 0 0 rgba(108, 92, 231, 0);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .feature-glow:hover {
+        box-shadow: 0 0 30px rgba(108, 92, 231, 0.2);
+      }
+
+      .icon-container {
+        background: linear-gradient(135deg, #1e293b, #334155);
+        transition: all 0.3s ease;
+      }
+
+      .icon-container:hover {
+        transform: scale(1.05) rotate(5deg);
+      }
+
+      .icon-glow {
+        filter: drop-shadow(0 0 8px rgba(108, 92, 231, 0.5));
+      }
+
+      .card-entrance {
+        animation: slideUp 0.8s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        to {
+          transform: translateY(0);
+          opacity: 1;
         }
-        
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .text-shimmer {
+        background: linear-gradient(135deg, #6c5ce7, #8b7cf5, #a855f7);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0%,
+        100% {
+          background-position: 0% 50%;
         }
-        
-        .glow-effect {
-            box-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
+        50% {
+          background-position: 100% 50%;
         }
-        
-        .pulse-dot {
-            animation: pulse 2s infinite;
+      }
+
+      .arrow-slide {
+        transform: translateX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .group:hover .arrow-slide {
+        transform: translateX(4px);
+      }
+
+      .feature-badge {
+        background: linear-gradient(135deg, #6c5ce7, #8b7cf5);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        50% {
+          opacity: 0.7;
         }
-        
-        .slide-in {
-            animation: slideIn 0.8s ease-out;
+      }
+
+      .floating-icon {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
         }
-        
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        50% {
+          transform: translateY(-5px);
         }
-        
-        .notification-badge {
-            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-3px); }
-            60% { transform: translateY(-2px); }
-        }
-        .gradient-border {
-            background: linear-gradient(135deg, #334155, #475569);
-            padding: 1px;
-            border-radius: 0.75rem;
-        }
-        
-        .gradient-border-hover {
-            background: linear-gradient(135deg, #6C5CE7, #8B7CF5);
-            padding: 1px;
-            border-radius: 0.75rem;
-        }
-        
-        .feature-glow {
-            box-shadow: 0 0 0 rgba(108, 92, 231, 0);
-            transition: box-shadow 0.3s ease;
-        }
-        
-        .feature-glow:hover {
-            box-shadow: 0 0 30px rgba(108, 92, 231, 0.2);
-        }
-        
-        .icon-container {
-            background: linear-gradient(135deg, #1E293B, #334155);
-            transition: all 0.3s ease;
-        }
-        
-        .icon-container:hover {
-            transform: scale(1.05) rotate(5deg);
-        }
-        
-        .icon-glow {
-            filter: drop-shadow(0 0 8px rgba(108, 92, 231, 0.5));
-        }
-        
-        .card-entrance {
-            animation: slideUp 0.8s ease-out;
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .text-shimmer {
-            background: linear-gradient(135deg, #6C5CE7, #8B7CF5, #A855F7);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        .arrow-slide {
-            transform: translateX(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .group:hover .arrow-slide {
-            transform: translateX(4px);
-        }
-        
-        .feature-badge {
-            background: linear-gradient(135deg, #6C5CE7, #8B7CF5);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        .floating-icon {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-        }
-        
+      }
       
     </style>
     {% block head %}{% endblock %}
@@ -392,19 +433,19 @@
         window.location.href = url;
       }
     </script>
-      <script>
-        lucide.createIcons();
-        
-        // Add some interactive effects
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                button.style.transform = 'translateY(-1px)';
-            });
-            
-            button.addEventListener('mouseleave', () => {
-                button.style.transform = 'translateY(0)';
-            });
+    <script>
+      lucide.createIcons();
+
+      // Add some interactive effects
+      document.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("mouseenter", () => {
+          button.style.transform = "translateY(-1px)";
         });
+
+        button.addEventListener("mouseleave", () => {
+          button.style.transform = "translateY(0)";
+        });
+      });
     </script>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
@@ -451,52 +492,54 @@
       gtag("config", "G-7RHG8736TN");
     </script>
     <script>
-        // Initialize Feather icons
-        feather.replace();
+      // Initialize Feather icons
+      feather.replace();
 
-        // Add some interactive functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // File upload area interactions
-            const uploadArea = document.querySelector('.border-dashed');
-            
-            uploadArea.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                this.classList.add('border-indigo-400', 'bg-indigo-50');
-            });
-            
-            uploadArea.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                this.classList.remove('border-indigo-400', 'bg-indigo-50');
-            });
-            
-            uploadArea.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.classList.remove('border-indigo-400', 'bg-indigo-50');
-                // Handle file drop logic here
-                console.log('Files dropped:', e.dataTransfer.files);
-            });
+      // Add some interactive functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        // File upload area interactions
+        const uploadArea = document.querySelector(".border-dashed");
 
-            // Add click handler for upload button
-            document.querySelector('button:contains("Choose File")').addEventListener('click', function() {
-                // Create hidden file input
-                const fileInput = document.createElement('input');
-                fileInput.type = 'file';
-                fileInput.accept = '.pdf,.jpg,.jpeg,.png,.docx';
-                fileInput.multiple = true;
-                
-                fileInput.addEventListener('change', function(e) {
-                    console.log('Files selected:', e.target.files);
-                    // Handle file selection logic here
-                });
-                
-                fileInput.click();
-            });
+        uploadArea.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          this.classList.add("border-indigo-400", "bg-indigo-50");
         });
+
+        uploadArea.addEventListener("dragleave", function (e) {
+          e.preventDefault();
+          this.classList.remove("border-indigo-400", "bg-indigo-50");
+        });
+
+        uploadArea.addEventListener("drop", function (e) {
+          e.preventDefault();
+          this.classList.remove("border-indigo-400", "bg-indigo-50");
+          // Handle file drop logic here
+          console.log("Files dropped:", e.dataTransfer.files);
+        });
+
+        // Add click handler for upload button
+        document
+          .querySelector('button:contains("Choose File")')
+          .addEventListener("click", function () {
+            // Create hidden file input
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.accept = ".pdf,.jpg,.jpeg,.png,.docx";
+            fileInput.multiple = true;
+
+            fileInput.addEventListener("change", function (e) {
+              console.log("Files selected:", e.target.files);
+              // Handle file selection logic here
+            });
+
+            fileInput.click();
+          });
+      });
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  lucide.createIcons();
-</script>
+    <script>
+      lucide.createIcons();
+    </script>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>

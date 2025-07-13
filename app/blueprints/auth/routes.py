@@ -1,8 +1,7 @@
 from flask import render_template, redirect, url_for, session, request, flash
-from werkzeug.security import check_password_hash
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.exc import OperationalError
-from app.utils.helpers import ping_database, login_required
+from app.utils.helpers import ping_database
 from app.blueprints.auth import auth_bp
 from app.extensions import db, limiter
 from datetime import timedelta

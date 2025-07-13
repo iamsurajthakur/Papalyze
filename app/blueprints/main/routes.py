@@ -110,6 +110,21 @@ def db_check():
             "<h3 style='color:red;'>Unexpected Error</h3>"
             f"<p>{e}</p>"
         )
+    
+@bp.route('/upload', methods=['POST'])
+def upload():
+    file = request.files.get('paper_file')
+    extract_questions = request.form.get('extract_questions') == 'on'
+    difficulty_analysis = request.form.get('difficulty_analysis') == 'on'
+    topic_classification = request.form.get('topic_classification') == 'on'
+    answer_suggestions = request.form.get('answer_suggestions') == 'on'
+
+    # Do processing here...
+    print("Received:", file.filename, extract_questions, difficulty_analysis, topic_classification, answer_suggestions)
+
+    # Simulate success
+    return jsonify({"message": "Analysis complete!", "redirect_url": "/upload"})
+
 @bp.route('/forgot_password.html', methods=["GET", "POST"])
 def forgot_password():
     reset_url = None
@@ -139,3 +154,4 @@ def forgot_password():
         return redirect(url_for("main.forgot_password"))
 
     return render_template('main/forgot_password.html', reset_url=reset_url, email=email, show_navbar=False)
+

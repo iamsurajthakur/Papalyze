@@ -8,7 +8,139 @@
   
     {% if feature == 'upload' %}
     <div class="pt-20 mt-5">
-    <p class="text-4xl font-bold text-gray-900 dark:text-white">Page for paper upload and analysis</p>
+    <!-- Main Content Area -->
+    <div class="max-w-4xl mx-auto p-6 space-y-8">
+    <!-- Page Header -->
+    <div class="bg-slate-800 rounded-2xl shadow-sm border border-slate-700 p-6">
+        <h1 class="text-2xl font-semibold text-white mb-2">Upload & Analyze Paper</h1>
+        <p class="text-slate-300">Upload your exam paper as PDF or image file for AI-powered analysis and insights.</p>
+    </div>
+
+    <!-- Upload Form -->
+    <div class="bg-slate-800 rounded-2xl shadow-sm border border-slate-700 p-8">
+        <form id="uploadForm" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <!-- File Upload Area -->
+            <div class="space-y-4">
+                <label class="block text-sm font-medium text-slate-200 mb-2">
+                    Select or drag your exam paper
+                </label>
+
+                <!-- Drag & Drop Zone -->
+                <div id="dropZone" class="relative border-2 border-dashed border-slate-600 rounded-2xl p-12 text-center hover:border-indigo-500 hover:bg-slate-700 transition-colors duration-200 cursor-pointer group">
+                    <input 
+                        type="file" 
+                        id="fileInput" 
+                        name="paper_file" 
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        aria-label="Upload exam paper file"
+                    >
+                    <div class="file-label space-y-4">
+                        <!-- Upload Icon -->
+                        <div class="mx-auto w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center group-hover:bg-indigo-600 transition-colors">
+                            <svg class="w-8 h-8 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                        </div>
+                        
+                        <!-- Upload Text -->
+                        <div>
+                            <p class="text-lg font-medium text-white mb-1">
+                                Click to upload or drag and drop
+                            </p>
+                            <p class="text-sm text-slate-400">
+                                PDF, JPG, JPEG, PNG files supported (max 10MB)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Preview/Info -->
+            <div id="fileInfo" class="hidden bg-slate-700 rounded-xl p-4 border border-slate-600">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p id="fileName" class="text-sm font-medium text-white">
+                                {% if file_name %}{{ file_name }}{% else %}No file selected{% endif %}
+                            </p>
+                            <p id="fileSize" class="text-xs text-slate-400">Ready to analyze</p>
+                        </div>
+                    </div>
+                    <button 
+                        type="button" 
+                        id="removeFile" 
+                        class="text-slate-400 hover:text-white p-1 rounded-md hover:bg-slate-600 transition-colors"
+                        aria-label="Remove file"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Analysis Options -->
+            <div class="space-y-4">
+                <label class="block text-sm font-medium text-slate-200">
+                    Analysis Options
+                </label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% set options = [
+                        ('extract_questions', 'Extract Questions', 'Identify and extract all questions from the paper'),
+                        ('difficulty_analysis', 'Difficulty Analysis', 'Analyze question difficulty and patterns'),
+                        ('topic_classification', 'Topic Classification', 'Categorize questions by subject topics'),
+                        ('answer_suggestions', 'Answer Suggestions', 'Generate AI-powered answer hints')
+                    ] %}
+                    {% for id, title, desc in options %}
+                    <label class="flex items-center space-x-3 p-4 border border-slate-600 rounded-xl hover:bg-slate-700 cursor-pointer transition-colors">
+                        <input type="checkbox" name="{{ id }}" {% if id != 'answer_suggestions' %}checked{% endif %} class="w-4 h-4 text-indigo-500 border-gray-300 rounded focus:ring-indigo-500">
+                        <div>
+                            <p class="text-sm font-medium text-white">{{ title }}</p>
+                            <p class="text-xs text-slate-400">{{ desc }}</p>
+                        </div>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button 
+                    type="submit" 
+                    id="analyzeBtn" 
+                    disabled
+                    class="px-8 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
+                >
+                    <span id="analyzeText">Analyze Paper</span>
+                    <svg id="analyzeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- Progress/Status Display -->
+        <div id="progressSection" class="hidden mt-6 p-4 bg-slate-700 rounded-xl border border-slate-600">
+            <div class="flex items-center space-x-3">
+                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-500"></div>
+                <div>
+                    <p class="text-sm font-medium text-indigo-300">Analyzing your paper...</p>
+                    <p id="progressText" class="text-xs text-indigo-400">
+                        {% if status %}{{ status }}{% else %}Processing OCR and extracting text...{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
 
     </div>
     {% elif feature == 'predict' %}
