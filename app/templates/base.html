@@ -16,6 +16,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
     <script src="{{ url_for('static', filename='js/preline.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Preline + Flowbite -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
@@ -284,6 +285,28 @@
           transform: translateY(-5px);
         }
       }
+      .chart-container {
+            transition: all 0.3s ease;
+        }
+        .chart-container:hover {
+            transform: translateY(-2px);
+        }
+        .chart-placeholder {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+       
     </style>
     {% block head %}{% endblock %}
   </head>
@@ -596,6 +619,8 @@
       });
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
+
     <script>
       lucide.createIcons();
     </script>
