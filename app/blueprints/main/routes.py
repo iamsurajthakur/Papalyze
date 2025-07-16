@@ -155,3 +155,4 @@ def forgot_password():
 
     return render_template('main/forgot_password.html', reset_url=reset_url, email=email, show_navbar=False)
 
+

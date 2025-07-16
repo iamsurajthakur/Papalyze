@@ -631,7 +631,166 @@
 
     {% else %}
       <div class="pt-20 mt-5">
-    <p class="text-4xl font-bold text-gray-900 dark:text-white">Page for notes to summary</p>
+   <div class="absolute inset-0 opacity-5 dark:opacity-10">
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.3) 1px, transparent 0); background-size: 20px 20px;"></div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-4xl">
+            <!-- Header Section -->
+            <div class="text-center mb-6 sm:mb-8 animate-fade-in">
+                <h1 class="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                    Note to Summary
+                </h1>
+                <p class="text-sm sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto px-4">
+                    Transform your notes into clear, concise summaries with AI-powered intelligence
+                </p>
+            </div>
+
+            <!-- Main Card -->
+            <!-- Main Card -->
+<form id="summaryForm" method="POST" action="" enctype="multipart/form-data" class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 p-4 sm:p-8 animate-slide-up">
+    
+    <!-- Hidden input mode tracker -->
+    <input type="hidden" name="input_mode" id="inputModeField" value="text">
+
+    <!-- Input Method Toggle -->
+    <div class="flex items-center justify-center mb-6 sm:mb-8">
+        <div class="bg-slate-100 dark:bg-slate-700 p-1 rounded-xl">
+            <button type="button" id="textInputBtn" class="px-3 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-all duration-200 bg-indigo-600 text-white shadow-md text-sm sm:text-base">
+                <span class="flex items-center">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Text Input
+                </span>
+            </button>
+            <button type="button" id="fileInputBtn" class="px-3 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-all duration-200 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 text-sm sm:text-base">
+                <span class="flex items-center">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    Upload File
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Text Input Area -->
+    <div id="textInputArea" class="mb-8 space-y-4">
+        <label for="noteInput" class="block text-slate-700 dark:text-slate-300 font-semibold text-lg">
+            Enter your notes
+        </label>
+        <div class="relative">
+            <textarea 
+                id="noteInput" 
+                name="noteInput"
+                rows="8" 
+                placeholder="Paste your notes here or start typing..."
+                class="w-full p-4 sm:p-6 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 resize-none text-sm sm:text-base"
+            ></textarea>
+            <div class="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 text-xs text-slate-400 dark:text-slate-500">
+                <span id="charCount">0</span> characters
+            </div>
+        </div>
+    </div>
+
+    <!-- File Upload Area -->
+    <div id="fileInputArea" class="mb-8 space-y-4 hidden">
+        <label class="block text-slate-700 dark:text-slate-300 font-semibold text-lg">
+            Upload your file
+        </label>
+        <div id="uploadDropZone" class="relative border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-2xl p-6 sm:p-8 text-center hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors duration-200 cursor-pointer">
+            <div class="flex flex-col items-center space-y-4">
+                <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-slate-600 dark:text-slate-400 mb-2 text-sm sm:text-base">
+                        <span class="font-medium">Click to upload</span> or drag and drop
+                    </p>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-500">
+                        PDF, JPG, PNG files up to 10MB
+                    </p>
+                </div>
+            </div>
+            <input id="fileUpload" name="fileUpload" type="file" accept=".pdf,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+        </div>
+        <div id="fileInfo" class=" bg-slate-50 dark:bg-slate-700 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p id="fileName" class="font-medium text-slate-800 dark:text-white text-sm sm:text-base"></p>
+                    <p id="fileSize" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400"></p>
+                </div>
+            </div>
+            <button id="removeFile" class="text-red-500 hover:text-red-700 transition-colors p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 mb-6 sm:mb-8">
+        <button type="button" id="clearBtn" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors duration-200 flex items-center space-x-2 text-sm sm:text-base">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            <span>Clear</span>
+        </button>
+        
+        <button type="submit" id="summarizeBtn" class="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-xl flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 text-sm sm:text-lg">
+            <div id="loadingSpinner" class="hidden">
+                <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+            <span>✨ Generate Summary</span>
+        </button>
+    </div>
+
+    <!-- Summary Output -->
+    <div id="summaryOutputContainer" class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-2xl border-2 border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
+            <h3 class="text-lg font-semibold text-white flex items-center">
+                <span class="mr-2">🧠</span>
+                AI Summary
+            </h3>
+        </div>
+        <div class="p-6">
+            <div id="summaryOutput" class="text-slate-700 dark:text-slate-300 min-h-[100px] flex items-center justify-center">
+                <div class="text-center text-slate-500 dark:text-slate-400">
+                    <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                    <p class="text-sm">Your AI-generated summary will appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button id="darkModeToggle" class="fixed top-6 right-6 p-3 bg-white dark:bg-slate-800 rounded-full shadow-lg border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200">
+        <svg id="sunIcon" class="w-5 h-5 text-slate-600 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+        <svg id="moonIcon" class="w-5 h-5 text-slate-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+    </button>
 
     </div>
     {% endif %}
