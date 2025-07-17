@@ -33,6 +33,10 @@ def contact():
 def about():
     return render_template('main/about.html', title='About')
 
+@bp.route('/privacy.html')
+def privacy():
+    return render_template('main/privacy.html', title='Privacy Policy')
+
 @bp.route('/features')
 def feature():
     if not session.get('user_id'):
