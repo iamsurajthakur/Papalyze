@@ -41,6 +41,10 @@ def privacy():
 def license():
     return render_template('main/license.html', title='LICENSE')
 
+@bp.route('/term.html')
+def term():
+    return render_template('main/term.html',title='Term & Condition')
+
 @bp.route('/features')
 def feature():
     if not session.get('user_id'):
