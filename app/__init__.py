@@ -2,7 +2,7 @@ import os
 from flask import Flask, session
 from dotenv import load_dotenv
 from app.models import User
-from app.extensions import db, limiter
+from app.extensions import db, limiter, mail
 
 load_dotenv()
 
@@ -19,6 +19,7 @@ def create_app(config_class=None):
     # Initialize extensions
     db.init_app(app)
     limiter.init_app(app)
+    mail.init_app(app) 
     
     # Ensure the instance folder exists
     try:

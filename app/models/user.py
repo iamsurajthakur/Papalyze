@@ -1,7 +1,5 @@
 from app.extensions import db
 from datetime import datetime, timezone
-from werkzeug.security import check_password_hash
-
 class User(db.Model):
     __tablename__ = 'users'
 

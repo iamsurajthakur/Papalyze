@@ -130,7 +130,7 @@ block content %}
         important topics, and trends—helping you study efficiently and ace your
         exams.
       </p>
-      <form class="w-full max-w-md mx-auto">
+      <form method="POST" action="{{ url_for('main.subscribe') }}" class="w-full max-w-md mx-auto">
         <label
           for="default-email"
           class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -156,6 +156,7 @@ block content %}
             </svg>
           </div>
           <input
+            name="email"
             type="email"
             id="default-email"
             class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

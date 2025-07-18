@@ -1,12 +1,13 @@
 from flask import render_template, request, redirect, flash, url_for, session, jsonify, abort
 from app.blueprints.main import bp
-from app.extensions import db
+from app.extensions import db, mail
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 from app.utils.token import generate_reset_token
 from app.utils.send_email import send_reset_email
 from app.utils.helpers import ping_database, login_required
-from app.models import User
+from app.models import User, Subscriber
+from flask_mail import Message
 import os
 
 
@@ -17,17 +18,87 @@ def index():
     user = User.query.get(session.get('user_id')) if 'user_id' in session else None
     return render_template('main/index.html',user=user, title='Home')
 
-@bp.route('/contact.html', methods=["GET","POST"])
+@bp.route('/contact.html', methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
         name = request.form.get("name")
         email = request.form.get("email")
         message = request.form.get("message")
 
-        flash("Thanks! Your message has been sent.", "success")
+        try:
+            # Send to Papalyze Gmail
+            owner_msg = Message(
+                subject="New Contact Form Message",
+                sender=("Papalyze", "papalyze@gmail.com"),
+                recipients=["papalyze@gmail.com"],
+                body=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
+            )
+            mail.send(owner_msg)
+
+            # Auto-reply to the user
+            user_msg = Message(
+                subject="Thanks for contacting Papalyze",
+                sender=("Papalyze", "papalyze@gmail.com"),
+                recipients=[email],
+                body=f"Hi {name},\n\nThanks for reaching out to Papalyze! We'll get back to you shortly.\n\nYour message:\n\"{message}\"\n\n- Team Papalyze"
+            )
+            mail.send(user_msg)
+
+            flash("Thanks! Your message has been sent.", "success")
+        except Exception as e:
+            print(f"[Mail Error] {e}")  # Optional: log the error to console or file
+            flash("❌ Something went wrong while sending your message. Please try again later.", "danger")
+
         return redirect(url_for("main.contact"))
 
-    return render_template('main/contact.html', title='Contact')
+    return render_template("main/contact.html", title="Contact")
+
+@bp.route('/subscribe', methods=["POST"]) 
+def subscribe():
+    email = request.form.get('email')
+
+    if not email:
+        flash("Please provide an email address.", "danger")
+        return redirect(url_for('main.index'))
+
+    # Check for existing subscriber
+    if Subscriber.query.filter_by(email=email).first():
+        flash("You are already subscribed!", "info")
+        return redirect(url_for('main.index'))
+
+    try:
+        # Save to database
+        new_subscriber = Subscriber(email=email)
+        db.session.add(new_subscriber)
+        db.session.commit()
+
+        # Notify Papalyze
+        notify_msg = Message(
+            subject="New Papalyze Email Signup",
+            sender=("Papalyze", "papalyze@gmail.com"),
+            recipients=["papalyze@gmail.com"],
+            body=f"New email signup: {email}"
+        )
+        mail.send(notify_msg)
+
+        # Auto-reply to user
+        auto_reply = Message(
+            subject="Thanks for subscribing to Papalyze!",
+            sender=("Papalyze", "papalyze@gmail.com"),
+            recipients=[email],
+            body=f"Hi,\n\nThanks for subscribing to Papalyze! We'll keep you updated and contact you if needed.\n\nBest regards,\nTeam Papalyze"
+        )
+        mail.send(auto_reply)
+
+        flash("Thanks for signing up! A confirmation email has been sent to you.", "success")
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error processing subscription: {e}")
+        flash("Failed to process signup. Please try again.", "danger")
+
+    return redirect(url_for('main.index'))
+
 
 @bp.route('/about.html')
 def about():
