@@ -195,6 +195,7 @@ def db_check():
         )
     
 @bp.route('/upload', methods=['POST'])
+@login_required
 def upload():
     file = request.files.get('paper_file')
     extract_questions = request.form.get('extract_questions') == 'on'

@@ -1,8 +1,66 @@
-<!-- Navigation Bar -->
 <nav
   class="bg-white border-gray-200 dark:bg-gray-900 fixed z-50 w-full shadow-md"
   role="navigation"
   aria-label="Main navigation"
+  x-data="{ 
+  mobileMenuOpen: false, 
+  searchOpen: false,
+  searchQuery: '',
+  suggestions: [],
+  selectedIndex: 0,
+  routes: [
+    { name: 'Home', path: '/' },
+    { name: 'Login', path: '/auth/login.html' },
+    { name: 'Signup', path: '/auth/signin.html' },
+    { name: 'Upload', path: '/features?type=upload' },
+    { name: 'Charts', path: '/features?type=charts' },
+    { name: 'Prediction', path: '/features?type=predict' },
+    { name: 'Summary', path: '/features?type=summarize' },
+    { name: 'Contact', path: '/contact.html' },
+    { name: 'About', path: '/about.html' },
+    { name: 'Privacy', path: '/privacy.html' },
+    { name: 'License', path: '/license.html' },
+    { name: 'Forgot Password', path: '/forgot_password.html' },
+    { name: 'Reset Password', path: '/forgot_password.html' },
+    { name: 'Term & Conditions', path: '/term.html' },
+    
+
+
+  ],
+  handleSearch(query) {
+    this.searchQuery = query;
+    if (!query.trim()) {
+      this.suggestions = [];
+      this.selectedIndex = 0;
+      return;
+    }
+    const lower = query.toLowerCase();
+    this.suggestions = this.routes
+      .filter(route => route.name.toLowerCase().includes(lower))
+      .map(route => route.name);
+    this.selectedIndex = 0;
+  },
+  selectSuggestion(suggestion) {
+    const route = this.routes.find(r => r.name === suggestion);
+    if (route) window.location.href = route.path;
+  },
+  navigateWithKeyboard(e) {
+    if (!this.suggestions.length) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      this.selectedIndex = (this.selectedIndex + 1) % this.suggestions.length;
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      this.selectedIndex = (this.selectedIndex - 1 + this.suggestions.length) % this.suggestions.length;
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const selected = this.suggestions[this.selectedIndex];
+      this.selectSuggestion(selected);
+    }
+  }
+}"
+
 >
   <div
     class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
@@ -12,26 +70,27 @@
       href="/"
       class="relative flex items-center space-x-3 rtl:space-x-reverse"
     >
-      <img
-        src="{{ url_for('static', filename='images/papalyze.svg') }}"
-        class="h-25 absolute -top-8 -left-4"
-        alt="Papalyze Logo"
-      />
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center">
+        <img
+            src="{{ url_for('static', filename='images/papalyze.svg') }}"
+            class="h-25 absolute -top-8 -left-8"
+            alt="Papalyze Logo"
+          />
+      </div>
       <span
-        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white ms-14"
+        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
         >Papalyze</span
       >
     </a>
 
     <!-- Search bar toggle & hamburger menu (on small screens) -->
-    <div class="flex md:order-2">
+    <div class="flex md:order-2 items-center space-x-2">
       <!-- Mobile search toggle button -->
       <button
         type="button"
-        data-collapse-toggle="navbar-search"
-        aria-controls="navbar-search"
-        aria-expanded="false"
-        class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 me-1"
+        @click="searchOpen = !searchOpen; if(!searchOpen) searchQuery = ''"
+        class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+        aria-label="Toggle search"
       >
         <!-- Search icon SVG -->
         <svg
@@ -49,9 +108,8 @@
             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
           />
         </svg>
-        <span class="sr-only">Search</span>
       </button>
-
+      
       <!-- Search input (visible on md+ screens) -->
       <div class="relative hidden md:block">
         <div
@@ -72,41 +130,49 @@
               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
             />
           </svg>
-          <span class="sr-only">Search icon</span>
         </div>
-        <!-- Input field -->
+        <!-- Desktop Input field -->
         <input
           type="text"
           id="search-navbar-desktop"
+          x-model="searchQuery"
+          @input="handleSearch($event.target.value)"
+          @keydown="navigateWithKeyboard"
           class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Search..."
           autocomplete="off"
         />
+        <!-- Desktop suggestions -->
         <ul
-  id="search-suggestions"
-  class="absolute z-10 mt-1 w-full text-white bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-300 dark:border-gray-600 hidden max-h-60 overflow-y-auto"
->
-  <!-- Suggestions will appear here -->
-</ul>
+          x-show="suggestions.length > 0 && searchQuery.length > 0"
+          @click.away="suggestions = []"
+          x-transition
+          class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-300 dark:border-gray-600 max-h-60 overflow-y-auto"
+        >
+          <template x-for="suggestion in suggestions" :key="suggestion">
+            <li class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-900 dark:text-white"
+                @click="selectSuggestion(suggestion)"
+                x-text="suggestion">
+            </li>
+          </template>
+        </ul>
       </div>
 
       <!-- Login button (placed next to the search bar on md+ screens) -->
-      <!-- Login button with animation (next to search bar) -->
       <a
-  href="{{ url_for('auth.login') }}"
-  class="ml-4 cursor-pointer px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg transform transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400 active:scale-95"
->
-  Login
-</a>
-
+        href="/auth/login.html"
+        class="cursor-pointer px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg transform transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400 active:scale-95"
+      >
+        Login
+      </a>
 
       <!-- Hamburger menu button for mobile -->
       <button
-        data-collapse-toggle="navbar-search"
+        @click="mobileMenuOpen = !mobileMenuOpen"
         type="button"
         class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
         aria-controls="navbar-search"
-        aria-expanded="false"
+        :aria-expanded="mobileMenuOpen"
       >
         <span class="sr-only">Open main menu</span>
         <!-- Hamburger icon -->
@@ -128,16 +194,19 @@
       </button>
     </div>
 
-    <!-- Collapsible part: navbar links + search for mobile -->
+    <!-- Mobile Search Bar (appears below header when toggled) -->
     <div
-      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-      id="navbar-search"
+      x-show="searchOpen"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 transform -translate-y-4"
+      x-transition:enter-end="opacity-100 transform translate-y-0"
+      x-transition:leave="transition ease-in duration-200"
+      x-transition:leave-start="opacity-100 transform translate-y-0"
+      x-transition:leave-end="opacity-0 transform -translate-y-4"
+      class="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4 shadow-lg mobile-search-container"
     >
-      <!-- Search field (only visible on mobile) -->
-      <div class="relative mt-3 md:hidden">
-        <div
-          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-        >
+      <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
             class="w-4 h-4 text-gray-500 dark:text-gray-400"
             xmlns="http://www.w3.org/2000/svg"
@@ -153,14 +222,45 @@
             />
           </svg>
         </div>
+        <!-- Mobile Input field -->
         <input
           type="text"
           id="search-navbar-mobile"
+          x-model="searchQuery"
+          @input="handleSearch($event.target.value)"
+          @keydown="navigateWithKeyboard"
           class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Search..."
+          autocomplete="off"
         />
-      </div>
+        <!-- Mobile suggestions -->
+        <ul
+          x-show="suggestions.length > 0 && searchQuery.length > 0"
+          @click.away="suggestions = []"
+          x-transition
+          class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-300 dark:border-gray-600 max-h-60 overflow-y-auto"
+        >
+          <template x-for="suggestion in suggestions" :key="suggestion">
+            <li 
+  :class="{
+    'bg-gray-100 dark:bg-gray-700': suggestions.indexOf(suggestion) === selectedIndex
+  }"
+  class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-900 dark:text-white"
+  @click="selectSuggestion(suggestion)"
+  x-text="suggestion"
+></li>
 
+          </template>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Navigation Links - Always visible on desktop, toggle on mobile -->
+    <div
+      class="items-center justify-between w-full md:flex md:w-auto md:order-1"
+      :class="{ 'hidden': !mobileMenuOpen }"
+      id="navbar-search"
+    >
       <!-- Navigation Links -->
       <ul
         class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
@@ -192,18 +292,14 @@
 
         <!-- Services with Dropdown Menu -->
         <li
-          x-data="{ open: false }"
-          x-init="() => {
-                const handleMouseEnter = () => { if (window.innerWidth >= 768) open = true };
-                const handleMouseLeave = () => { if (window.innerWidth >= 768) open = false };
-                $el.addEventListener('mouseenter', handleMouseEnter);
-                $el.addEventListener('mouseleave', handleMouseLeave);
-              }"
+          x-data="{ servicesOpen: false }"
           class="relative"
+          @mouseenter="if (window.innerWidth >= 768) servicesOpen = true"
+          @mouseleave="if (window.innerWidth >= 768) servicesOpen = false"
         >
           <!-- Button to toggle dropdown -->
           <button
-            @click.prevent="open = !open"
+            @click="servicesOpen = !servicesOpen"
             class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm md:w-auto hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
           >
             Services
@@ -224,9 +320,9 @@
             </svg>
           </button>
 
-          <!-- Dropdown menu (Alpine.js controlled) -->
+          <!-- Dropdown menu -->
           <div
-            x-show="open"
+            x-show="servicesOpen"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 translate-y-1"
             x-transition:enter-end="opacity-100 translate-y-0"
@@ -234,13 +330,12 @@
             x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 translate-y-1"
             class="absolute top-full left-0 z-50 mt-1 min-w-[200px] bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-600"
-            @click.away="open = false"
+            @click.away="servicesOpen = false"
           >
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
               <li>
                 <a
                   href="/features?type=upload"
-                  onclick="handleFeatureClick('/features?type=upload')"
                   class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >Paper Upload & Analysis</a
                 >
@@ -248,7 +343,6 @@
               <li>
                 <a
                   href="/features?type=predict"
-                  onclick="handleFeatureClick('/features?type=predict')"
                   class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >Important Topics Prediction</a
                 >
@@ -256,7 +350,6 @@
               <li>
                 <a
                   href="/features?type=charts"
-                  onclick="handleFeatureClick('/features?type=charts')"
                   class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >Visual Reports & Charts</a
                 >
@@ -264,7 +357,6 @@
               <li>
                 <a
                   href="/features?type=summarize"
-                  onclick="handleFeatureClick('/features?type=summarize')"
                   class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >Notes to Summary</a
                 >
