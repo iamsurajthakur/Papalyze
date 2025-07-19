@@ -80,7 +80,14 @@
           id="search-navbar-desktop"
           class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Search..."
+          autocomplete="off"
         />
+        <ul
+  id="search-suggestions"
+  class="absolute z-10 mt-1 w-full text-white bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-300 dark:border-gray-600 hidden max-h-60 overflow-y-auto"
+>
+  <!-- Suggestions will appear here -->
+</ul>
       </div>
 
       <!-- Login button (placed next to the search bar on md+ screens) -->

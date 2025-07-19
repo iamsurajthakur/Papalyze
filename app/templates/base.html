@@ -576,6 +576,105 @@
       lucide.createIcons();
     </script>
     <script>
+  const routeMap = {
+    "home": "/",
+    "login": "auth/login.html",
+    "signin": "auth/signin.html",
+    "register": "auth/signin.html",
+    "about": "/about.html",
+    "contact": "/contact.html",
+    "privacy": "/privacy.html",
+    "terms": "/term.html",
+    "reset": "/forgot_password.html",
+    "forgot password": "/forgot_password.html",
+    "license": "/license.html"
+  };
+
+    const searchInput = document.getElementById("search-navbar-desktop");
+  const suggestionsBox = document.getElementById("search-suggestions");
+
+  const keys = Object.keys(routeMap);
+  let activeIndex = -1; // For keyboard navigation
+  let currentSuggestions = [];
+
+  function updateSuggestions(value) {
+    const query = value.toLowerCase().trim();
+    suggestionsBox.innerHTML = "";
+    currentSuggestions = [];
+
+    if (!query) {
+      suggestionsBox.classList.add("hidden");
+      return;
+    }
+
+    const filtered = keys.filter(key => key.includes(query));
+
+    if (filtered.length === 0) {
+      suggestionsBox.classList.add("hidden");
+      return;
+    }
+
+    currentSuggestions = filtered;
+    activeIndex = 0; // Highlight the first suggestion
+
+    filtered.forEach((key, index) => {
+      const li = document.createElement("li");
+      li.textContent = key;
+      li.className = `cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+        index === 0 ? "bg-gray-100 dark:bg-gray-700" : ""
+      }`;
+      li.dataset.index = index;
+
+      li.addEventListener("click", () => {
+        window.location.href = routeMap[key];
+      });
+
+      suggestionsBox.appendChild(li);
+    });
+
+    suggestionsBox.classList.remove("hidden");
+  }
+
+  // Update suggestions on typing
+  searchInput?.addEventListener("input", (e) => {
+    updateSuggestions(e.target.value);
+  });
+
+  // Keyboard navigation
+  searchInput?.addEventListener("keydown", function (e) {
+    const items = suggestionsBox.querySelectorAll("li");
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (activeIndex < currentSuggestions.length - 1) activeIndex++;
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (activeIndex > 0) activeIndex--;
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const selectedKey = currentSuggestions[activeIndex];
+      if (selectedKey && routeMap[selectedKey]) {
+        window.location.href = routeMap[selectedKey];
+      }
+    }
+
+    // Update visual selection
+    items.forEach((li, i) => {
+      li.classList.toggle("bg-gray-100", i === activeIndex);
+      li.classList.toggle("dark:bg-gray-700", i === activeIndex);
+    });
+  });
+
+  // Hide on outside click
+  document.addEventListener("click", (e) => {
+    if (!suggestionsBox.contains(e.target) && e.target !== searchInput) {
+      suggestionsBox.classList.add("hidden");
+    }
+  });
+</script>
+
+
+    <script>
       // Add number counting animation
       const counters = document.querySelectorAll(".number-counter");
       counters.forEach((counter) => {
