@@ -629,7 +629,7 @@
 
                     <!-- Edit Mode -->
                     <div x-show="editMode">
-                        <form @submit.prevent="handleUpdate()" class="space-y-6">
+                        <form action="/upload-avatar" method="POST" enctype="multipart/form-data" class="space-y-6">
                             <!-- Avatar Upload -->
                             <div class="flex flex-col items-center space-y-3">
                                 <label class="text-sm font-medium text-gray-700 dark:text-gray-200">Profile Photo</label>
@@ -650,12 +650,7 @@
                                     />
                                 </div>
                                 
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    class="block w-full text-sm text-gray-700 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900 dark:file:text-blue-200"
-                                    @change="handleFileUpload($event)"
-                                />
+                               
                             </div>
 
                             <!-- Name Input -->
@@ -665,7 +660,7 @@
                                 </label>
                                 <input
                                     type="text"
-                                    x-model="editingUser.name"
+                                    name="name" value="{{ user.fullname }}"
                                     required
                                     class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all"
                                     placeholder="Enter your full name"
@@ -696,7 +691,7 @@
                                 <button 
                                     type="submit"
                                     class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                                    :disabled="!editingUser.name || editingUser.name.trim() === ''"
+                                    
                                 >
                                     Save Changes
                                 </button>

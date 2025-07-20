@@ -47,3 +47,4 @@ def create_app(config_class=None):
     app.debug = True
 
     return app
+

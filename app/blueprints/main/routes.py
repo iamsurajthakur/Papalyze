@@ -1,5 +1,6 @@
-from flask import render_template, request, redirect, flash, url_for, session, jsonify, abort
+from flask import render_template, request, redirect, flash, url_for, session, jsonify, abort, current_app
 from app.blueprints.main import bp
+from werkzeug.utils import secure_filename
 from app.extensions import db, mail
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
@@ -9,6 +10,7 @@ from app.utils.helpers import ping_database, login_required
 from app.models import User, Subscriber
 from flask_mail import Message
 import os
+import uuid
 
 
 @bp.route('/')
@@ -239,4 +241,36 @@ def forgot_password():
 
     return render_template('main/forgot_password.html', reset_url=reset_url, email=email, show_navbar=False)
 
+@bp.route('/upload-avatar', methods=['POST'])
+@login_required
+def upload_avatar():
+    user = User.query.get(session["user_id"])
+    
+    name = request.form.get("name")
+    if name:
+        user.fullname = name
+
+    file = request.files.get('avatar')
+
+    if file and file.filename:
+        filename = secure_filename(file.filename)
+        if '.' not in filename or filename.rsplit('.', 1)[1].lower() not in current_app.config['ALLOWED_EXTENSIONS']:
+            return jsonify({'success': False, 'message': 'Invalid file type'}), 400
+
+        ext = filename.rsplit('.', 1)[1].lower()
+        unique_filename = f"{uuid.uuid4()}.{ext}"
+        upload_folder = current_app.config['UPLOAD_FOLDER']
+        upload_path = os.path.join(upload_folder, unique_filename)
+
+        try:
+            os.makedirs(upload_folder, exist_ok=True)  # <---- Add this here to create folder if missing
+            file.save(upload_path)
+            avatar_url = f"/{upload_path.replace(os.sep, '/')}"
+            user.avatar_url = avatar_url
+        except Exception as e:
+            print(f"[Avatar Upload Error] {e}")
+            return jsonify({'success': False, 'message': 'Upload failed'}), 500
+
+    db.session.commit()
+    return redirect(url_for('main.dashboard'))
 
