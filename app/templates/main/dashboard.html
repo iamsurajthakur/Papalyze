@@ -74,7 +74,7 @@ block content %}
           class="hidden md:flex items-center space-x-2 glass-effect rounded-lg px-4 py-3"
         >
           <i data-lucide="user" class="w-4 h-4 text-slate-400"></i>
-          <span class="text-sm text-slate-300 font-medium"> {{ greeting }} {{ user.fullname.split()[0] }}</span>
+          <span id="dynamic-greeting" class="text-sm text-slate-300 font-medium"></span>
           <div class="w-2 h-2 bg-blue-400 rounded-full pulse-dot"></div>
         </div>
 

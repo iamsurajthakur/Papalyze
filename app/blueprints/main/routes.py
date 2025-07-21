@@ -132,14 +132,6 @@ def feature():
 @login_required
 def dashboard():
     user = User.query.get(session["user_id"])
-
-    hour = datetime.now().hour
-    if hour < 12:
-        greeting = "Good morning!"
-    elif hour < 18:
-        greeting = "Good afternoon!"
-    else:
-        greeting = "Good evening!"
         
     recent_activities = [
         {"icon": "file-text", "message": "Math Paper 2023 analyzed", "time": "2 hours ago"},
@@ -151,7 +143,6 @@ def dashboard():
         recent_activities=recent_activities,
         title='Dashboard',
         user=user,
-        greeting=greeting
     )
 
 @bp.route('/ping')
