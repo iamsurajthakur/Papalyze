@@ -14,8 +14,6 @@ import os
 import uuid
 
 
-
-
 @bp.route('/')
 def index():
     if 'user_id' in session:
