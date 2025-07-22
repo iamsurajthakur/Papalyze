@@ -15,6 +15,8 @@ def create_app(config_class=None):
         app.config.from_object(config_class)
     else:
         app.config.from_pyfile('config.py', silent=True)
+
+    print(f"SQLALCHEMY_DATABASE_URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
     
     # Initialize extensions
     db.init_app(app)
