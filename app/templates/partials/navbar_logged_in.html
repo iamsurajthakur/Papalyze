@@ -2,16 +2,115 @@
   class="bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 fixed z-50 w-full shadow-sm"
   role="navigation"
   aria-label="Main navigation"
-  x-data="{ 
-            userMenuOpen: false,
-            profileModalOpen: false,
-            servicesOpen: false,
-            user: {
-                name: '{{ user.fullname | escape }}',
-                email: '{{ user.email | escape }}',
-                avatar: null
+  x-data="{
+    userMenuOpen: false,
+    profileModalOpen: false,
+    servicesOpen: false,
+    editMode: false,
+    user: {
+        name: '{{ user.fullname | escape }}',
+        email: '{{ user.email | escape }}',
+        avatar: null,
+        avatarPreview: null
+    },
+    // Create a copy for editing to avoid direct mutations
+    editingUser: {},
+    
+    // Initialize editing user data
+    startEdit() {
+        this.editingUser = { 
+            ...this.user,
+            avatarPreview: this.user.avatarPreview 
+        };
+        this.editMode = true;
+    },
+    
+    // Handle form submission
+    handleUpdate() {
+        // Validate required fields
+        if (!this.editingUser.name || this.editingUser.name.trim() === '') {
+            alert('Name is required');
+            return;
+        }
+        
+        // Update user data
+        this.user = { ...this.editingUser };
+        
+        // Close edit mode
+        this.editMode = false;
+        
+        // Show success message
+        console.log('Profile updated successfully');
+        
+        // Here you would typically send the data to your server
+        // Example: fetch('/api/update-profile', { method: 'POST', body: formData })
+    },
+    
+    // Cancel editing
+    cancelEdit() {
+        this.editMode = false;
+        this.editingUser = {};
+    },
+    
+    // Handle file upload
+    handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                event.target.value = '';
+                return;
             }
-         }"
+            
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                event.target.value = '';
+                return;
+            }
+            
+            this.editingUser.avatar = file;
+            
+            // Create preview URL
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.editingUser.avatarPreview = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    },
+    
+    // Get user initials
+    getUserInitials(userName = null) {
+        const name = userName || this.user.name;
+        if (!name || name.trim() === '') return 'U';
+        
+        return name
+            .split(' ')
+            .filter(n => n && n.length > 0)
+            .map(n => n[0].toUpperCase())
+            .slice(0, 2)
+            .join('');
+    },
+    
+    // Close profile modal
+    closeProfileModal() {
+        this.profileModalOpen = false;
+        this.editMode = false;
+        this.editingUser = {};
+    },
+    
+    // Toggle user menu
+    toggleUserMenu() {
+        this.userMenuOpen = !this.userMenuOpen;
+    },
+    
+    // Toggle services menu
+    toggleServices() {
+        this.servicesOpen = !this.servicesOpen;
+    }
+}"
 >
   <div
     class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-3"
@@ -45,11 +144,15 @@
           aria-expanded="false"
         >
           <!-- User Avatar -->
-          <div
-            class="w-8 h-8 rounded-full user-avatar flex items-center justify-center text-white font-semibold text-sm"
-          >
-            <span x-text="user.name.split(' ').map(n => n[0]).join('')"></span>
-          </div>
+          <div class="w-8 h-8 rounded-full overflow-hidden user-avatar flex items-center justify-center text-white font-semibold text-sm bg-gray-700">
+  <template x-if="user.avatarPreview">
+    <img :src="user.avatarPreview" alt="Avatar" class="w-full h-full object-cover" />
+  </template>
+  <template x-if="!user.avatarPreview">
+    <span x-text="user.name.split(' ').map(n => n[0]).join('')"></span>
+  </template>
+</div>
+
           <!-- User Info (hidden on mobile) -->
           <div class="hidden md:block text-left">
             <div
@@ -428,120 +531,176 @@
       </ul>
     </div>
   </div>
-
-  <!-- Profile Settings Modal -->
-  <div
-    x-show="profileModalOpen"
-    x-cloak
-    x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0"
-    x-transition:enter-end="opacity-100"
-    x-transition:leave="transition ease-in duration-200"
-    x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0"
-    class="fixed inset-0 backdrop-blur-sm bg-black/50 z-50 flex items-center justify-center p-4"
-    @click.self="profileModalOpen = false"
-  >
-    <div
-      x-show="profileModalOpen"
-      x-transition:enter="transition ease-out duration-300"
-      x-transition:enter-start="opacity-0 scale-95"
-      x-transition:enter-end="opacity-100 scale-100"
-      x-transition:leave="transition ease-in duration-200"
-      x-transition:leave-start="opacity-100 scale-100"
-      x-transition:leave-end="opacity-0 scale-95"
-      class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full"
-    >
-      <!-- Modal Header -->
-      <div
-        class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700"
-      >
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-          Profile Settings
-        </h3>
-        <button
-          @click="profileModalOpen = false"
-          class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
+<!-- Profile Settings Modal -->
+<div
+            x-show="profileModalOpen"
+            x-cloak
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 backdrop-blur-sm bg-black/50 z-50 flex items-center justify-center p-4"
+            @click.self="profileModalOpen = false"
+            @keydown.escape="profileModalOpen = false"
         >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Modal Content -->
-      <div class="p-6">
-        <div class="flex flex-col items-center space-y-4 mb-6">
-          <div
-            class="w-20 h-20 rounded-full user-avatar flex items-center justify-center text-white font-bold text-2xl"
-          >
-            <span x-text="user.name.split(' ').map(n => n[0]).join('')"></span>
-          </div>
-          <div class="text-center">
-            <h4
-              class="font-semibold text-gray-900 dark:text-white"
-              x-text="user.name"
-            ></h4>
-            <p
-              class="text-sm text-gray-500 dark:text-gray-400"
-              x-text="user.email"
-            ></p>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="space-y-3">
-          <a
-            href="/profile/edit"
-            class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-all duration-200 transform hover:scale-105"
-          >
-            <svg
-              class="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <div
+                x-show="profileModalOpen"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+                x-data="{ editMode: false }"
+                x-ref="profileModal"
+                @click.stop
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-              />
-            </svg>
-            Edit Profile
-          </a>
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        Profile Settings
+                    </h3>
+                    <button
+                        @click="profileModalOpen = false"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                        aria-label="Close modal"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
 
-          <a
-            href="/auth/logout"
-            class="w-full flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 transition-all duration-200 transform hover:scale-105"
-          >
-            <svg
-              class="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
-            Sign Out
-          </a>
+                <!-- Modal Content -->
+                <div class="p-6">
+                    <!-- Display Mode -->
+                    <div x-show="!editMode" class="space-y-6">
+                        <div class="flex flex-col items-center space-y-4">
+                            <div class="relative">
+                                <div
+                                    class="w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg"
+                                    x-show="!user.avatarPreview"
+                                >
+                                    <span x-text="getUserInitials()"></span>
+                                </div>
+                                <img 
+                                    x-show="user.avatarPreview"
+                                    :src="user.avatarPreview"
+                                    alt="Profile"
+                                    class="w-20 h-20 rounded-full object-cover shadow-lg"
+                                />
+                            </div>
+                            <div class="text-center">
+                                <h4 class="font-semibold text-gray-900 dark:text-white text-lg" x-text="user.name"></h4>
+                                <p class="text-sm text-gray-500 dark:text-gray-400" x-text="user.email"></p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="space-y-3">
+                            <button
+                                @click="editMode = true; startEdit()"
+                                class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none transition-all duration-200 transform hover:scale-105"
+                            >
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Edit Profile
+                            </button>
+
+                            <a
+                                href="/auth/logout"
+                                class="w-full flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 focus:outline-none transition-all duration-200 transform hover:scale-105"
+                                @click="console.log('Signing out...')"
+                            >
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Sign Out
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Edit Mode -->
+                    <div x-show="editMode">
+                        <form action="/upload-avatar" method="POST" enctype="multipart/form-data" class="space-y-6">
+                            <!-- Avatar Upload -->
+                            <div class="flex flex-col items-center space-y-3">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-200">Profile Photo</label>
+                                
+                                <!-- Current Avatar Display -->
+                                <div class="relative">
+                                    <div
+                                        class="w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg"
+                                        x-show="!editingUser.avatarPreview"
+                                    >
+                                        <span x-text="editingUser.name ? editingUser.name.split(' ').filter(n => n.length > 0).map(n => n[0].toUpperCase()).slice(0, 2).join('') : 'U'"></span>
+                                    </div>
+                                    <img 
+                                        x-show="editingUser.avatarPreview"
+                                        :src="editingUser.avatarPreview"
+                                        alt="Profile Preview"
+                                        class="w-20 h-20 rounded-full object-cover shadow-lg"
+                                    />
+                                </div>
+                                
+                               
+                            </div>
+
+                            <!-- Name Input -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                                    Name <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="name" value="{{ user.fullname }}"
+                                    required
+                                    class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all"
+                                    placeholder="Enter your full name"
+                                />
+                            </div>
+
+                            <!-- Email Display (Read-only) -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Email</label>
+                                <input
+                                    type="email"
+                                    :value="user.email"
+                                    readonly
+                                    class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 bg-gray-50 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                                />
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Email cannot be changed</p>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="flex justify-between space-x-3 pt-4">
+                                <button 
+                                    type="button" 
+                                    @click="editMode = false; editingUser = {}"
+                                    class="flex-1 px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit"
+                                    class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+
 </nav>

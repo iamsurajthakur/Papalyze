@@ -3,6 +3,8 @@ from flask import Flask, session
 from dotenv import load_dotenv
 from app.models import User
 from app.extensions import db, limiter, mail
+from flask_login import current_user
+
 
 load_dotenv()
 
@@ -18,6 +20,8 @@ def create_app(config_class=None):
 
     print(f"SQLALCHEMY_DATABASE_URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
     
+    
+
     # Initialize extensions
     db.init_app(app)
     limiter.init_app(app)
@@ -49,3 +53,4 @@ def create_app(config_class=None):
     app.debug = True
 
     return app
+

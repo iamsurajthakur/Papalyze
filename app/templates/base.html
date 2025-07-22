@@ -670,6 +670,25 @@ document.addEventListener('click', function(event) {
         });
       });
     </script>
+    <script>
+  const greetingSpan = document.getElementById("dynamic-greeting");
+  const now = new Date();
+  const hour = now.getHours();
+
+  let greeting;
+  if (hour < 12) {
+    greeting = "Good morning";
+  } else if (hour < 18) {
+    greeting = "Good afternoon";
+  } else {
+    greeting = "Good evening";
+  }
+
+  // Replace 'Suraj' with Jinja2 user's first name
+  greetingSpan.textContent = `${greeting}`;
+
+
+</script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
 
