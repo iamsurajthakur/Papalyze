@@ -4,9 +4,7 @@ class Config:
     DEBUG = True
     SECRET_KEY = os.getenv("SECRET_KEY", "dev")
 
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URL", "sqlite:///default.db"
-    )
+    SQLALCHEMY_DATABASE_URI = "postgresql://mmamc:urus@localhost/mmamc"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Flask-Mail config
@@ -16,5 +14,3 @@ class Config:
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")  
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD") 
     MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")  
-
-
