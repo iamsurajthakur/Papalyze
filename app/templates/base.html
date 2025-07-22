@@ -286,31 +286,27 @@
         }
       }
       .chart-container {
-        transition: all 0.3s ease;
-      }
-      .chart-container:hover {
-        transform: translateY(-2px);
-      }
-      .chart-placeholder {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        position: relative;
-        overflow: hidden;
-      }
-      .chart-placeholder::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.1),
-          transparent
-        );
-        animation: shimmer 2s infinite;
-      }
+            transition: all 0.3s ease;
+        }
+        .chart-container:hover {
+            transform: translateY(-2px);
+        }
+        .chart-placeholder {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+       
     </style>
     {% block head %}{% endblock %}
   </head>
@@ -434,9 +430,7 @@
               >
             </li>
             <li>
-              <a href="/license.html" class="hover:underline me-4 md:me-6"
-                >Licensing</a
-              >
+              <a href="/license.html" class="hover:underline me-4 md:me-6">Licensing</a>
             </li>
             <li>
               <a href="/contact.html" class="hover:underline">Contact</a>
@@ -582,55 +576,56 @@
       lucide.createIcons();
     </script>
     <script>
-      const routes = [
-        { name: "Home", path: "/" },
-        { name: "Login", path: "/login" },
-        { name: "Signup", path: "/signup" },
-        { name: "Contact", path: "/contact" },
-        { name: "About", path: "/about" },
-        { name: "Privacy Policy", path: "/privacy" },
-        { name: "Upload", path: "/upload" },
-        { name: "Dashboard", path: "/dashboard" },
-      ];
+  const routes = [
+    { name: "Home", path: "/" },
+    { name: "Login", path: "/login" },
+    { name: "Signup", path: "/signup" },
+    { name: "Contact", path: "/contact" },
+    { name: "About", path: "/about" },
+    { name: "Privacy Policy", path: "/privacy" },
+    { name: "Upload", path: "/upload" },
+    { name: "Dashboard", path: "/dashboard" }
+  ];
 
-      const input = document.getElementById("searchInput");
-      const dropdown = document.getElementById("suggestionsDropdown");
+  const input = document.getElementById('searchInput');
+const dropdown = document.getElementById('suggestionsDropdown');
 
-      input.addEventListener("input", () => {
-        const query = input.value.trim().toLowerCase();
-        dropdown.innerHTML = "";
-        selectedIndex = 0;
+input.addEventListener('input', () => {
+  const query = input.value.trim().toLowerCase();
+  dropdown.innerHTML = '';
+  selectedIndex = 0;
 
-        if (query.length === 0) {
-          dropdown.classList.add("hidden"); // hide dropdown if no query
-          return;
-        }
+  if (query.length === 0) {
+    dropdown.classList.add('hidden'); // hide dropdown if no query
+    return;
+  }
 
-        const matchedRoutes = routes.filter((route) =>
-          route.name.toLowerCase().includes(query)
-        );
+  const matchedRoutes = routes.filter(route =>
+    route.name.toLowerCase().includes(query)
+  );
 
-        matchedRoutes.forEach((route, index) => {
-          const item = document.createElement("div");
-          item.textContent = route.name;
-          item.className = `px-4 py-2 cursor-pointer hover:bg-gray-200 ${
-            index === 0 ? "bg-gray-200" : ""
-          }`;
-          item.addEventListener("click", () => {
-            window.location.href = route.path;
-          });
-          dropdown.appendChild(item);
-        });
+  matchedRoutes.forEach((route, index) => {
+    const item = document.createElement('div');
+    item.textContent = route.name;
+    item.className = `px-4 py-2 cursor-pointer hover:bg-gray-200 ${index === 0 ? 'bg-gray-200' : ''}`;
+    item.addEventListener('click', () => {
+      window.location.href = route.path;
+    });
+    dropdown.appendChild(item);
+  });
 
-        dropdown.classList.remove("hidden"); // show dropdown when items exist
-      });
+  dropdown.classList.remove('hidden'); // show dropdown when items exist
+});
 
-      document.addEventListener("click", function (event) {
-        if (!input.contains(event.target) && !dropdown.contains(event.target)) {
-          dropdown.classList.add("hidden"); // hide dropdown if clicked outside
-        }
-      });
-    </script>
+document.addEventListener('click', function(event) {
+  if (!input.contains(event.target) && !dropdown.contains(event.target)) {
+    dropdown.classList.add('hidden'); // hide dropdown if clicked outside
+  }
+});
+
+
+</script>
+
 
     <script>
       // Add number counting animation
@@ -676,24 +671,24 @@
       });
     </script>
     <script>
-      const greetingSpan = document.getElementById("dynamic-greeting");
-      const now = new Date();
-      const hour = now.getHours();
+  const greetingSpan = document.getElementById("dynamic-greeting");
+  const now = new Date();
+  const hour = now.getHours();
 
-      let greeting;
-      if (hour < 12) {
-        greeting = "Good morning";
-      } else if (hour < 18) {
-        greeting = "Good afternoon";
-      } else {
-        greeting = "Good evening";
-      }
+  let greeting;
+  if (hour < 12) {
+    greeting = "Good morning";
+  } else if (hour < 18) {
+    greeting = "Good afternoon";
+  } else {
+    greeting = "Good evening";
+  }
+
+  // Replace 'Suraj' with Jinja2 user's first name
+  greetingSpan.textContent = `${greeting}`;
 
 
-      // Replace 'Suraj' with Jinja2 user's first name
-      greetingSpan.textContent = `${greeting}`;
-    </script>
-
+</script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
 
