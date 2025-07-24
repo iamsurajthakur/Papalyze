@@ -459,6 +459,13 @@
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
     <script>
+      
+      console.log('dashboard page');
+      
+    
+    
+    </script>
+    <script>
       // Initialize Flowbite collapse functionality
       document.addEventListener("DOMContentLoaded", function () {
         // Initialize Flowbite components if available
@@ -515,6 +522,7 @@
         });
       });
     </script>
+    
 
     <!-- Google tag (gtag.js) -->
     <script
@@ -662,7 +670,8 @@ document.addEventListener('click', function(event) {
           ripple.className =
             "absolute inset-0 rounded-xl bg-white/10 pointer-events-none";
           ripple.style.animation = "ripple 0.6s ease-out";
-          card.querySelector(".relative").appendChild(ripple);
+          const container = card.querySelector(".relative") || card
+          container.appendChild(ripple);
 
           setTimeout(() => {
             ripple.remove();
@@ -695,5 +704,7 @@ document.addEventListener('click', function(event) {
     <script>
       lucide.createIcons();
     </script>
+   
+    
   </body>
 </html>
