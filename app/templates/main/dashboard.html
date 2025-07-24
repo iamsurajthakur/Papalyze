@@ -81,6 +81,7 @@ block content %}
         <!-- Notifications -->
         <div class="relative">
           <button
+            id="notification-btn"
             class="p-3 glass-effect rounded-lg hover:bg-slate-700/50 transition-all duration-300 group"
           >
             <i
@@ -88,12 +89,29 @@ block content %}
               class="w-5 h-5 text-slate-400 group-hover:text-white"
             ></i>
           </button>
+        
+          <!-- Notification badge -->
           <div
             class="absolute -top-1 -right-1 w-5 h-5 notification-badge rounded-full flex items-center justify-center"
           >
             <span class="text-xs font-bold text-white">3</span>
           </div>
+        
+          <!-- Dropdown panel -->
+          <div
+            id="notification-dropdown"
+            class="hidden absolute right-0 mt-2 w-64 bg-slate-800 text-white rounded-lg shadow-lg z-50"
+          >
+            <div class="p-4 border-b border-slate-700 font-semibold">Notifications</div>
+            <ul class="max-h-60 overflow-y-auto">
+              <li class="p-3 hover:bg-slate-700 transition">🔔 New user signed up</li>
+              <li class="p-3 hover:bg-slate-700 transition">📬 Message received</li>
+              <li class="p-3 hover:bg-slate-700 transition">🛠️ Server restarted</li>
+            </ul>
+          </div>
         </div>
+        
+        
       </div>
     </div>
   </div>
@@ -105,7 +123,7 @@ block content %}
 </header>
 
 <!-- Main Content -->
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<main class="max-w-7xl z-10 mx-auto px-4 sm:px-6 lg:px-8 py-10">
   <!-- Stats -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
     <!-- Papers Analyzed Card -->
@@ -138,7 +156,7 @@ block content %}
             <span class="text-xs font-medium">+12%</span>
           </div>
         </div>
-        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
+        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-visible">
           <div
             class="progress-bar h-full rounded-full"
             style="--progress-width: 65%"
@@ -178,7 +196,7 @@ block content %}
             <span class="text-xs font-medium">+24%</span>
           </div>
         </div>
-        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
+        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-visible">
           <div
             class="progress-bar h-full rounded-full"
             style="--progress-width: 85%"
@@ -218,7 +236,7 @@ block content %}
             <span class="text-xs font-medium">+8%</span>
           </div>
         </div>
-        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
+        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-visible">
           <div
             class="progress-bar h-full rounded-full"
             style="--progress-width: 45%"
@@ -233,7 +251,7 @@ block content %}
         class="absolute inset-0 gradient-border group-hover:gradient-border-hover transition-all duration-500 rounded-xl"
       ></div>
       <div
-        class="relative bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover"
+        class="relative z-10 bg-slate-800 rounded-xl p-6 h-full transition-all duration-500 group-hover:card-glow-hover"
       >
         <div class="flex items-center justify-between mb-4">
           <div
@@ -258,7 +276,7 @@ block content %}
             <span class="text-xs font-medium">+18%</span>
           </div>
         </div>
-        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-hidden">
+        <div class="mt-4 h-1 bg-slate-700 rounded-full overflow-visible">
           <div
             class="progress-bar h-full rounded-full"
             style="--progress-width: 75%"
@@ -531,5 +549,27 @@ block content %}
     </div>
   </div>
 </main>
+
+{% block scripts %}
+<script>
+  const btn = document.getElementById('notification-btn');
+  const dropdown = document.getElementById('notification-dropdown');
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('hidden');
+  });
+
+  // Optional: Hide when clicking outside
+  document.addEventListener('click', () => {
+    dropdown.classList.add('hidden');
+  });
+  console.log('dashboard page');
+  
+
+
+</script>
+
+{% endblock %}
 
 {% endblock %}
