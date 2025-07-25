@@ -16,10 +16,16 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
     <script src="{{ url_for('static', filename='js/preline.js') }}"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+
 
     <!-- Preline + Flowbite -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
     <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
     <script
       defer
@@ -459,19 +465,9 @@
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
     <script>
-      
-      console.log('dashboard page');
-      
-    
-    
-    </script>
-    <script>
       // Initialize Flowbite collapse functionality
       document.addEventListener("DOMContentLoaded", function () {
-        // Initialize Flowbite components if available
-        if (typeof Flowbite !== "undefined") {
-          Flowbite.initCollapses();
-        }
+        
       });
 
       // Handle feature navigation
@@ -538,51 +534,7 @@
 
       gtag("config", "G-7RHG8736TN");
     </script>
-    <script>
-      // Initialize Feather icons
-      feather.replace();
-      // Add some interactive functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        // File upload area interactions
-        const uploadArea = document.querySelector(".border-dashed");
-
-        uploadArea.addEventListener("dragover", function (e) {
-          e.preventDefault();
-          this.classList.add("border-indigo-400", "bg-indigo-50");
-        });
-
-        uploadArea.addEventListener("dragleave", function (e) {
-          e.preventDefault();
-          this.classList.remove("border-indigo-400", "bg-indigo-50");
-        });
-
-        uploadArea.addEventListener("drop", function (e) {
-          e.preventDefault();
-          this.classList.remove("border-indigo-400", "bg-indigo-50");
-          // Handle file drop logic here
-          console.log("Files dropped:", e.dataTransfer.files);
-        });
-
-        // Add click handler for upload button
-        document
-          .querySelector('button:contains("Choose File")')
-          .addEventListener("click", function () {
-            // Create hidden file input
-            const fileInput = document.createElement("input");
-            fileInput.type = "file";
-            fileInput.accept = ".pdf,.jpg,.jpeg,.png,.docx";
-            fileInput.multiple = true;
-
-            fileInput.addEventListener("change", function (e) {
-              console.log("Files selected:", e.target.files);
-              // Handle file selection logic here
-            });
-
-            fileInput.click();
-          });
-      });
-      lucide.createIcons();
-    </script>
+    
     <script>
   const routes = [
     { name: "Home", path: "/" },
@@ -595,41 +547,7 @@
     { name: "Dashboard", path: "/dashboard" }
   ];
 
-  const input = document.getElementById('searchInput');
-const dropdown = document.getElementById('suggestionsDropdown');
 
-input.addEventListener('input', () => {
-  const query = input.value.trim().toLowerCase();
-  dropdown.innerHTML = '';
-  selectedIndex = 0;
-
-  if (query.length === 0) {
-    dropdown.classList.add('hidden'); // hide dropdown if no query
-    return;
-  }
-
-  const matchedRoutes = routes.filter(route =>
-    route.name.toLowerCase().includes(query)
-  );
-
-  matchedRoutes.forEach((route, index) => {
-    const item = document.createElement('div');
-    item.textContent = route.name;
-    item.className = `px-4 py-2 cursor-pointer hover:bg-gray-200 ${index === 0 ? 'bg-gray-200' : ''}`;
-    item.addEventListener('click', () => {
-      window.location.href = route.path;
-    });
-    dropdown.appendChild(item);
-  });
-
-  dropdown.classList.remove('hidden'); // show dropdown when items exist
-});
-
-document.addEventListener('click', function(event) {
-  if (!input.contains(event.target) && !dropdown.contains(event.target)) {
-    dropdown.classList.add('hidden'); // hide dropdown if clicked outside
-  }
-});
 
 
 </script>
@@ -680,31 +598,47 @@ document.addEventListener('click', function(event) {
       });
     </script>
     <script>
-  const greetingSpan = document.getElementById("dynamic-greeting");
-  const now = new Date();
-  const hour = now.getHours();
+  document.addEventListener("DOMContentLoaded", () => {
+    const greetingSpan = document.getElementById("dynamic-greeting");
 
-  let greeting;
-  if (hour < 12) {
-    greeting = "Good morning";
-  } else if (hour < 18) {
-    greeting = "Good afternoon";
-  } else {
-    greeting = "Good evening";
-  }
+    if (greetingSpan) {
+      const hour = new Date().getHours();
+      const greeting =
+        hour < 12
+          ? "Good morning"
+          : hour < 18
+          ? "Good afternoon"
+          : "Good evening";
 
-  // Replace 'Suraj' with Jinja2 user's first name
-  greetingSpan.textContent = `${greeting}`;
-
-
+      greetingSpan.textContent = greeting;
+    }
+  });
 </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
+
+    
 
     <script>
       lucide.createIcons();
     </script>
-   
+   <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const notificationBtn = document.getElementById('notification-btn');
+    const dropdown = document.getElementById('notification-dropdown');
+
+    if (notificationBtn && dropdown) {
+      notificationBtn.addEventListener('click', (e) => {b
+        e.stopPropagation();
+        dropdown.classList.toggle('hidden');
+      });
+
+      // Hide dropdown when clicking outside
+      document.addEventListener('click', () => {
+        dropdown.classList.add('hidden');
+      });
+    }
+  });
+</script>
+
     
   </body>
 </html>

@@ -94,7 +94,7 @@ block content %}
           <div
             class="absolute -top-1 -right-1 w-5 h-5 notification-badge rounded-full flex items-center justify-center"
           >
-            <span class="text-xs font-bold text-white">3</span>
+            <span class="text-xs font-bold text-white">1</span>
           </div>
         
           <!-- Dropdown panel -->
@@ -114,13 +114,11 @@ block content %}
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
   <div
     id="notification-dropdown"
-    class=" absolute top-54 right-20 mt-2 w-64 bg-slate-800 text-white rounded-lg shadow-lg z-50"
+    class="hidden absolute top-54 right-20 mt-2 w-64 bg-slate-800 text-white rounded-lg shadow-lg z-50"
   >
     <div class="p-4 border-b border-slate-700 font-semibold">Notifications</div>
     <ul class="max-h-60 overflow-y-auto">
       <li class="p-3 hover:bg-slate-700 transition">🔔 New user signed up</li>
-      <li class="p-3 hover:bg-slate-700 transition">📬 Message received</li>
-      <li class="p-3 hover:bg-slate-700 transition">🛠️ Server restarted</li>
     </ul>
   </div>
 </div>
@@ -550,26 +548,6 @@ block content %}
   </div>
 </main>
 
-{% block scripts %}
-<script>
-  const btn = document.getElementById('notification-btn');
-  const dropdown = document.getElementById('notification-dropdown');
 
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle('hidden');
-  });
-
-  // Optional: Hide when clicking outside
-  document.addEventListener('click', () => {
-    dropdown.classList.add('hidden');
-  });
-  console.log('dashboard page');
-  
-
-
-</script>
-
-{% endblock %}
 
 {% endblock %}
