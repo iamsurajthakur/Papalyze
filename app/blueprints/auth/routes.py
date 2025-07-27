@@ -6,53 +6,61 @@ from app.blueprints.auth import auth_bp
 from app.extensions import db, limiter
 from datetime import timedelta
 from app.models import User
+import traceback
 from app.utils.token import confirm_reset_token
 from flask import current_app
 import re
 
-
-@auth_bp.route('/login.html', methods=['GET', 'POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 @limiter.limit("5 per 5 minutes", methods=["POST"])
 def login():
     try:
+        # Check DB connection
         ping_database()
+
+        # Handle login form
+        if request.method == 'POST':
+            email = request.form.get('email')
+            password = request.form.get('password')
+            remember = request.form.get('remember_me')
+
+            if not email or not password:
+                flash('Email and password are required.', 'danger')
+                return redirect(url_for('auth.login'))
+
+            email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+            if not re.match(email_regex, email):
+                flash('Invalid email format.', 'danger')
+                return redirect(url_for('auth.login'))
+
+            user = User.query.filter_by(email=email).first()
+            if user and check_password_hash(user.password_hash, password):
+                session['user_id'] = user.id
+
+                if remember == 'on':
+                    session.permanent = True
+                    current_app.permanent_session_lifetime = timedelta(days=30)
+                else:
+                    session.permanent = False
+
+                flash('Login successful!', 'success')
+                return redirect(url_for('main.dashboard'))
+            else:
+                flash('Invalid email or password', 'danger')
+                return redirect(url_for('auth.login'))
+
+        return render_template('login.html', show_navbar=False)
+
     except OperationalError:
         return "Database is waking up, please try again in a few seconds.", 503
-    
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        remember = request.form.get('remember_me')  
 
-        if not email or not password:
-            flash('Email and password are required.', 'danger')
-            return redirect(url_for('auth.login'))
-        
-        email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-        if not re.match(email_regex, email):
-            flash('Invalid email format.', 'danger')
-            return redirect(url_for('auth.login'))
-
-        user = User.query.filter_by(email=email).first()
-        if user and check_password_hash(user.password_hash, password):
-            session['user_id'] = user.id
-            
-            if remember == 'on':
-                session.permanent = True
-                current_app.permanent_session_lifetime = timedelta(days=30)
-            else:
-                session.permanent = False
-            
-            flash('Login successful!', 'success')
-            return redirect(url_for('main.dashboard'))  
-        else:
-            flash('Invalid email or password', 'danger')
-            return redirect(url_for('auth.login'))
-
-    return render_template('login.html', show_navbar=False)
+    except Exception as e:
+        print("🔴 Unexpected error in login route:", str(e))
+        traceback.print_exc()
+        return "Internal Server Error – the issue has been logged.", 500
 
 
-@auth_bp.route('/signin.html', methods=['GET', 'POST'])
+@auth_bp.route('/signin', methods=['GET', 'POST'])
 def signin():
     if request.method == 'POST':
         fullname = request.form.get('fullname')
