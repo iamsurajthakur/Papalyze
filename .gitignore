@@ -50,3 +50,4 @@ package-lock.json
 htmlcov/
 .pytest_cache/
 .tox/
+uploaded_files/
