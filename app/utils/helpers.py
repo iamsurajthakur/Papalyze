@@ -6,9 +6,13 @@ from sqlalchemy import text
 from flask import session, redirect, url_for, flash
 
 
-@retry(stop=stop_after_attempt(5), wait=wait_fixed(3))
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 def ping_database():
-    db.session.execute(text("SELECT 1"))
+    try:
+        db.session.execute(text("SELECT 1"))
+    except SQLAlchemyError as e:
+        db.session.rollback() 
+        raise e
 
 def login_required(f):
     @wraps(f)
