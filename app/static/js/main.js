@@ -1,5 +1,3 @@
-console.log('upload page')
-
 // paper upload and analysis js code
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
@@ -14,7 +12,7 @@ const progressSection = document.getElementById('progressSection');
 const progressText = document.getElementById('progressText');
 const uploadForm = document.getElementById('uploadForm');
 
-let selectedFile = null;
+let selectedFiles = [];
 
 // Drag events
 dropZone.addEventListener('dragover', (e) => {
@@ -31,21 +29,38 @@ dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
     dropZone.classList.remove('ring-2', 'ring-indigo-400');
     const files = e.dataTransfer.files;
-    if (files.length > 0) handleFileSelect(files[0]);
+    if (files.length > 0) handleFileSelect(files);
 });
 
 fileInput.addEventListener('change', (e) => {
-    if (e.target.files.length > 0) handleFileSelect(e.target.files[0]);
+    if (e.target.files.length > 0) handleFileSelect(e.target.files);
 });
 
-function handleFileSelect(file) {
+function handleFileSelect(files) {
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-    if (!allowedTypes.includes(file.type)) return alert('Only PDF, JPG, JPEG, PNG files are allowed.');
-    if (file.size > 10 * 1024 * 1024) return alert('File size must be below 10MB.');
+    selectedFiles = [];
 
-    selectedFile = file;
-    fileName.textContent = file.name;
-    fileSize.textContent = `${(file.size / 1024 / 1024).toFixed(2)} MB`;
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!allowedTypes.includes(file.type)) {
+            alert('Only PDF, JPG, JPEG, PNG files are allowed.');
+            return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+            alert('File size must be below 10MB.');
+            return;
+        }
+        selectedFiles.push(file);
+    }
+
+    // Update UI with file names and sizes (show count if multiple)
+    if (selectedFiles.length === 1) {
+        fileName.textContent = selectedFiles[0].name;
+        fileSize.textContent = `${(selectedFiles[0].size / 1024 / 1024).toFixed(2)} MB`;
+    } else {
+        fileName.textContent = `${selectedFiles.length} files selected`;
+        fileSize.textContent = '';
+    }
 
     fileInfo.classList.remove('hidden');
     analyzeBtn.disabled = false;
@@ -53,7 +68,7 @@ function handleFileSelect(file) {
 }
 
 removeFile.addEventListener('click', () => {
-    selectedFile = null;
+    selectedFiles = [];
     fileInput.value = '';
     fileInfo.classList.add('hidden');
     analyzeBtn.disabled = true;
@@ -63,8 +78,8 @@ removeFile.addEventListener('click', () => {
 uploadForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (!selectedFile) {
-        alert('Please select a file.');
+    if (selectedFiles.length === 0) {
+        alert('Please select at least one file.');
         return;
     }
 
@@ -76,7 +91,11 @@ uploadForm.addEventListener('submit', async (e) => {
     progressText.textContent = 'Processing OCR and extracting text...';
 
     const formData = new FormData();
-    formData.append('paper_file', selectedFile);
+
+    // Append all selected files
+    selectedFiles.forEach(file => {
+        formData.append('paper_files', file);
+    });
 
     // Append selected checkboxes
     ['extract_questions', 'difficulty_analysis', 'topic_classification', 'answer_suggestions'].forEach(id => {
@@ -92,7 +111,7 @@ uploadForm.addEventListener('submit', async (e) => {
 
         const data = await response.json();
 
-        // Simulate progress steps
+        // Simulate progress steps (you can replace this with polling later)
         const steps = [
             'Analyzing question patterns...',
             'Classifying topics and difficulty...',
@@ -120,6 +139,3 @@ document.addEventListener('keydown', (e) => {
         fileInput.click();
     }
 });
-
-// code for topic prediction page
-

@@ -13,7 +13,10 @@ from datetime import datetime
 import os
 import uuid
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @bp.route('/')
@@ -208,17 +211,51 @@ def db_check():
 @bp.route('/upload', methods=['POST'])
 @login_required
 def upload():
-    file = request.files.get('paper_file')
+    # Get list of uploaded files from the key 'paper_files' (matches your frontend)
+    files = request.files.getlist('paper_files')
+
+    if not files or all(f.filename == '' for f in files):
+        return jsonify({'error': 'No files provided'}), 400
+
+    # Set upload folder based on environment
+    if os.environ.get('RENDER'):
+        upload_folder = '/tmp'
+    else:
+        upload_folder = os.path.join(os.getcwd(), 'uploaded_files')
+        os.makedirs(upload_folder, exist_ok=True)
+
+    saved_filenames = []
+
+    for file in files:
+        if file and file.filename != '':
+            if not allowed_file(file.filename):
+                return jsonify({'error': f'File type not allowed: {file.filename}'}), 400
+
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(upload_folder, filename)
+
+            try:
+                file.save(file_path)
+                saved_filenames.append(filename)
+                print("✅ File saved at:", file_path)
+            except Exception as e:
+                print("❌ Error saving file:", e)
+                return jsonify({'error': 'File saving failed'}), 500
+
+    # Handle checkboxes (for analysis)
     extract_questions = request.form.get('extract_questions') == 'on'
     difficulty_analysis = request.form.get('difficulty_analysis') == 'on'
     topic_classification = request.form.get('topic_classification') == 'on'
     answer_suggestions = request.form.get('answer_suggestions') == 'on'
 
-    # Do processing here...
-    print("Received:", file.filename, extract_questions, difficulty_analysis, topic_classification, answer_suggestions)
+    # Placeholder for analysis logic on saved_filenames list
+    print("Received files:", saved_filenames)
+    print("Options:", extract_questions, difficulty_analysis, topic_classification, answer_suggestions)
 
-    # Simulate success
-    return jsonify({"message": "Analysis complete!", "redirect_url": "/upload"})
+    return jsonify({"message": f"Analysis complete! Uploaded {len(saved_filenames)} files.", "redirect_url": "/upload"})
+
+
+
 
 @bp.route('/forgot_password.html', methods=["GET", "POST"])
 def forgot_password():
