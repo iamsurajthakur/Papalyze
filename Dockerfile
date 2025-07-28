@@ -1,23 +1,26 @@
-# Use official Python image
 FROM python:3.11-slim
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     poppler-utils \
-    && rm -rf /var/lib/apt/lists/*
+    libpq-dev \
+    gcc \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Set work directory
 WORKDIR /app
 
-# Copy all files
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the code
 COPY . .
 
-# Install Python dependencies
-RUN pip install --upgrade pip && pip install -r requirements.txt
-
-# Expose port (used by gunicorn)
+# Expose port (match your gunicorn or Flask port)
 EXPOSE 10000
 
-# Start the app using gunicorn
+# Start the app with Gunicorn
 CMD ["gunicorn", "-b", "0.0.0.0:10000", "run:app"]
