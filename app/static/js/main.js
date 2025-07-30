@@ -1,4 +1,3 @@
-// paper upload and analysis js code
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
 const fileInfo = document.getElementById('fileInfo');
