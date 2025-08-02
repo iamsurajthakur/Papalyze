@@ -1,32 +1,29 @@
+import re
+from datetime import datetime, timezone  # `datetime` & `timezone` kept in case you use them elsewhere
+
+from flask import flash, redirect, url_for
 from app import create_app
 from app.config import Config
-from flask import flash, redirect, url_for
-from datetime import datetime, timezone
-import re
 
-
+# Initialize the Flask app using the provided config
 app = create_app(Config)
-
 
 @app.errorhandler(429)
 def ratelimit_handler(e):
-    print(">>> Entered 429 error handler")
+    """
+    Custom handler for HTTP 429 Too Many Requests.
+    Calculates cooldown period from rate limit description,
+    formats a human-readable time message, and flashes it to the user.
+    """
+    default_cooldown = 300  # fallback in seconds (5 minutes)
+    cooldown_seconds = default_cooldown
 
-    print(f">>> Exception description: {e.description}")
-    print(f">>> Exception type: {type(e)}")
-    
-    cooldown_seconds = 300
-    print(">>> Default fallback cooldown: 300 seconds")
-
+    # Attempt to extract rate limit info using regex from the error description
     if hasattr(e, "description"):
         match = re.search(r'(\d+)\s+per\s+(\d+)\s+(second|minute|hour)', str(e.description))
-        print(f">>> Regex match result: {match}")
         if match:
-            limit_count = int(match.group(1))     
-            time_value = int(match.group(2))     
-            time_unit = match.group(3)            
-
-            print(f">>> Parsed values - limit_count: {limit_count}, time_value: {time_value}, time_unit: {time_unit}")
+            _, time_value, time_unit = match.groups()
+            time_value = int(time_value)
 
             if time_unit == "second":
                 cooldown_seconds = time_value
@@ -34,24 +31,17 @@ def ratelimit_handler(e):
                 cooldown_seconds = time_value * 60
             elif time_unit == "hour":
                 cooldown_seconds = time_value * 3600
+            # else keep default cooldown
+    # else keep default cooldown
 
-            print(f">>> Updated cooldown_seconds: {cooldown_seconds}")
-        else:
-            print(">>> No match found in description, using fallback.")
-    else:
-        print(">>> No description found on exception.")
-
-    minutes = cooldown_seconds // 60
-    seconds = cooldown_seconds % 60
-
+    # Format cooldown time into a human-readable message
+    minutes, seconds = divmod(cooldown_seconds, 60)
     if cooldown_seconds < 60:
         time_msg = f"{cooldown_seconds} second(s)"
     elif seconds == 0:
         time_msg = f"{minutes} minute(s)"
     else:
         time_msg = f"{minutes} minute(s) and {seconds} second(s)"
-
-    print(f">>> Final time_msg: {time_msg}")
 
     flash(f"Too many login attempts. Try again in {time_msg}.", "danger")
     return redirect(url_for('auth.signin'))
