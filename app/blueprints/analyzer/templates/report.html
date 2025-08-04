@@ -1,0 +1,416 @@
+{% extends "base.html" %} 
+{% block title %}Contact - Papalyze{% endblock %} 
+{% block content %}
+<div class="pt-20 mt-5">
+
+   <div class="pt-20 mt-5" x-data="reportData()">
+    <div class="container mx-auto px-6 py-8">
+        <!-- Header with Export Controls -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-3xl font-bold text-white">Analysis Report</h1>
+                <div class="flex items-center gap-4">
+                    <div class="text-sm text-gray-400">Generated on: {{ generation_date }}</div>
+                    <button @click="window.print()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <span role="img" aria-label="export">📄</span> Export PDF
+                    </button>
+                    <button @click="window.print()" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <span role="img" aria-label="print">🖨️</span> Print
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Executive Summary -->
+            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
+                <h2 class="text-xl font-semibold text-blue-400 mb-3">
+                    <span role="img" aria-label="clipboard">📋</span> Executive Summary
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-slate-700 rounded-lg p-3 text-center">
+                        <div class="text-2xl font-bold text-green-400">{{ analysis_result.summary.successful_extractions }}</div>
+                        <div class="text-sm text-gray-400">Documents Analyzed</div>
+                    </div>
+                    <div class="bg-slate-700 rounded-lg p-3 text-center">
+                        <div class="text-2xl font-bold text-blue-400">{{ analysis_result.topic_analysis.total_unique_topics if analysis_result.topic_analysis else 0 }}</div>
+                        <div class="text-sm text-gray-400">Unique Topics</div>
+                    </div>
+                    <div class="bg-slate-700 rounded-lg p-3 text-center">
+                        <div class="text-2xl font-bold text-purple-400">{{ analysis_result.topic_analysis.repeated_topics|length if analysis_result.topic_analysis and analysis_result.topic_analysis.repeated_topics else 0 }}</div>
+                        <div class="text-sm text-gray-400">Repeated Topics</div>
+                    </div>
+                    <div class="bg-slate-700 rounded-lg p-3 text-center">
+                        <div class="text-2xl font-bold text-yellow-400">{{ "%.1f"|format(avg_ocr_confidence) }}%</div>
+                        <div class="text-sm text-gray-400">OCR Confidence</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Priority Filter Controls -->
+        {% if analysis_result.predictions %}
+        <div class="mb-6">
+            <div class="flex flex-wrap gap-2">
+                <button @click="selectedPriority = 'all'" 
+                        :class="selectedPriority === 'all' ? 'bg-blue-600' : 'bg-slate-700 hover:bg-slate-600'"
+                        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    All Topics
+                </button>
+                <button @click="selectedPriority = 'very-high'" 
+                        :class="selectedPriority === 'very-high' ? 'bg-red-600' : 'bg-slate-700 hover:bg-slate-600'"
+                        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Very High Priority
+                </button>
+                <button @click="selectedPriority = 'high'" 
+                        :class="selectedPriority === 'high' ? 'bg-orange-600' : 'bg-slate-700 hover:bg-slate-600'"
+                        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    High Priority
+                </button>
+                <button @click="selectedPriority = 'medium'" 
+                        :class="selectedPriority === 'medium' ? 'bg-yellow-600' : 'bg-slate-700 hover:bg-slate-600'"
+                        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Medium Priority
+                </button>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- High Priority Topics -->
+        {% if analysis_result.predictions %}
+        <div class="mb-8">
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-semibold text-red-400">
+                        <span role="img" aria-label="fire">🔥</span> High Priority Topics (Study First!)
+                    </h2>
+                    <button @click="sectionsCollapsed.highPriority = !sectionsCollapsed.highPriority" 
+                            class="text-gray-400 hover:text-white transition-colors">
+                        <span x-text="sectionsCollapsed.highPriority ? '▼' : '▲'"></span>
+                    </button>
+                </div>
+                
+                <div x-show="!sectionsCollapsed.highPriority" x-transition class="grid gap-4">
+                    {% for prediction in analysis_result.predictions %}
+                    {% set priority_class = 'very-high' if prediction.likelihood_category == 'Very High' else 'high' if prediction.likelihood_category == 'High' else 'medium' if prediction.likelihood_category == 'Medium' else 'low' %}
+                    {% set border_class = 'border-red-500' if prediction.likelihood_category == 'Very High' else 'border-orange-500' if prediction.likelihood_category == 'High' else 'border-yellow-500' if prediction.likelihood_category == 'Medium' else 'border-green-500' %}
+                    {% set badge_class = 'bg-red-500' if prediction.likelihood_category == 'Very High' else 'bg-orange-500' if prediction.likelihood_category == 'High' else 'bg-yellow-500' if prediction.likelihood_category == 'Medium' else 'bg-green-500' %}
+                    
+                    <div class="bg-slate-700 rounded-lg p-4 border-l-4 {{ border_class }}" 
+                         x-show="selectedPriority === 'all' || selectedPriority === '{{ priority_class }}'">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-white">{{ prediction.topic }}</h3>
+                            <span class="px-2 py-1 rounded text-xs text-white {{ badge_class }}">
+                                {{ prediction.likelihood_category }} ({{ "%.2f"|format(prediction.likelihood_score) }})
+                            </span>
+                        </div>
+                        {% if prediction.get('description') %}
+                        <p class="text-gray-300 text-sm mb-2">{{ prediction.description }}</p>
+                        {% endif %}
+                        <div class="flex items-center text-xs text-gray-400">
+                            <span class="mr-4">
+                                <span role="img" aria-label="chart">📈</span> 
+                                Appeared: {{ prediction.frequency }} times
+                            </span>
+                            <span class="mr-4">
+                                <span role="img" aria-label="bar chart">📊</span> 
+                                Coverage: {{ "%.1f"|format(prediction.coverage_percentage) }}%
+                            </span>
+                            <span>
+                                <span role="img" aria-label="folder">📁</span> 
+                                {{ prediction.document_count }} documents
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Study Recommendations -->
+        <div class="mb-8">
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-semibold text-green-400">
+                        <span role="img" aria-label="books">📚</span> Study Recommendations
+                    </h2>
+                    <button @click="sectionsCollapsed.recommendations = !sectionsCollapsed.recommendations" 
+                            class="text-gray-400 hover:text-white transition-colors">
+                        <span x-text="sectionsCollapsed.recommendations ? '▼' : '▲'"></span>
+                    </button>
+                </div>
+                
+                <div x-show="!sectionsCollapsed.recommendations" x-transition class="grid md:grid-cols-2 gap-6">
+                    <!-- Priority Breakdown -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-blue-400 mb-3">
+                            <span role="img" aria-label="target">🎯</span> Priority Breakdown
+                        </h3>
+                        <div class="space-y-3">
+                            {% set very_high_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Very High')|list|length if analysis_result.predictions else 0 %}
+                            {% set high_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'High')|list|length if analysis_result.predictions else 0 %}
+                            {% set medium_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Medium')|list|length if analysis_result.predictions else 0 %}
+                            {% set low_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Low')|list|length if analysis_result.predictions else 0 %}
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Very High Priority</span>
+                                <span class="bg-red-500 text-white px-3 py-1 rounded">{{ very_high_count }} topics</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">High Priority</span>
+                                <span class="bg-orange-500 text-white px-3 py-1 rounded">{{ high_count }} topics</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Medium Priority</span>
+                                <span class="bg-yellow-500 text-white px-3 py-1 rounded">{{ medium_count }} topics</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">Low Priority</span>
+                                <span class="bg-green-500 text-white px-3 py-1 rounded">{{ low_count }} topics</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Allocation -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-blue-400 mb-3">
+                            <span role="img" aria-label="clock">⏰</span> Time Allocation
+                        </h3>
+                        <div class="space-y-3">
+                            {% set total_high_priority = very_high_count + high_count %}
+                            {% if total_high_priority > 0 %}
+                            <div class="flex items-center">
+                                <div class="w-20 text-right mr-3 text-gray-300">70%</div>
+                                <div class="flex-1 bg-slate-700 rounded-full h-3">
+                                    <div class="bg-red-500 h-3 rounded-full" style="width: 70%"></div>
+                                </div>
+                                <div class="ml-3 text-gray-300">High Priority</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-20 text-right mr-3 text-gray-300">30%</div>
+                                <div class="flex-1 bg-slate-700 rounded-full h-3">
+                                    <div class="bg-yellow-500 h-3 rounded-full" style="width: 30%"></div>
+                                </div>
+                                <div class="ml-3 text-gray-300">Medium Priority</div>
+                            </div>
+                            {% else %}
+                            <div class="text-center text-gray-300 py-4">
+                                <p>Review all topics equally</p>
+                                <p class="text-sm">Focus on understanding fundamentals</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Study Strategies -->
+        <div class="mb-8">
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-semibold text-purple-400">
+                        <span role="img" aria-label="lightbulb">💡</span> Smart Study Strategies
+                    </h2>
+                    <button @click="sectionsCollapsed.strategies = !sectionsCollapsed.strategies" 
+                            class="text-gray-400 hover:text-white transition-colors">
+                        <span x-text="sectionsCollapsed.strategies ? '▼' : '▲'"></span>
+                    </button>
+                </div>
+                
+                <div x-show="!sectionsCollapsed.strategies" x-transition class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <h3 class="font-semibold text-blue-400 mb-2">
+                            <span role="img" aria-label="map">🗺️</span> Concept Mapping
+                        </h3>
+                        <p class="text-gray-300 text-sm">Create visual connections between related topics like graph theory and algorithms</p>
+                    </div>
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <h3 class="font-semibold text-green-400 mb-2">
+                            <span role="img" aria-label="note">📝</span> Active Recall
+                        </h3>
+                        <p class="text-gray-300 text-sm">Practice problems and use spaced repetition for better retention</p>
+                    </div>
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <h3 class="font-semibold text-yellow-400 mb-2">
+                            <span role="img" aria-label="people">👥</span> Study Groups
+                        </h3>
+                        <p class="text-gray-300 text-sm">Discuss complex concepts with peers to deepen understanding</p>
+                    </div>
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <h3 class="font-semibrel text-red-400 mb-2">
+                            <span role="img" aria-label="clipboard">📋</span> Past Papers
+                        </h3>
+                        <p class="text-gray-300 text-sm">Solve previous exam papers to identify question patterns</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Topics Analysis (from semantic groups) -->
+        {% if analysis_result.semantic_groups %}
+        <div class="mb-8">
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-semibold text-cyan-400">
+                        <span role="img" aria-label="analysis">📈</span> Semantic Topic Groups
+                    </h2>
+                    <button @click="sectionsCollapsed.keyTopics = !sectionsCollapsed.keyTopics" 
+                            class="text-gray-400 hover:text-white transition-colors">
+                        <span x-text="sectionsCollapsed.keyTopics ? '▼' : '▲'"></span>
+                    </button>
+                </div>
+                
+                <div x-show="!sectionsCollapsed.keyTopics" x-transition class="space-y-4">
+                    {% for group in analysis_result.semantic_groups[:5] %}
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <h3 class="font-semibold text-white mb-2">Related Topic Group {{ loop.index }} ({{ group.group_size }} topics)</h3>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            {% for topic_item in group.topics[:5] %}
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">{{ topic_item.topic[:30] }}{% if topic_item.topic|length > 30 %}...{% endif %}</span>
+                            {% endfor %}
+                        </div>
+                        <p class="text-gray-300 text-sm">Similarity Score: {{ "%.2f"|format(group.avg_similarity) }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Document Quality Assessment -->
+        <div class="mb-8">
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <h2 class="text-2xl font-semibold text-yellow-400 mb-4">
+                    <span role="img" aria-label="quality">🔬</span> Analysis Quality
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Document Statistics -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-blue-400 mb-3">
+                            <span role="img" aria-label="document">📄</span> Document Statistics
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-300">Total Words Processed:</span>
+                                <span class="text-white font-semibold">{{ total_words|default(0) }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-300">Average Words/Document:</span>
+                                <span class="text-white font-semibold">{{ avg_words_per_doc|default(0) }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-300">Average OCR Confidence:</span>
+                                <span class="text-green-400 font-semibold">{{ "%.1f"|format(avg_ocr_confidence) }}%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confidence Levels -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-blue-400 mb-3">
+                            <span role="img" aria-label="confidence">📊</span> Confidence Levels
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <span class="w-32 text-gray-300">High (≥85%):</span>
+                                <div class="flex-1 bg-slate-700 rounded-full h-2 mr-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: {{ (confidence_stats.high_confidence_count / analysis_result.summary.successful_extractions * 100)|round }}%"></div>
+                                </div>
+                                <span class="text-white">{{ confidence_stats.high_confidence_count }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-32 text-gray-300">Medium (70-84%):</span>
+                                <div class="flex-1 bg-slate-700 rounded-full h-2 mr-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: {{ (confidence_stats.medium_confidence_count / analysis_result.summary.successful_extractions * 100)|round }}%"></div>
+                                </div>
+                                <span class="text-white">{{ confidence_stats.medium_confidence_count }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-32 text-gray-300">Low (<70%):</span>
+                                <div class="flex-1 bg-slate-700 rounded-full h-2 mr-2">
+                                    <div class="bg-red-500 h-2 rounded-full" style="width: {{ (confidence_stats.low_confidence_count / analysis_result.summary.successful_extractions * 100)|round }}%"></div>
+                                </div>
+                                <span class="text-white">{{ confidence_stats.low_confidence_count }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processed Files -->
+        {% if analysis_result.analyzer.extracted_texts %}
+        <div class="mb-8">
+            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-semibold text-indigo-400">
+                        <span role="img" aria-label="folder">📁</span> Processed Files
+                    </h2>
+                    <button @click="sectionsCollapsed.files = !sectionsCollapsed.files" 
+                            class="text-gray-400 hover:text-white transition-colors">
+                        <span x-text="sectionsCollapsed.files ? '▼' : '▲'"></span>
+                    </button>
+                </div>
+                
+                <div x-show="!sectionsCollapsed.files" x-transition class="grid gap-4">
+                    {% for file_data in analysis_result.analyzer.extracted_texts %}
+                    {% set confidence_icon = '🟢' if file_data.confidence >= 85 else '🟡' if file_data.confidence >= 70 else '🔴' %}
+                    {% set confidence_class = 'bg-green-500' if file_data.confidence >= 85 else 'bg-yellow-500' if file_data.confidence >= 70 else 'bg-red-500' %}
+                    
+                    <div class="bg-slate-700 rounded-lg p-4 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-white">{{ file_data.filename }}</h3>
+                            <p class="text-gray-400 text-sm">
+                                Confidence: {{ "%.1f"|format(file_data.confidence) }}% | 
+                                Words: {{ file_data.word_count }} | 
+                                Method: {{ file_data.method }}
+                            </p>
+                        </div>
+                        <span class="px-2 py-1 rounded text-xs text-white {{ confidence_class }}">
+                            {{ confidence_icon }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Footer Info -->
+        <div class="text-center text-gray-400 text-sm">
+            <p><span role="img" aria-label="chart">📈</span> Analysis Powered by Enhanced Topic Repetition Analyzer</p>
+            <p class="mt-1"><span role="img" aria-label="graduation cap">🎓</span> Designed for Academic Success - Focus Smart, Study Less!</p>
+            <p class="mt-1"><span role="img" aria-label="lightbulb">💡</span> Tip: Regular analysis of new materials improves prediction accuracy</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function reportData() {
+        return {
+            selectedPriority: 'all',
+            sectionsCollapsed: {
+                highPriority: false,
+                recommendations: false,
+                strategies: false,
+                keyTopics: false,
+                files: false
+            }
+        }
+    }
+</script>
+
+<style>
+    @media print {
+        .no-print, button {
+            display: none !important;
+        }
+        body {
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+    }
+</style>
+
+</div>
+{% endblock %}

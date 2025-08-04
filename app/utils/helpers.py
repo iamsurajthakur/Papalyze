@@ -1,10 +1,10 @@
 from functools import wraps
-
+import os
 from flask import session, redirect, url_for, flash
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
 from tenacity import retry, stop_after_attempt, wait_fixed
-
+from pdf2image import convert_from_path
 from app.extensions import db
 
 
@@ -39,3 +39,16 @@ def login_required(f):
         return f(*args, **kwargs)
     
     return decorated_function
+
+def convert_pdf_to_images(pdf_path, output_folder="temp_images", dpi=300):
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    images = convert_from_path(pdf_path, dpi=dpi)
+    image_paths = []
+
+    for i, img in enumerate(images):
+        image_path = os.path.join(output_folder, f"page_{i+1}.png")
+        img.save(image_path, "PNG")
+        image_paths.append(image_path)
+    
+    return image_paths

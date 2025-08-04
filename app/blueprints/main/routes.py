@@ -12,6 +12,9 @@ from flask_mail import Message
 from datetime import datetime
 import os
 import uuid
+import tempfile
+from app.blueprints.analyzer import analyze_enhanced_topic_repetitions
+
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
@@ -106,7 +109,96 @@ def subscribe():
         flash("Failed to process signup. Please try again.", "danger")
 
     return redirect(url_for('main.index'))
+@bp.route('/report.html')
+def report():
+    if os.environ.get('RENDER'):
+        image_folder_path = '/tmp'
+    else:
+        image_folder_path = os.path.join(os.getcwd(), 'uploaded_files')
+    
+    if not os.path.exists(image_folder_path):
+        os.makedirs(image_folder_path, exist_ok=True)
+        return render_template('error.html', message="Upload folder was created but is empty.")
 
+    try:
+        # Collect images AND pdfs
+        all_files = [
+            os.path.join(image_folder_path, f)
+            for f in os.listdir(image_folder_path)
+            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.pdf'))
+        ]
+    except OSError as e:
+        current_app.logger.error(f"Error accessing upload folder: {e}")
+        return render_template('error.html', message="Upload folder access error.")
+
+    if not all_files:
+        return render_template('error.html', message="No valid files found (PDF or image).")
+
+    # Prepare final list of image paths
+    final_image_files = []
+
+    from app.utils.helpers import convert_pdf_to_images  # import your function
+
+    for file_path in all_files:
+        if file_path.lower().endswith(".pdf"):
+            try:
+                images = convert_pdf_to_images(file_path)
+                final_image_files.extend(images)
+            except Exception as e:
+                current_app.logger.error(f"PDF conversion failed: {e}")
+        else:
+            final_image_files.append(file_path)
+
+    if not final_image_files:
+        return render_template('error.html', message="No valid images available for analysis after processing.")
+
+    # Temporarily override: analyze_enhanced_topic_repetitions only accepts folder,
+    # so put converted images in a temp folder and pass that folder instead
+    from tempfile import TemporaryDirectory
+    import shutil
+
+    with TemporaryDirectory() as temp_dir:
+        for img_path in final_image_files:
+            shutil.copy(img_path, temp_dir)
+
+        try:
+            analysis_result = analyze_enhanced_topic_repetitions(
+                temp_dir,
+                use_lemmatization=True,
+                verbose=False
+            )
+        except Exception as e:
+            current_app.logger.error(f"Analysis failed: {e}")
+            return render_template('error.html', message="Analysis failed.")
+
+    if not analysis_result:
+        return render_template('error.html', message="Analysis returned no results.")
+
+    extracted_texts = analysis_result['analyzer'].extracted_texts
+
+    confidence_stats = {
+        'high_confidence_count': len([f for f in extracted_texts if f['confidence'] >= 85]),
+        'medium_confidence_count': len([f for f in extracted_texts if 70 <= f['confidence'] < 85]),
+        'low_confidence_count': len([f for f in extracted_texts if f['confidence'] < 70])
+    }
+
+    total_words = sum(f['word_count'] for f in extracted_texts)
+    avg_words_per_doc = total_words // len(extracted_texts)
+    avg_ocr_confidence = sum(f['confidence'] for f in extracted_texts) / len(extracted_texts)
+
+    return render_template('report.html',
+        analysis_result=analysis_result,
+        generation_date=datetime.now().strftime("%B %d, %Y"),
+        confidence_stats=confidence_stats,
+        total_words=total_words,
+        avg_words_per_doc=avg_words_per_doc,
+        avg_ocr_confidence=avg_ocr_confidence
+    )
+
+
+@bp.route('/error.html')
+def error():
+    return render_template('error.html', title='Error')
 
 @bp.route('/about.html')
 def about():
@@ -207,52 +299,64 @@ def db_check():
             "<h3 style='color:red;'>Unexpected Error</h3>"
             f"<p>{e}</p>"
         )
-    
 @bp.route('/upload', methods=['POST'])
 @login_required
 def upload():
-    # Get list of uploaded files from the key 'paper_files' (matches your frontend)
     files = request.files.getlist('paper_files')
 
     if not files or all(f.filename == '' for f in files):
-        return jsonify({'error': 'No files provided'}), 400
+        if request.is_json or request.accept_mimetypes['application/json'] > request.accept_mimetypes['text/html']:
+            return jsonify({'status': 'error', 'message': 'No files provided'}), 400
+        return render_template('report.html', error="No files provided")
 
-    # Set upload folder based on environment
-    if os.environ.get('RENDER'):
-        upload_folder = '/tmp'
-    else:
-        upload_folder = os.path.join(os.getcwd(), 'uploaded_files')
-        os.makedirs(upload_folder, exist_ok=True)
+    # Define permanent upload folder in your project root
+    upload_folder = os.path.join(os.getcwd(), 'uploaded_files')
+
+    # Create folder if it doesn't exist
+    os.makedirs(upload_folder, exist_ok=True)
 
     saved_filenames = []
 
     for file in files:
         if file and file.filename != '':
             if not allowed_file(file.filename):
-                return jsonify({'error': f'File type not allowed: {file.filename}'}), 400
-
+                return jsonify({'status': 'error', 'message': f'File type not allowed: {file.filename}'}), 400
+            
             filename = secure_filename(file.filename)
             file_path = os.path.join(upload_folder, filename)
 
             try:
                 file.save(file_path)
                 saved_filenames.append(filename)
-                print("✅ File saved at:", file_path)
             except Exception as e:
-                print("❌ Error saving file:", e)
-                return jsonify({'error': 'File saving failed'}), 500
+                current_app.logger.error(f"Failed to save file {filename}: {e}")
+                return jsonify({'status': 'error', 'message': 'File saving failed'}), 500
 
-    # Handle checkboxes (for analysis)
     extract_questions = request.form.get('extract_questions') == 'on'
     difficulty_analysis = request.form.get('difficulty_analysis') == 'on'
     topic_classification = request.form.get('topic_classification') == 'on'
     answer_suggestions = request.form.get('answer_suggestions') == 'on'
 
-    # Placeholder for analysis logic on saved_filenames list
-    print("Received files:", saved_filenames)
-    print("Options:", extract_questions, difficulty_analysis, topic_classification, answer_suggestions)
+    # Run analysis on the permanent upload folder
+    result = analyze_enhanced_topic_repetitions(
+        upload_folder,
+        debug=False,
+        use_lemmatization=True,
+        verbose=False
+    )
 
-    return jsonify({"message": f"Analysis complete! Uploaded {len(saved_filenames)} files.", "redirect_url": "/upload"})
+    if not result:
+        return jsonify({'status': 'error', 'message': 'Analysis failed or no valid files'}), 500
+
+    return jsonify({
+        'status': 'success',
+        'message': f'Analysis complete! Uploaded {len(saved_filenames)} files.',
+        'summary': result.get("summary", {}),
+        'predictions': result.get("predictions", []),
+        'redirect_url': '/report.html'
+    }), 200
+
+
 
 
 

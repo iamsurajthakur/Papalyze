@@ -1,3 +1,4 @@
+# Add this at the very top of your analyze.py file, before any other imports
 import cv2
 import pytesseract
 from PIL import Image
@@ -8,8 +9,6 @@ import pandas as pd
 from datetime import datetime, timedelta
 import re
 from collections import Counter, defaultdict
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import cosine_similarity
@@ -30,9 +29,17 @@ for item in nltk_downloads:
     except LookupError:
         nltk.download(item, quiet=True)
 
-def convert_pdf_to_images(pdf_path, output_folder="temp_images", dpi=300):
+if os.environ.get('RENDER'):
+    TEMP_IMAGE_FOLDER = '/tmp/temp_images'
+else:
+    TEMP_IMAGE_FOLDER = os.path.join(os.getcwd(), 'temp_images')
+
+os.makedirs(TEMP_IMAGE_FOLDER, exist_ok=True)
+
+def convert_pdf_to_images(pdf_path, output_folder=TEMP_IMAGE_FOLDER, dpi=300):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
+        
     images = convert_from_path(pdf_path, dpi=dpi)
     image_paths = []
 
@@ -40,7 +47,7 @@ def convert_pdf_to_images(pdf_path, output_folder="temp_images", dpi=300):
         image_path = os.path.join(output_folder, f"page_{i+1}.png")
         img.save(image_path, "PNG")
         image_paths.append(image_path)
-    
+
     return image_paths
 
 class EnhancedTopicRepetitionAnalyzer:
@@ -85,16 +92,16 @@ class EnhancedTopicRepetitionAnalyzer:
         if self.use_lemmatization:
             self.lemmatizer = WordNetLemmatizer()
         
-        # Create output directories
+        # Create output directories (removed debug_images and visualizations)
         os.makedirs(output_dir, exist_ok=True)
-        for subdir in ['debug_images', 'extracted_texts', 'visualizations', 'reports']:
+        for subdir in ['extracted_texts', 'reports']:
             os.makedirs(f"{output_dir}/{subdir}", exist_ok=True)
         
         if self.verbose:
             print(f"Enhanced analysis output directory: {output_dir}")
 
-    def enhance_image_for_ocr(self, image_path, debug=False):
-        """Enhanced OCR preprocessing with better noise reduction"""
+    def enhance_image_for_ocr(self, image_path):
+        """Enhanced OCR preprocessing without debug image saving"""
         img = cv2.imread(image_path)
         if img is None:
             raise ValueError(f"Could not load image from {image_path}")
@@ -132,17 +139,12 @@ class EnhancedTopicRepetitionAnalyzer:
             'enhanced': enhanced  # Also try the enhanced grayscale
         }
         
-        if debug:
-            filename = os.path.basename(image_path).split('.')[0]
-            for method_name, processed in methods.items():
-                cv2.imwrite(f"{self.output_dir}/debug_images/{filename}_{method_name}.jpg", processed)
-        
         return methods
 
-    def extract_text_from_image(self, image_path, debug=False):
-        """Improved text extraction with better confidence scoring"""
+    def extract_text_from_image(self, image_path):
+        """Improved text extraction with better confidence scoring - no debug saving"""
         try:
-            processed_methods = self.enhance_image_for_ocr(image_path, debug)
+            processed_methods = self.enhance_image_for_ocr(image_path)
             
             best_text = ""
             best_confidence = 0
@@ -219,8 +221,8 @@ class EnhancedTopicRepetitionAnalyzer:
         
         return datetime.now()
 
-    def process_multiple_files(self, file_paths, debug=False):
-        """Enhanced file processing with better error handling"""
+    def process_multiple_files(self, file_paths):
+        """Enhanced file processing with better error handling - no debug mode"""
         if self.verbose:
             print(f"Processing {len(file_paths)} files...")
         
@@ -230,7 +232,7 @@ class EnhancedTopicRepetitionAnalyzer:
             if self.verbose:
                 print(f"Processing file {i}/{len(file_paths)}: {os.path.basename(file_path)}")
             
-            text, confidence, method = self.extract_text_from_image(file_path, debug)
+            text, confidence, method = self.extract_text_from_image(file_path)
             
             if text.strip() and len(text.split()) >= 10:  # Minimum word requirement
                 extracted_date = self.extract_date_from_filename(os.path.basename(file_path))
@@ -558,185 +560,6 @@ class EnhancedTopicRepetitionAnalyzer:
         
         return heat_index
 
-    def create_enhanced_visualizations(self, predictions, topic_analysis):
-        """Create enhanced visualizations with better design"""
-        if self.verbose:
-            print("Creating enhanced visualizations...")
-        
-        if not predictions and not topic_analysis:
-            if self.verbose:
-                print("No data to visualize")
-            return
-        
-        plt.style.use('default')
-        sns.set_palette("husl")
-        
-        # Create comprehensive visualization
-        fig, axes = plt.subplots(2, 2, figsize=(18, 14))
-        fig.suptitle('Enhanced Topic Repetition Analysis', fontsize=18, fontweight='bold')
-        
-        # 1. Top Topics by Likelihood Score or Frequency
-        if predictions:
-            top_predictions = predictions[:10]
-            topics = [pred['topic'][:25] + "..." if len(pred['topic']) > 25 else pred['topic'] 
-                     for pred in top_predictions]
-            scores = [pred['likelihood_score'] for pred in top_predictions]
-            colors = ['red' if score >= 0.6 else 'orange' if score >= 0.4 else 'gold' if score >= 0.2 else 'lightgreen' 
-                     for score in scores]
-            
-            bars = axes[0, 0].barh(range(len(topics)), scores, color=colors)
-            axes[0, 0].set_yticks(range(len(topics)))
-            axes[0, 0].set_yticklabels(topics, fontsize=9)
-            axes[0, 0].set_xlabel('Likelihood Score')
-            axes[0, 0].set_title('Top Topics by Repetition Likelihood')
-            axes[0, 0].invert_yaxis()
-            
-            # Add score labels on bars
-            for i, bar in enumerate(bars):
-                width = bar.get_width()
-                axes[0, 0].text(width + 0.01, bar.get_y() + bar.get_height()/2, 
-                               f'{scores[i]:.2f}', ha='left', va='center', fontsize=8)
-        else:
-            axes[0, 0].text(0.5, 0.5, 'No predictions available\nTry lowering thresholds', 
-                           ha='center', va='center', transform=axes[0, 0].transAxes, fontsize=12)
-            axes[0, 0].set_title('Top Topics by Repetition Likelihood')
-        
-        # 2. Topic Heat Index
-        heat_index = self.create_topic_heat_index(topic_analysis)
-        if heat_index:
-            topics = [item['topic'][:20] + "..." if len(item['topic']) > 20 else item['topic'] 
-                     for item in heat_index[:8]]
-            mentions = [item['mentions'] for item in heat_index[:8]]
-            
-            bars = axes[0, 1].bar(range(len(topics)), mentions, color='skyblue')
-            axes[0, 1].set_xticks(range(len(topics)))
-            axes[0, 1].set_xticklabels(topics, rotation=45, ha='right', fontsize=8)
-            axes[0, 1].set_ylabel('Mentions')
-            axes[0, 1].set_title('Topic Heat Index')
-            axes[0, 1].grid(True, alpha=0.3, axis='y')
-            
-            # Add mention count labels on bars
-            for bar in bars:
-                height = bar.get_height()
-                axes[0, 1].text(bar.get_x() + bar.get_width()/2., height + 0.05,
-                               f'{int(height)}', ha='center', va='bottom', fontsize=8)
-        else:
-            axes[0, 1].text(0.5, 0.5, 'No topics found', 
-                           ha='center', va='center', transform=axes[0, 1].transAxes)
-            axes[0, 1].set_title('Topic Heat Index')
-        
-        # 3. Likelihood Categories Distribution
-        if predictions:
-            categories = {}
-            for pred in predictions:
-                cat = pred['likelihood_category']
-                categories[cat] = categories.get(cat, 0) + 1
-            
-            if categories:
-                category_colors = {'Very High': 'red', 'High': 'orange', 'Medium': 'gold', 'Low': 'lightgreen'}
-                colors = [category_colors.get(cat, 'gray') for cat in categories.keys()]
-                
-                axes[1, 0].pie(categories.values(), labels=categories.keys(), autopct='%1.1f%%', 
-                              colors=colors, startangle=90)
-                axes[1, 0].set_title('Distribution of Likelihood Categories')
-        else:
-            axes[1, 0].text(0.5, 0.5, 'No predictions for\ncategory distribution', 
-                           ha='center', va='center', transform=axes[1, 0].transAxes)
-            axes[1, 0].set_title('Distribution of Likelihood Categories')
-        
-        # 4. Document Processing Quality
-        if self.extracted_texts:
-            filenames = [data['filename'][:15] + "..." if len(data['filename']) > 15 else data['filename'] 
-                        for data in self.extracted_texts]
-            confidences = [data['confidence'] for data in self.extracted_texts]
-            word_counts = [data['word_count'] for data in self.extracted_texts]
-            
-            # Create a dual-axis plot
-            ax1 = axes[1, 1]
-            ax2 = ax1.twinx()
-            
-            x = range(len(filenames))
-            bars1 = ax1.bar([i - 0.2 for i in x], confidences, 0.4, label='OCR Confidence (%)', 
-                           color='lightblue', alpha=0.7)
-            bars2 = ax2.bar([i + 0.2 for i in x], word_counts, 0.4, label='Word Count', 
-                           color='lightcoral', alpha=0.7)
-            
-            ax1.set_xlabel('Documents')
-            ax1.set_ylabel('OCR Confidence (%)', color='blue')
-            ax2.set_ylabel('Word Count', color='red')
-            ax1.set_title('Document Processing Quality')
-            ax1.set_xticks(x)
-            ax1.set_xticklabels(filenames, rotation=45, ha='right', fontsize=8)
-            
-            # Add legends
-            ax1.legend(loc='upper left')
-            ax2.legend(loc='upper right')
-            
-            # Add value labels
-            for i, bar in enumerate(bars1):
-                height = bar.get_height()
-                ax1.text(bar.get_x() + bar.get_width()/2., height + 1,
-                        f'{confidences[i]:.0f}%', ha='center', va='bottom', fontsize=7)
-            
-            for i, bar in enumerate(bars2):
-                height = bar.get_height()
-                ax2.text(bar.get_x() + bar.get_width()/2., height + max(word_counts)*0.02,
-                        f'{word_counts[i]}', ha='center', va='bottom', fontsize=7)
-        else:
-            axes[1, 1].text(0.5, 0.5, 'No document data', 
-                           ha='center', va='center', transform=axes[1, 1].transAxes)
-            axes[1, 1].set_title('Document Processing Quality')
-        
-        plt.tight_layout()
-        plt.savefig(f"{self.output_dir}/visualizations/enhanced_analysis.png", 
-                   dpi=300, bbox_inches='tight')
-        plt.close()
-        
-        # Create a detailed topic word cloud if we have topics
-        if topic_analysis and (topic_analysis.get('repeated_topics') or topic_analysis.get('all_topics_list')):
-            self.create_topic_wordcloud(topic_analysis)
-        
-        if self.verbose:
-            print(f"Enhanced visualizations saved to {self.output_dir}/visualizations/")
-
-    def create_topic_wordcloud(self, topic_analysis):
-        """Create a word cloud of repeated topics"""
-        try:
-            # Prepare text for word cloud
-            topic_text = []
-            
-            # Use repeated topics if available
-            if topic_analysis.get('repeated_topics'):
-                for topic, data in topic_analysis['repeated_topics']:
-                    # Repeat topic based on its frequency for word cloud weighting
-                    topic_text.extend([topic] * data['frequency'])
-            
-            # Fallback to all topics if no repeated topics
-            elif topic_analysis.get('all_topics_list'):
-                topic_text = topic_analysis['all_topics_list']
-            
-            if topic_text:
-                wordcloud_text = ' '.join(topic_text)
-                
-                wordcloud = WordCloud(width=1200, height=600, 
-                                    background_color='white',
-                                    colormap='viridis',
-                                    max_words=50,
-                                    relative_scaling=0.5).generate(wordcloud_text)
-                
-                plt.figure(figsize=(15, 8))
-                plt.imshow(wordcloud, interpolation='bilinear')
-                plt.axis('off')
-                plt.title('Most Repeated Academic Topics', fontsize=16, fontweight='bold', pad=20)
-                plt.tight_layout()
-                plt.savefig(f"{self.output_dir}/visualizations/topic_wordcloud.png", 
-                           dpi=300, bbox_inches='tight')
-                plt.close()
-                
-        except Exception as e:
-            if self.verbose:
-                print(f"Warning: Could not create word cloud: {e}")
-
     def generate_enhanced_report(self, predictions, topic_analysis):
         """Generate comprehensive enhanced report with better fallback content"""
         report_path = f"{self.output_dir}/reports/enhanced_analysis_report.txt"
@@ -999,7 +822,7 @@ class EnhancedTopicRepetitionAnalyzer:
             return []
 
 def analyze_enhanced_topic_repetitions(image_folder, debug=False, use_lemmatization=True, verbose=False):
-    """Main enhanced function to analyze topic repetitions with better predictions"""
+    """Main enhanced function to analyze topic repetitions with better predictions - no debug/visualizations"""
     
     from tempfile import TemporaryDirectory
     from pathlib import Path
@@ -1051,7 +874,7 @@ def analyze_enhanced_topic_repetitions(image_folder, debug=False, use_lemmatizat
                 final_image_files.append(file_path)
 
         # Process all files with enhanced OCR
-        extracted_data = analyzer.process_multiple_files(final_image_files, debug=debug)
+        extracted_data = analyzer.process_multiple_files(final_image_files)
 
         if not extracted_data:
             if verbose:
@@ -1072,10 +895,7 @@ def analyze_enhanced_topic_repetitions(image_folder, debug=False, use_lemmatizat
         # Find semantic topic groups
         semantic_groups = analyzer.find_semantic_topic_groups()
 
-        # Create enhanced visualizations
-        analyzer.create_enhanced_visualizations(predictions, topic_analysis)
-
-        # Generate comprehensive report
+        # Generate comprehensive report (no visualizations)
         analyzer.generate_enhanced_report(predictions, topic_analysis)
 
         # Return analysis results for backend use
@@ -1113,13 +933,14 @@ def analyze_enhanced_topic_repetitions(image_folder, debug=False, use_lemmatizat
 
 # Example usage for backend integration
 if __name__ == "__main__":
-    # Backend-friendly usage
-    image_folder_path = "D:\\pytesseract\\images"  # Change this to your folder path
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # folder where analyze.py is
+    project_root = os.path.abspath(os.path.join(base_dir, '..', '..', '..'))  # Adjust based on location
+    image_folder_path = os.path.join(project_root, 'uploadfile')
     
     # For backend use - set verbose=False to minimize console output
     result = analyze_enhanced_topic_repetitions(
         image_folder_path, 
-        debug=False,  # Set to False for production
+         debug=False,  # Set to False for production
         use_lemmatization=True,
         verbose=False  # Set to False for backend use
     )
