@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Install system dependencies as root
 RUN apt-get update && apt-get install -y \
-    libg11 \
+    libgl1 \
     tesseract-ocr \
     poppler-utils \
     libpq-dev \
