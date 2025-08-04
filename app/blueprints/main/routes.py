@@ -21,6 +21,12 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+if os.environ.get('RENDER'):
+        image_folder_path = '/tmp'
+else:
+    image_folder_path = os.path.join(os.getcwd(), 'uploaded_files')
+
+os.makedirs(image_folder_path, exist_ok=True)
 
 @bp.route('/')
 def index():
@@ -109,16 +115,9 @@ def subscribe():
         flash("Failed to process signup. Please try again.", "danger")
 
     return redirect(url_for('main.index'))
+
 @bp.route('/report.html')
 def report():
-    if os.environ.get('RENDER'):
-        image_folder_path = '/tmp'
-    else:
-        image_folder_path = os.path.join(os.getcwd(), 'uploaded_files')
-    
-    if not os.path.exists(image_folder_path):
-        os.makedirs(image_folder_path, exist_ok=True)
-        return render_template('error.html', message="Upload folder was created but is empty.")
 
     try:
         # Collect images AND pdfs
@@ -299,6 +298,7 @@ def db_check():
             "<h3 style='color:red;'>Unexpected Error</h3>"
             f"<p>{e}</p>"
         )
+    
 @bp.route('/upload', methods=['POST'])
 @login_required
 def upload():
@@ -309,11 +309,6 @@ def upload():
             return jsonify({'status': 'error', 'message': 'No files provided'}), 400
         return render_template('report.html', error="No files provided")
 
-    # Define permanent upload folder in your project root
-    upload_folder = os.path.join(os.getcwd(), 'uploaded_files')
-
-    # Create folder if it doesn't exist
-    os.makedirs(upload_folder, exist_ok=True)
 
     saved_filenames = []
 
@@ -323,7 +318,7 @@ def upload():
                 return jsonify({'status': 'error', 'message': f'File type not allowed: {file.filename}'}), 400
             
             filename = secure_filename(file.filename)
-            file_path = os.path.join(upload_folder, filename)
+            file_path = os.path.join(image_folder_path, filename)
 
             try:
                 file.save(file_path)
@@ -339,7 +334,7 @@ def upload():
 
     # Run analysis on the permanent upload folder
     result = analyze_enhanced_topic_repetitions(
-        upload_folder,
+        image_folder_path,
         debug=False,
         use_lemmatization=True,
         verbose=False
