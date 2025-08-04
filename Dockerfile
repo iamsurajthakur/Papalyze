@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     poppler-utils \
     libpq-dev \
     gcc \
-    build-essential \  
+    build-essential \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -18,24 +18,28 @@ RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 
 # Set work directory and change ownership
 WORKDIR /app
-RUN chown appuser:appgroup /app
+RUN mkdir -p /app/nltk_data && chown -R appuser:appgroup /app
 
-# Copy requirements and install python dependencies as root
+# Set environment variables for non-root user
+ENV NLTK_DATA=/app/nltk_data
+ENV MPLCONFIGDIR=/tmp/matplotlib
+
+# Copy requirements and install Python packages
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Download NLTK data as root (optional: could run as non-root, but simpler here)
-RUN python -m nltk.downloader punkt stopwords wordnet
+# Download required NLTK data to /app/nltk_data (custom location)
+RUN python -m nltk.downloader -d /app/nltk_data punkt stopwords wordnet
 
-# Copy rest of the app code and change ownership so non-root user can access
+# Copy app code and fix permissions
 COPY . .
 RUN chown -R appuser:appgroup /app
 
 # Switch to non-root user for running the app
 USER appuser
 
-# Expose port (match your gunicorn or Flask port)
+# Expose the port that your app runs on
 EXPOSE 10000
 
-# Start the app as non-root user
+# Run the app
 CMD ["gunicorn", "-b", "0.0.0.0:10000", "run:app"]

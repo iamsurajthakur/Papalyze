@@ -22,12 +22,15 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Download required NLTK data silently
-nltk_downloads = ["punkt", "stopwords", "wordnet", "omw-1.4", "averaged_perceptron_tagger"]
-for item in nltk_downloads:
-    try:
-        nltk.data.find(f'tokenizers/{item}' if item == 'punkt' else f'corpora/{item}')
-    except LookupError:
-        nltk.download(item, quiet=True)
+os.environ['NLTK_DATA'] = '/app/nltk_data'
+
+if os.environ.get("FLASK_ENV") == "development":
+    nltk_downloads = ["punkt", "stopwords", "wordnet", "omw-1.4", "averaged_perceptron_tagger"]
+    for item in nltk_downloads:
+        try:
+            nltk.data.find(f'tokenizers/{item}' if item == 'punkt' else f'corpora/{item}')
+        except LookupError:
+            nltk.download(item, quiet=True)
 
 if os.environ.get('RENDER'):
     TEMP_IMAGE_FOLDER = '/tmp/temp_images'
