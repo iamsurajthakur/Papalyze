@@ -123,8 +123,9 @@ uploadForm.addEventListener('submit', async (e) => {
         }
 
         progressText.textContent = data.message || 'Analysis complete!';
+
         setTimeout(() => {
-            window.location.href = data.redirect_url || '/results';
+            window.location.href = data.redirect_url || '/report.html';
         }, 1000);
 
     } catch (err) {

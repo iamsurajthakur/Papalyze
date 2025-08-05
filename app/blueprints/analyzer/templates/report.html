@@ -339,7 +339,7 @@
         </div>
 
         <!-- Processed Files -->
-        {% if analysis_result.analyzer.extracted_texts %}
+        {% if analysis_result.analyzer_data.extracted_texts %}
         <div class="mb-8">
             <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
                 <div class="flex items-center justify-between mb-4">
@@ -353,7 +353,7 @@
                 </div>
                 
                 <div x-show="!sectionsCollapsed.files" x-transition class="grid gap-4">
-                    {% for file_data in analysis_result.analyzer.extracted_texts %}
+                    {% for file_data in analysis_result.analyzer_data.extracted_texts %}
                     {% set confidence_icon = '🟢' if file_data.confidence >= 85 else '🟡' if file_data.confidence >= 70 else '🔴' %}
                     {% set confidence_class = 'bg-green-500' if file_data.confidence >= 85 else 'bg-yellow-500' if file_data.confidence >= 70 else 'bg-red-500' %}
                     

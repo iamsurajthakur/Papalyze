@@ -3,7 +3,7 @@ import pytesseract
 from PIL import Image
 import numpy as np
 import os
-import pandas as pd
+import tempfile
 from datetime import datetime, timedelta
 import re
 from collections import Counter, defaultdict
@@ -30,14 +30,12 @@ if os.environ.get("FLASK_ENV") == "development":
         except LookupError:
             nltk.download(item, quiet=True)
 
-if os.environ.get('RENDER'):
-    TEMP_IMAGE_FOLDER = '/tmp'
-else:
-    TEMP_IMAGE_FOLDER = os.path.join(os.getcwd(), 'temp_images')
 
-os.makedirs(TEMP_IMAGE_FOLDER, exist_ok=True)
-
-def convert_pdf_to_images(pdf_path, output_folder=TEMP_IMAGE_FOLDER, dpi=300):
+def convert_pdf_to_images(pdf_path, output_folder=None, dpi=300):
+    # Use temp directory if none provided
+    if output_folder is None:
+        output_folder = tempfile.mkdtemp(prefix='pdf_convert_')
+    
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
         
@@ -822,27 +820,32 @@ class EnhancedTopicRepetitionAnalyzer:
                 print(f"Error in semantic grouping: {e}")
             return []
 
-def analyze_enhanced_topic_repetitions(image_folder, debug=False, use_lemmatization=True, verbose=False):
-    """Main enhanced function to analyze topic repetitions with better predictions - no debug/visualizations"""
-    
+def analyze_enhanced_topic_repetitions(image_input, debug=False, use_lemmatization=True, verbose=False):
+    """Enhanced analysis accepts either folder path or list of files"""
+
     from tempfile import TemporaryDirectory
     from pathlib import Path
+    import os
 
-    # Initialize enhanced analyzer
     analyzer = EnhancedTopicRepetitionAnalyzer(use_lemmatization=use_lemmatization, verbose=verbose)
-    
-    # File processing
+
     image_extensions = ['.jpg', '.jpeg', '.png', '.tiff', '.tif', '.bmp']
     pdf_extension = '.pdf'
     input_files = []
 
-    if os.path.isdir(image_folder):
-        for file in os.listdir(image_folder):
-            file_path = os.path.join(image_folder, file)
+    # Detect if input is a list of file paths or a folder path
+    if isinstance(image_input, (list, tuple)):
+        # Expecting list of file paths
+        input_files = [str(f) for f in image_input if any(str(f).lower().endswith(ext) for ext in image_extensions + [pdf_extension])]
+    elif os.path.isdir(image_input):
+        # input is a directory path
+        for file in os.listdir(image_input):
+            file_path = os.path.join(image_input, file)
             if any(file.lower().endswith(ext) for ext in image_extensions + [pdf_extension]):
                 input_files.append(file_path)
     else:
-        input_files = [image_folder]
+        # Assume a single file path
+        input_files = [str(image_input)]
 
     if not input_files:
         if verbose:
@@ -874,7 +877,6 @@ def analyze_enhanced_topic_repetitions(image_folder, debug=False, use_lemmatizat
             else:
                 final_image_files.append(file_path)
 
-        # Process all files with enhanced OCR
         extracted_data = analyzer.process_multiple_files(final_image_files)
 
         if not extracted_data:
@@ -882,24 +884,16 @@ def analyze_enhanced_topic_repetitions(image_folder, debug=False, use_lemmatizat
                 print("No text was extracted from any files!")
             return None
 
-        # Enhanced topic analysis
         topic_analysis = analyzer.analyze_enhanced_topic_frequency()
-        
         if not topic_analysis:
             if verbose:
                 print("No topics could be analyzed!")
             return None
 
-        # Generate enhanced predictions
         predictions = analyzer.calculate_enhanced_predictions(topic_analysis)
-        
-        # Find semantic topic groups
         semantic_groups = analyzer.find_semantic_topic_groups()
-
-        # Generate comprehensive report (no visualizations)
         analyzer.generate_enhanced_report(predictions, topic_analysis)
 
-        # Return analysis results for backend use
         result = {
             'analyzer': analyzer,
             'predictions': predictions,
@@ -920,16 +914,17 @@ def analyze_enhanced_topic_repetitions(image_folder, debug=False, use_lemmatizat
                 very_high_count = len([p for p in predictions if p['likelihood_category'] == 'Very High'])
                 high_count = len([p for p in predictions if p['likelihood_category'] == 'High'])
                 medium_count = len([p for p in predictions if p['likelihood_category'] == 'Medium'])
-                
+
                 print(f"Prediction Summary:")
                 print(f"   • Very High Priority: {very_high_count} topics")
                 print(f"   • High Priority: {high_count} topics")
                 print(f"   • Medium Priority: {medium_count} topics")
                 print(f"   • Total Predictions: {len(predictions)} topics")
-            
+
             print(f"Results saved to: {analyzer.output_dir}")
 
         return result
+
 
 
 # Example usage for backend integration
