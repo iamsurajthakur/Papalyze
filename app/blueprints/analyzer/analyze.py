@@ -33,7 +33,7 @@ if os.environ.get("FLASK_ENV") == "development":
             nltk.download(item, quiet=True)
 
 if os.environ.get('RENDER'):
-    TEMP_IMAGE_FOLDER = '/tmp/temp_images'
+    TEMP_IMAGE_FOLDER = '/tmp'
 else:
     TEMP_IMAGE_FOLDER = os.path.join(os.getcwd(), 'temp_images')
 
