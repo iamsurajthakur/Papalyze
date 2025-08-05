@@ -1,10 +1,8 @@
-# Add this at the very top of your analyze.py file, before any other imports
 import cv2
 import pytesseract
 from PIL import Image
 import numpy as np
 import os
-import json
 import pandas as pd
 from datetime import datetime, timedelta
 import re
