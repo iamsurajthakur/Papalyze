@@ -6,7 +6,7 @@ from app import create_app
 from app.config import Config
 
 # Initialize the Flask app using the provided config
-app = create_app(Config)
+app = create_app()
 
 @app.errorhandler(429)
 def ratelimit_handler(e):
