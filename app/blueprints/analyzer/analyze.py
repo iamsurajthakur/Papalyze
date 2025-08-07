@@ -10,14 +10,21 @@ from collections import Counter, defaultdict
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import cosine_similarity
-from wordcloud import WordCloud
 import nltk
+import platform
 from nltk.corpus import stopwords
 from pdf2image import convert_from_path
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.stem import WordNetLemmatizer
 import warnings
 warnings.filterwarnings('ignore')
+
+if platform.system() == "Windows":
+    # Change this path to your local tesseract installation path
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+else:
+    # Linux / Docker environment path
+    pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 # Download required NLTK data silently
 os.environ['NLTK_DATA'] = '/app/nltk_data'
@@ -32,22 +39,30 @@ if os.environ.get("FLASK_ENV") == "development":
 
 
 def convert_pdf_to_images(pdf_path, output_folder=None, dpi=300):
-    # Use temp directory if none provided
+    import logging
     if output_folder is None:
         output_folder = tempfile.mkdtemp(prefix='pdf_convert_')
     
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
-        
-    images = convert_from_path(pdf_path, dpi=dpi)
-    image_paths = []
+    
+    poppler_path = "/usr/bin"  # Adjust if needed
 
+    try:
+        images = convert_from_path(pdf_path, dpi=dpi, poppler_path=poppler_path)
+    except Exception as e:
+        logging.error(f"PDF to image conversion failed for {pdf_path}: {e}")
+        return []
+
+    image_paths = []
     for i, img in enumerate(images):
         image_path = os.path.join(output_folder, f"page_{i+1}.png")
         img.save(image_path, "PNG")
         image_paths.append(image_path)
 
+    logging.info(f"Converted PDF to {len(image_paths)} images: {image_paths}")
     return image_paths
+
 
 class EnhancedTopicRepetitionAnalyzer:
     def __init__(self, output_dir="enhanced_repetition_analysis", use_lemmatization=True, verbose=False):
