@@ -284,3 +284,26 @@ def upload_avatar():
     db.session.commit()
     return redirect(url_for('main.dashboard'))
 
+@bp.route("/debug/tesseract")
+def debug_tesseract():
+    import subprocess
+    try:
+        output = subprocess.check_output(["tesseract", "--list-langs"]).decode()
+        return f"<pre>{output}</pre>"
+    except Exception as e:
+        return f"<pre>{str(e)}</pre>"
+    
+@bp.route("/debug/ocr")
+def debug_ocr():
+    import pytesseract
+    from PIL import Image
+    import os
+
+    test_img_path = "/tmp/tmp53smag_t/20250807_114150_github-git-cheat-sheet_page_0.png"
+    if not os.path.exists(test_img_path):
+        return "Image not found."
+
+    img = Image.open(test_img_path)
+    text = pytesseract.image_to_string(img)
+    return f"<pre>{text if text else 'No text extracted'}</pre>"
+
