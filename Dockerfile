@@ -6,6 +6,7 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get update && apt-get install -y \
     libgl1 \
     tesseract-ocr \
+    tesseract-ocr-eng \
     poppler-utils \
     libpq-dev \
     gcc \

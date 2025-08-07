@@ -17,7 +17,15 @@ from pdf2image import convert_from_path
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.stem import WordNetLemmatizer
 import warnings
+import subprocess
 warnings.filterwarnings('ignore')
+
+try:
+    result = subprocess.run(["tesseract", "--version"], capture_output=True, text=True)
+    print(f"[INFO] Tesseract version output:\n{result.stdout}")
+except Exception as e:
+    print(f"[ERROR] Failed to run tesseract: {e}")
+
 
 if platform.system() == "Windows":
     # Change this path to your local tesseract installation path
@@ -118,7 +126,10 @@ class EnhancedTopicRepetitionAnalyzer:
         """Enhanced OCR preprocessing without debug image saving"""
         img = cv2.imread(image_path)
         if img is None:
-            raise ValueError(f"Could not load image from {image_path}")
+            print(f"[ERROR] cv2 failed to load image: {image_path}")
+        else:
+            print(f"[INFO] Image loaded successfully: {image_path}")
+            print(f"[INFO] Image shape: {img.shape}")
         
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
@@ -185,6 +196,8 @@ class EnhancedTopicRepetitionAnalyzer:
                         if valid_confidences and len(valid_confidences) > 3:
                             avg_confidence = sum(valid_confidences) / len(valid_confidences)
                             text = pytesseract.image_to_string(pil_img, config=config).strip()
+                            print(f"[DEBUG] OCR raw output (first 200 chars): {text[:200]!r}")
+
                             
                             # Quality scoring: length * confidence * word ratio
                             word_count = len([w for w in text.split() if len(w) > 1])
