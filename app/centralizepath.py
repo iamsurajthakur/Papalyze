@@ -34,6 +34,7 @@ class Config:
         """Create all necessary directories"""
         for folder in [self.upload_folder, self.temp_folder, self.reports_folder]:
             folder.mkdir(parents=True, exist_ok=True)
+            print(f"Ensured folder exists: {folder} (Exists: {folder.exists()})")
     
     def get_upload_path(self, filename=None):
         """Get upload path, optionally with filename"""
@@ -70,8 +71,6 @@ def upload():
             return jsonify({'status': 'error', 'message': 'No files provided'}), 400
         return render_template('report.html', error="No files provided")
 
-    # Clean up any existing temp files first
-    config.cleanup_temp_files()
     
     saved_filenames = []
     saved_file_paths = []
@@ -89,10 +88,19 @@ def upload():
             file_path = config.get_upload_path(unique_filename)
 
             try:
+                current_app.logger.info(f"Trying to save to {file_path}")
                 file.save(str(file_path))  # Convert Path to string for save()
+                current_app.logger.info(f"File saved to {file_path}")
+
+                if not Path(file_path).exists():
+                    current_app.logger.warning(f"File does NOT exist after save: {file_path}")
+                else:
+                    current_app.logger.info(f"Confirmed file exists after save: {file_path}")
+                
                 saved_filenames.append(unique_filename)
                 saved_file_paths.append(str(file_path))
                 current_app.logger.info(f"Saved file: {file_path}")
+
             except Exception as e:
                 current_app.logger.error(f"Failed to save file {filename}: {e}")
                 return jsonify({'status': 'error', 'message': 'File saving failed'}), 500
@@ -152,13 +160,17 @@ def upload():
         current_app.logger.error(f"Analysis error: {e}")
         return jsonify({'status': 'error', 'message': f'Analysis failed: {str(e)}'}), 500
     finally:
+
+        config.cleanup_temp_files()
         # Clean up uploaded files after analysis (important for Render)
-        for file_path in saved_file_paths:
-            try:
+        
+        try:
+            for file_path in saved_file_paths:
                 if Path(file_path).exists():
                     Path(file_path).unlink()
-            except Exception as e:
-                current_app.logger.warning(f"Could not clean up {file_path}: {e}")
+        except Exception as e:
+            current_app.logger.warning(f"Could not clean up {file_path}: {e}")
+
 @bp.route('/report.html')
 def report():
     try:
