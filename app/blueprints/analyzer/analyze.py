@@ -292,7 +292,7 @@ class EnhancedTopicRepetitionAnalyzer:
 
             if self.verbose:
                 print(f"--- OCR text for {os.path.basename(file_path)} ---")
-                print(text[:1000])  # print first 1000 chars (avoid log flooding)
+                print(text[:100])  # print first 1000 chars (avoid log flooding)
                 print("--- End of OCR text ---")
 
             
