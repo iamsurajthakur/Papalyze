@@ -160,10 +160,7 @@ def upload():
         current_app.logger.error(f"Analysis error: {e}")
         return jsonify({'status': 'error', 'message': f'Analysis failed: {str(e)}'}), 500
     finally:
-
         config.cleanup_temp_files()
-        # Clean up uploaded files after analysis (important for Render)
-        
         try:
             for file_path in saved_file_paths:
                 if Path(file_path).exists():

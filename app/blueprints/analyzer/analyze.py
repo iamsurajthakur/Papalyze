@@ -20,6 +20,35 @@ import warnings
 import subprocess
 warnings.filterwarnings('ignore')
 
+
+def preprocess_for_ocr(image):
+    """Convert to grayscale and binarize for better OCR."""
+    gray = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2GRAY)
+    _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+    return thresh
+
+def pdf_to_images_with_ocr(file_path, temp_dir, debug=False):
+    """Convert PDF to high-quality images and extract text."""
+    images = convert_from_path(file_path, dpi=300, poppler_path="/usr/bin")
+    text_list = []
+    
+    for i, img in enumerate(images):
+        processed = preprocess_for_ocr(img)
+        if debug:
+            debug_path = f"/tmp/debug_page_{i+1}.png"
+            cv2.imwrite(debug_path, processed)
+            print(f"[DEBUG] Saved OCR image to {debug_path}")
+        
+        text = pytesseract.image_to_string(
+            processed,
+            lang="eng",
+            config="--oem 3 --psm 6"
+        )
+        if text.strip():
+            text_list.append(text)
+    
+    return text_list
+
 try:
     result = subprocess.run(["tesseract", "--version"], capture_output=True, text=True)
     print(f"[INFO] Tesseract version output:\n{result.stdout}")
@@ -260,6 +289,12 @@ class EnhancedTopicRepetitionAnalyzer:
                 print(f"Processing file {i}/{len(file_paths)}: {os.path.basename(file_path)}")
             
             text, confidence, method = self.extract_text_from_image(file_path)
+
+            if self.verbose:
+                print(f"--- OCR text for {os.path.basename(file_path)} ---")
+                print(text[:1000])  # print first 1000 chars (avoid log flooding)
+                print("--- End of OCR text ---")
+
             
             if text.strip() and len(text.split()) >= 10:  # Minimum word requirement
                 extracted_date = self.extract_date_from_filename(os.path.basename(file_path))
@@ -848,7 +883,7 @@ class EnhancedTopicRepetitionAnalyzer:
                 print(f"Error in semantic grouping: {e}")
             return []
 
-def analyze_enhanced_topic_repetitions(image_input, debug=False, use_lemmatization=True, verbose=False):
+def analyze_enhanced_topic_repetitions(image_input, debug=False, use_lemmatization=True, verbose=True):
     """Enhanced analysis accepts either folder path or list of files"""
 
     from tempfile import TemporaryDirectory
@@ -894,14 +929,19 @@ def analyze_enhanced_topic_repetitions(image_input, debug=False, use_lemmatizati
                 if verbose:
                     print(f"Converting PDF: {file_path}")
                 try:
-                    images = convert_from_path(file_path)
-                    for i, img in enumerate(images):
-                        image_path = os.path.join(temp_dir, f"{Path(file_path).stem}_page_{i}.png")
-                        img.save(image_path, "PNG")
-                        final_image_files.append(image_path)
+                    text_list = pdf_to_images_with_ocr(file_path, temp_dir, debug=True)
+                    if text_list:
+                    # Save images for analyzer to process if needed
+                        images = convert_from_path(file_path, dpi=300, poppler_path="/usr/bin")
+                        for i, img in enumerate(images):
+                            image_path = os.path.join(temp_dir, f"{Path(file_path).stem}_page_{i}.png")
+                            img.save(image_path, "PNG")
+                            final_image_files.append(image_path)
+                    else:
+                        print(f"⚠️ No OCR text extracted from {file_path}")
                 except Exception as e:
-                    if verbose:
-                        print(f"Failed to convert {file_path}: {e}")
+                    print(f"Failed to convert {file_path}: {e}")
+
             else:
                 final_image_files.append(file_path)
 
