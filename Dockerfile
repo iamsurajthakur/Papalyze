@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies (expanded to fix Tesseract + image handling)
+# Install system dependencies as root
 RUN apt-get update && apt-get install -y \
     libgl1 \
     tesseract-ocr \
@@ -11,18 +11,6 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     gcc \
     build-essential \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
-    libleptonica-dev \
-    libtiff-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    libpng-dev \
-    libwebp-dev \
-    libopenjp2-7 \
-    fonts-dejavu-core \
-    fonts-freefont-ttf \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
