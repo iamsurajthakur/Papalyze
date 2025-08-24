@@ -1,0 +1,60 @@
+Source: C:\Users\ACER\AppData\Local\Temp\tmpg6oikefy\20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+Date: 2025-08-24
+Confidence: 94.0%
+Method: enhanced_psm3
+==================================================
+
+NISCHALKAFLE
+
+FULLSTACKWEBDEVELOPER
+
+Kathmandu,Nepal |_kafelnk123@gmail.com|nischal69.com.np
+Linkedin|Github
+
+SUMMARY
+
+|am_aCSstudentwithhandsonexperienceinReactandNodejs.|ampassionateabout_building
+betterwebapplicationandalwaysopentolearningnewandbetterwaysofdoingthingstofurther
+enhancemyskills.
+
+SKILLS
+
+FrontendTechnologies:React,Nextjs,TypeScript,TailwindCSS
+~StateManagement:ReduxToolkit,ContextAPI,Zustand
+BackendTechnologies:Node.js(Express),Nestjs
+~Databases&ORMs:PostgreSQL,MongoDB,DrizzleORM,PrismaORM
++Testing:Jest
+
+~APIDevelopment&Testing:Postman
++DevOps&Tools:Git/GitHub,Docker
+DataFetchingandCaching:TanstackQuery
+
+PROJECTS
+
++Pizza-App
+=AsimplepizzaselectingappwhichhasbeautifulUiandaddtocartfunctionality.Ituses
+Zustandtomanagethecomplexstatemanagementanddoallthecalculations.
+pizza-ui-amber.vercel.app
++Medrepo
+sAfullstackwebapp_builtusingNextjsto_keepMedicalrecordsofPatients.Itconnects
+patientsanddoctorsofdifferenthospitalstomakesharingofmedicalrecordsefficientand
+easy.
+medrepo.vercel.app
+*QuizApi
+eArobustAPIthatallowsuserstocreatequizzes,participateinquizzesandviewtheirresults.
+Itincludesadminfunctionalitywithauthenticationandauthorization.
+github.com/nischal1101/quizapi
++TutorAppApi
+ANestjs-basedbackendapplicationwithauthentication,usermanagementandtutor-student
+interactions.Itprovidesendpointsforuserauthentication,profilemanagement,tutorarticle
+creationandstudentarticleaccess.
+github.com/nischal1101/x-hackathon-backend
+
+EDUCATION
+~BachelorofScienceinComputerScienceandInformationTechnology 2025(expected)
+
+ADDITIONALINFORMATION
+
++Languages:English,Nepali,Hindi
++SoftSkills:Communication,Leadership,Teamwork,Problem-solving,TimeManagement,
+CriticalThinking,Creativity

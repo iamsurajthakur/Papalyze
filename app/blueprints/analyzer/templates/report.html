@@ -1,388 +1,590 @@
 {% extends "base.html" %} 
-{% block title %}Contact - Papalyze{% endblock %} 
+{% block title %}Analysis Report - Papalyze{% endblock %} 
 {% block content %}
-<div class="pt-20 mt-5">
 
-   <div class="pt-20 mt-5" x-data="reportData()">
-    <div class="container mx-auto px-6 py-8">
-        <!-- Header with Export Controls -->
-        <div class="mb-8">
-            <div class="flex items-center justify-between mb-4">
-                <h1 class="text-3xl font-bold text-white">Analysis Report</h1>
-                <div class="flex items-center gap-4">
-                    <div class="text-sm text-gray-400">Generated on: {{ generation_date }}</div>
-                    <button @click="window.print()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        <span role="img" aria-label="export">📄</span> Export PDF
+<div class="pt-20 mt-5"></div>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" x-data="reportData()">
+    <!-- Header -->
+    <header class="bg-white/5 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-green-400 ">
+                         Analysis Report
+                    </h1>
+                    <p class="text-slate-400 mt-1 text-sm">Generated on: {{ generation_date }}</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button @click="window.print()" class="group flex items-center gap-2 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-blue-400 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105">
+                        <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Export PDF
                     </button>
-                    <button @click="window.print()" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        <span role="img" aria-label="print">🖨️</span> Print
+                    <button @click="window.print()" class="group flex items-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105">
+                        <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        Print
                     </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+        <!-- Executive Summary -->
+        <section class="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-xl">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-semibold text-white">Executive Summary</h2>
+                    <p class="text-slate-400 text-sm">Key metrics from your analysis</p>
                 </div>
             </div>
             
-            <!-- Executive Summary -->
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h2 class="text-xl font-semibold text-blue-400 mb-3">
-                    <span role="img" aria-label="clipboard">📋</span> Executive Summary
-                </h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-slate-700 rounded-lg p-3 text-center">
-                        <div class="text-2xl font-bold text-green-400">{{ analysis_result.summary.successful_extractions }}</div>
-                        <div class="text-sm text-gray-400">Documents Analyzed</div>
-                    </div>
-                    <div class="bg-slate-700 rounded-lg p-3 text-center">
-                        <div class="text-2xl font-bold text-blue-400">{{ analysis_result.topic_analysis.total_unique_topics if analysis_result.topic_analysis else 0 }}</div>
-                        <div class="text-sm text-gray-400">Unique Topics</div>
-                    </div>
-                    <div class="bg-slate-700 rounded-lg p-3 text-center">
-                        <div class="text-2xl font-bold text-purple-400">{{ analysis_result.topic_analysis.repeated_topics|length if analysis_result.topic_analysis and analysis_result.topic_analysis.repeated_topics else 0 }}</div>
-                        <div class="text-sm text-gray-400">Repeated Topics</div>
-                    </div>
-                    <div class="bg-slate-700 rounded-lg p-3 text-center">
-                        <div class="text-2xl font-bold text-yellow-400">{{ "%.1f"|format(avg_ocr_confidence) }}%</div>
-                        <div class="text-sm text-gray-400">OCR Confidence</div>
-                    </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white/5 rounded-xl p-6 text-center border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="text-4xl font-bold text-emerald-400 mb-2 group-hover:scale-110 transition-transform">{{ analysis_result.summary.successful_extractions }}</div>
+                    <div class="text-slate-400 text-sm font-medium">Documents Analyzed</div>
+                </div>
+                <div class="bg-white/5 rounded-xl p-6 text-center border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="text-4xl font-bold text-blue-400 mb-2 group-hover:scale-110 transition-transform">{{ analysis_result.topic_analysis.total_unique_topics if analysis_result.topic_analysis else 0 }}</div>
+                    <div class="text-slate-400 text-sm font-medium">Unique Topics</div>
+                </div>
+                <div class="bg-white/5 rounded-xl p-6 text-center border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="text-4xl font-bold text-purple-400 mb-2 group-hover:scale-110 transition-transform">{{ analysis_result.topic_analysis.repeated_topics|length if analysis_result.topic_analysis and analysis_result.topic_analysis.repeated_topics else 0 }}</div>
+                    <div class="text-slate-400 text-sm font-medium">Repeated Topics</div>
+                </div>
+                <div class="bg-white/5 rounded-xl p-6 text-center border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="text-4xl font-bold text-yellow-400 mb-2 group-hover:scale-110 transition-transform">{{ "%.1f"|format(avg_ocr_confidence) }}%</div>
+                    <div class="text-slate-400 text-sm font-medium">OCR Confidence</div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Priority Filter Controls -->
+        <!-- Priority Filters -->
         {% if analysis_result.predictions %}
-        <div class="mb-6">
-            <div class="flex flex-wrap gap-2">
-                <button @click="selectedPriority = 'all'" 
-                        :class="selectedPriority === 'all' ? 'bg-blue-600' : 'bg-slate-700 hover:bg-slate-600'"
-                        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                    All Topics
-                </button>
-                <button @click="selectedPriority = 'very-high'" 
-                        :class="selectedPriority === 'very-high' ? 'bg-red-600' : 'bg-slate-700 hover:bg-slate-600'"
-                        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                    Very High Priority
-                </button>
-                <button @click="selectedPriority = 'high'" 
-                        :class="selectedPriority === 'high' ? 'bg-orange-600' : 'bg-slate-700 hover:bg-slate-600'"
-                        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                    High Priority
-                </button>
-                <button @click="selectedPriority = 'medium'" 
-                        :class="selectedPriority === 'medium' ? 'bg-yellow-600' : 'bg-slate-700 hover:bg-slate-600'"
-                        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                    Medium Priority
-                </button>
-            </div>
-        </div>
+        <section class="flex flex-wrap gap-3">
+            <button @click="selectedPriority = 'all'" 
+                    :class="selectedPriority === 'all' ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25' : 'bg-white/5 text-slate-300 hover:bg-white/10'"
+                    class="px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 border border-white/10 hover:scale-105">
+                All Topics
+            </button>
+            <button @click="selectedPriority = 'very-high'" 
+                    :class="selectedPriority === 'very-high' ? 'bg-red-500 text-white shadow-lg shadow-red-500/25' : 'bg-white/5 text-slate-300 hover:bg-white/10'"
+                    class="px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 border border-white/10 hover:scale-105">
+                Very High Priority
+            </button>
+            <button @click="selectedPriority = 'high'" 
+                    :class="selectedPriority === 'high' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25' : 'bg-white/5 text-slate-300 hover:bg-white/10'"
+                    class="px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 border border-white/10 hover:scale-105">
+                High Priority
+            </button>
+            <button @click="selectedPriority = 'medium'" 
+                    :class="selectedPriority === 'medium' ? 'bg-yellow-500 text-white shadow-lg shadow-yellow-500/25' : 'bg-white/5 text-slate-300 hover:bg-white/10'"
+                    class="px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 border border-white/10 hover:scale-105">
+                Medium Priority
+            </button>
+        </section>
         {% endif %}
 
         <!-- High Priority Topics -->
         {% if analysis_result.predictions %}
-        <div class="mb-8">
-            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-2xl font-semibold text-red-400">
-                        <span role="img" aria-label="fire">🔥</span> High Priority Topics (Study First!)
-                    </h2>
-                    <button @click="sectionsCollapsed.highPriority = !sectionsCollapsed.highPriority" 
-                            class="text-gray-400 hover:text-white transition-colors">
-                        <span x-text="sectionsCollapsed.highPriority ? '▼' : '▲'"></span>
-                    </button>
-                </div>
-                
-                <div x-show="!sectionsCollapsed.highPriority" x-transition class="grid gap-4">
-                    {% for prediction in analysis_result.predictions %}
-                    {% set priority_class = 'very-high' if prediction.likelihood_category == 'Very High' else 'high' if prediction.likelihood_category == 'High' else 'medium' if prediction.likelihood_category == 'Medium' else 'low' %}
-                    {% set border_class = 'border-red-500' if prediction.likelihood_category == 'Very High' else 'border-orange-500' if prediction.likelihood_category == 'High' else 'border-yellow-500' if prediction.likelihood_category == 'Medium' else 'border-green-500' %}
-                    {% set badge_class = 'bg-red-500' if prediction.likelihood_category == 'Very High' else 'bg-orange-500' if prediction.likelihood_category == 'High' else 'bg-yellow-500' if prediction.likelihood_category == 'Medium' else 'bg-green-500' %}
-                    
-                    <div class="bg-slate-700 rounded-lg p-4 border-l-4 {{ border_class }}" 
-                         x-show="selectedPriority === 'all' || selectedPriority === '{{ priority_class }}'">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-semibold text-white">{{ prediction.topic }}</h3>
-                            <span class="px-2 py-1 rounded text-xs text-white {{ badge_class }}">
-                                {{ prediction.likelihood_category }} ({{ "%.2f"|format(prediction.likelihood_score) }})
-                            </span>
-                        </div>
-                        {% if prediction.get('description') %}
-                        <p class="text-gray-300 text-sm mb-2">{{ prediction.description }}</p>
-                        {% endif %}
-                        <div class="flex items-center text-xs text-gray-400">
-                            <span class="mr-4">
-                                <span role="img" aria-label="chart">📈</span> 
-                                Appeared: {{ prediction.frequency }} times
-                            </span>
-                            <span class="mr-4">
-                                <span role="img" aria-label="bar chart">📊</span> 
-                                Coverage: {{ "%.1f"|format(prediction.coverage_percentage) }}%
-                            </span>
-                            <span>
-                                <span role="img" aria-label="folder">📁</span> 
-                                {{ prediction.document_count }} documents
-                            </span>
-                        </div>
+        <section class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl overflow-hidden">
+            <div class="flex items-center justify-between p-8 border-b border-white/10">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                        </svg>
                     </div>
-                    {% endfor %}
+                    <div>
+                        <h2 class="text-2xl font-semibold text-white">High Priority Topics</h2>
+                        <p class="text-slate-400 text-sm">Focus on these first for maximum impact!</p>
+                    </div>
                 </div>
+                <button @click="sectionsCollapsed.highPriority = !sectionsCollapsed.highPriority" 
+                        class="p-3 hover:bg-white/10 rounded-xl transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 transform transition-transform duration-300" 
+                         :class="sectionsCollapsed.highPriority ? 'rotate-180' : ''" 
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
             </div>
-        </div>
+            
+            <div x-show="!sectionsCollapsed.highPriority" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform -translate-y-4"
+                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                 class="p-8 space-y-4">
+                {% for prediction in analysis_result.predictions %}
+                {% set priority_class = 'very-high' if prediction.likelihood_category == 'Very High' else 'high' if prediction.likelihood_category == 'High' else 'medium' if prediction.likelihood_category == 'Medium' else 'low' %}
+                {% set border_class = 'border-red-500/50' if prediction.likelihood_category == 'Very High' else 'border-orange-500/50' if prediction.likelihood_category == 'High' else 'border-yellow-500/50' if prediction.likelihood_category == 'Medium' else 'border-green-500/50' %}
+                {% set badge_class = 'bg-gradient-to-r from-red-500 to-red-600' if prediction.likelihood_category == 'Very High' else 'bg-gradient-to-r from-orange-500 to-orange-600' if prediction.likelihood_category == 'High' else 'bg-gradient-to-r from-yellow-500 to-yellow-600' if prediction.likelihood_category == 'Medium' else 'bg-gradient-to-r from-green-500 to-green-600' %}
+                
+                <div class="bg-white/5 rounded-xl p-6 border-l-4 {{ border_class }} hover:bg-white/10 transition-all duration-300 group" 
+                     x-show="selectedPriority === 'all' || selectedPriority === '{{ priority_class }}'">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-semibold text-white text-lg group-hover:text-blue-400 transition-colors">{{ prediction.topic }}</h3>
+                        <span class="px-3 py-1 rounded-full text-xs text-white {{ badge_class }} shadow-lg">
+                            {{ prediction.likelihood_category }} ({{ "%.2f"|format(prediction.likelihood_score) }})
+                        </span>
+                    </div>
+                    {% if prediction.get('description') %}
+                    <p class="text-slate-300 text-sm mb-4 leading-relaxed">{{ prediction.description }}</p>
+                    {% endif %}
+                    <div class="flex items-center gap-6 text-xs text-slate-400">
+                        <span class="flex items-center gap-2">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4"></path>
+                            </svg>
+                            Appeared: {{ prediction.frequency }} times
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            Coverage: {{ "%.1f"|format(prediction.coverage_percentage) }}%
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            </svg>
+                            {{ prediction.document_count }} documents
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
         {% endif %}
 
         <!-- Study Recommendations -->
-        <div class="mb-8">
-            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-2xl font-semibold text-green-400">
-                        <span role="img" aria-label="books">📚</span> Study Recommendations
-                    </h2>
-                    <button @click="sectionsCollapsed.recommendations = !sectionsCollapsed.recommendations" 
-                            class="text-gray-400 hover:text-white transition-colors">
-                        <span x-text="sectionsCollapsed.recommendations ? '▼' : '▲'"></span>
-                    </button>
-                </div>
-                
-                <div x-show="!sectionsCollapsed.recommendations" x-transition class="grid md:grid-cols-2 gap-6">
-                    <!-- Priority Breakdown -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-blue-400 mb-3">
-                            <span role="img" aria-label="target">🎯</span> Priority Breakdown
-                        </h3>
-                        <div class="space-y-3">
-                            {% set very_high_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Very High')|list|length if analysis_result.predictions else 0 %}
-                            {% set high_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'High')|list|length if analysis_result.predictions else 0 %}
-                            {% set medium_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Medium')|list|length if analysis_result.predictions else 0 %}
-                            {% set low_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Low')|list|length if analysis_result.predictions else 0 %}
-                            
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Very High Priority</span>
-                                <span class="bg-red-500 text-white px-3 py-1 rounded">{{ very_high_count }} topics</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">High Priority</span>
-                                <span class="bg-orange-500 text-white px-3 py-1 rounded">{{ high_count }} topics</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Medium Priority</span>
-                                <span class="bg-yellow-500 text-white px-3 py-1 rounded">{{ medium_count }} topics</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Low Priority</span>
-                                <span class="bg-green-500 text-white px-3 py-1 rounded">{{ low_count }} topics</span>
-                            </div>
-                        </div>
+        <section class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl overflow-hidden">
+            <div class="flex items-center justify-between p-8 border-b border-white/10">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
                     </div>
-
-                    <!-- Time Allocation -->
                     <div>
-                        <h3 class="text-lg font-semibold text-blue-400 mb-3">
-                            <span role="img" aria-label="clock">⏰</span> Time Allocation
-                        </h3>
-                        <div class="space-y-3">
-                            {% set total_high_priority = very_high_count + high_count %}
-                            {% if total_high_priority > 0 %}
-                            <div class="flex items-center">
-                                <div class="w-20 text-right mr-3 text-gray-300">70%</div>
-                                <div class="flex-1 bg-slate-700 rounded-full h-3">
-                                    <div class="bg-red-500 h-3 rounded-full" style="width: 70%"></div>
-                                </div>
-                                <div class="ml-3 text-gray-300">High Priority</div>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-20 text-right mr-3 text-gray-300">30%</div>
-                                <div class="flex-1 bg-slate-700 rounded-full h-3">
-                                    <div class="bg-yellow-500 h-3 rounded-full" style="width: 30%"></div>
-                                </div>
-                                <div class="ml-3 text-gray-300">Medium Priority</div>
-                            </div>
-                            {% else %}
-                            <div class="text-center text-gray-300 py-4">
-                                <p>Review all topics equally</p>
-                                <p class="text-sm">Focus on understanding fundamentals</p>
-                            </div>
-                            {% endif %}
+                        <h2 class="text-2xl font-semibold text-white">Study Recommendations</h2>
+                        <p class="text-slate-400 text-sm">Optimize your study strategy</p>
+                    </div>
+                </div>
+                <button @click="sectionsCollapsed.recommendations = !sectionsCollapsed.recommendations" 
+                        class="p-3 hover:bg-white/10 rounded-xl transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 transform transition-transform duration-300" 
+                         :class="sectionsCollapsed.recommendations ? 'rotate-180' : ''" 
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div x-show="!sectionsCollapsed.recommendations" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform -translate-y-4"
+                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                 class="p-8 grid md:grid-cols-2 gap-8">
+                <!-- Priority Breakdown -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">Priority Breakdown</h3>
+                    </div>
+                    <div class="space-y-4">
+                        {% set very_high_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Very High')|list|length if analysis_result.predictions else 0 %}
+                        {% set high_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'High')|list|length if analysis_result.predictions else 0 %}
+                        {% set medium_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Medium')|list|length if analysis_result.predictions else 0 %}
+                        {% set low_count = analysis_result.predictions|selectattr('likelihood_category', 'equalto', 'Low')|list|length if analysis_result.predictions else 0 %}
+                        
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-slate-300 font-medium">Very High Priority</span>
+                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg">{{ very_high_count }} topics</span>
+                        </div>
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-slate-300 font-medium">High Priority</span>
+                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg">{{ high_count }} topics</span>
+                        </div>
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-slate-300 font-medium">Medium Priority</span>
+                            <span class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg">{{ medium_count }} topics</span>
+                        </div>
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-slate-300 font-medium">Low Priority</span>
+                            <span class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg">{{ low_count }} topics</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Study Strategies -->
-        <div class="mb-8">
-            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-2xl font-semibold text-purple-400">
-                        <span role="img" aria-label="lightbulb">💡</span> Smart Study Strategies
-                    </h2>
-                    <button @click="sectionsCollapsed.strategies = !sectionsCollapsed.strategies" 
-                            class="text-gray-400 hover:text-white transition-colors">
-                        <span x-text="sectionsCollapsed.strategies ? '▼' : '▲'"></span>
-                    </button>
-                </div>
-                
-                <div x-show="!sectionsCollapsed.strategies" x-transition class="grid md:grid-cols-2 gap-4">
-                    <div class="bg-slate-700 rounded-lg p-4">
-                        <h3 class="font-semibold text-blue-400 mb-2">
-                            <span role="img" aria-label="map">🗺️</span> Concept Mapping
-                        </h3>
-                        <p class="text-gray-300 text-sm">Create visual connections between related topics like graph theory and algorithms</p>
+                <!-- Time Allocation -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">Time Allocation</h3>
                     </div>
-                    <div class="bg-slate-700 rounded-lg p-4">
-                        <h3 class="font-semibold text-green-400 mb-2">
-                            <span role="img" aria-label="note">📝</span> Active Recall
-                        </h3>
-                        <p class="text-gray-300 text-sm">Practice problems and use spaced repetition for better retention</p>
-                    </div>
-                    <div class="bg-slate-700 rounded-lg p-4">
-                        <h3 class="font-semibold text-yellow-400 mb-2">
-                            <span role="img" aria-label="people">👥</span> Study Groups
-                        </h3>
-                        <p class="text-gray-300 text-sm">Discuss complex concepts with peers to deepen understanding</p>
-                    </div>
-                    <div class="bg-slate-700 rounded-lg p-4">
-                        <h3 class="font-semibrel text-red-400 mb-2">
-                            <span role="img" aria-label="clipboard">📋</span> Past Papers
-                        </h3>
-                        <p class="text-gray-300 text-sm">Solve previous exam papers to identify question patterns</p>
+                    <div class="space-y-6">
+                        {% set total_high_priority = very_high_count + high_count %}
+                        {% if total_high_priority > 0 %}
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-300 font-medium">High Priority Topics</span>
+                                <span class="text-red-400 font-semibold">70%</span>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-red-500 to-red-600 h-3 rounded-full shadow-lg" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-300 font-medium">Medium Priority Topics</span>
+                                <span class="text-yellow-400 font-semibold">30%</span>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 h-3 rounded-full shadow-lg" style="width: 30%"></div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-8">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <p class="text-slate-300 font-medium mb-2">Balanced Study Approach</p>
+                            <p class="text-slate-400 text-sm">Review all topics equally and focus on understanding fundamentals</p>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Key Topics Analysis (from semantic groups) -->
+        <!-- Smart Study Strategies -->
+        <section class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl overflow-hidden">
+            <div class="flex items-center justify-between p-8 border-b border-white/10">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-semibold text-white">Smart Study Strategies</h2>
+                        <p class="text-slate-400 text-sm">Evidence-based techniques for better learning</p>
+                    </div>
+                </div>
+                <button @click="sectionsCollapsed.strategies = !sectionsCollapsed.strategies" 
+                        class="p-3 hover:bg-white/10 rounded-xl transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 transform transition-transform duration-300" 
+                         :class="sectionsCollapsed.strategies ? 'rotate-180' : ''" 
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div x-show="!sectionsCollapsed.strategies" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform -translate-y-4"
+                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                 class="p-8 grid md:grid-cols-2 gap-6">
+                <div class="bg-white/5 rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-white group-hover:text-blue-400 transition-colors">Concept Mapping</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">Create visual connections between related topics like graph theory and algorithms to build comprehensive understanding</p>
+                </div>
+                <div class="bg-white/5 rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-white group-hover:text-emerald-400 transition-colors">Active Recall</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">Practice problems and use spaced repetition techniques for better retention and deeper understanding</p>
+                </div>
+                <div class="bg-white/5 rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-white group-hover:text-yellow-400 transition-colors">Study Groups</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">Discuss complex concepts with peers to deepen understanding through collaborative learning</p>
+                </div>
+                <div class="bg-white/5 rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-white group-hover:text-red-400 transition-colors">Past Papers</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">Solve previous exam papers to identify question patterns and improve exam performance</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Semantic Topic Groups -->
         {% if analysis_result.semantic_groups %}
-        <div class="mb-8">
-            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-2xl font-semibold text-cyan-400">
-                        <span role="img" aria-label="analysis">📈</span> Semantic Topic Groups
-                    </h2>
-                    <button @click="sectionsCollapsed.keyTopics = !sectionsCollapsed.keyTopics" 
-                            class="text-gray-400 hover:text-white transition-colors">
-                        <span x-text="sectionsCollapsed.keyTopics ? '▼' : '▲'"></span>
-                    </button>
-                </div>
-                
-                <div x-show="!sectionsCollapsed.keyTopics" x-transition class="space-y-4">
-                    {% for group in analysis_result.semantic_groups[:5] %}
-                    <div class="bg-slate-700 rounded-lg p-4">
-                        <h3 class="font-semibold text-white mb-2">Related Topic Group {{ loop.index }} ({{ group.group_size }} topics)</h3>
-                        <div class="flex flex-wrap gap-2 mb-2">
-                            {% for topic_item in group.topics[:5] %}
-                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">{{ topic_item.topic[:30] }}{% if topic_item.topic|length > 30 %}...{% endif %}</span>
-                            {% endfor %}
-                        </div>
-                        <p class="text-gray-300 text-sm">Similarity Score: {{ "%.2f"|format(group.avg_similarity) }}</p>
+        <section class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl overflow-hidden">
+            <div class="flex items-center justify-between p-8 border-b border-white/10">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4m-6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
-                    {% endfor %}
+                    <div>
+                        <h2 class="text-2xl font-semibold text-white">Semantic Topic Groups</h2>
+                        <p class="text-slate-400 text-sm">Related concepts clustered for efficient studying</p>
+                    </div>
                 </div>
+                <button @click="sectionsCollapsed.keyTopics = !sectionsCollapsed.keyTopics" 
+                        class="p-3 hover:bg-white/10 rounded-xl transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 transform transition-transform duration-300" 
+                         :class="sectionsCollapsed.keyTopics ? 'rotate-180' : ''" 
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
             </div>
-        </div>
+            
+            <div x-show="!sectionsCollapsed.keyTopics" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform -translate-y-4"
+                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                 class="p-8 space-y-6">
+                {% for group in analysis_result.semantic_groups[:5] %}
+                <div class="bg-white/5 rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-white text-lg">Related Topic Group {{ loop.index }}</h3>
+                        <div class="flex items-center gap-2 text-sm text-slate-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            {{ group.group_size }} topics
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        {% for topic_item in group.topics[:5] %}
+                        <span class="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 text-blue-300 px-3 py-1 rounded-lg text-xs font-medium">
+                            {{ topic_item.topic[:30] }}{% if topic_item.topic|length > 30 %}...{% endif %}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Similarity Score: {{ "%.2f"|format(group.avg_similarity) }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
         {% endif %}
 
         <!-- Document Quality Assessment -->
-        <div class="mb-8">
-            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                <h2 class="text-2xl font-semibold text-yellow-400 mb-4">
-                    <span role="img" aria-label="quality">🔬</span> Analysis Quality
-                </h2>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <!-- Document Statistics -->
+        <section class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl overflow-hidden">
+            <div class="p-8 border-b border-white/10">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-blue-400 mb-3">
-                            <span role="img" aria-label="document">📄</span> Document Statistics
-                        </h3>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-gray-300">Total Words Processed:</span>
-                                <span class="text-white font-semibold">{{ total_words|default(0) }}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-300">Average Words/Document:</span>
-                                <span class="text-white font-semibold">{{ avg_words_per_doc|default(0) }}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-300">Average OCR Confidence:</span>
-                                <span class="text-green-400 font-semibold">{{ "%.1f"|format(avg_ocr_confidence) }}%</span>
-                            </div>
+                        <h2 class="text-2xl font-semibold text-white">Analysis Quality</h2>
+                        <p class="text-slate-400 text-sm">Document processing statistics and confidence metrics</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-8 grid md:grid-cols-2 gap-8">
+                <!-- Document Statistics -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">Document Statistics</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-slate-300 font-medium">Total Words Processed</span>
+                            <span class="text-white font-semibold text-lg">{{ "{:,}".format(total_words|default(0)) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-slate-300 font-medium">Average Words/Document</span>
+                            <span class="text-white font-semibold text-lg">{{ "{:,}".format(avg_words_per_doc|default(0)) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-slate-300 font-medium">Average OCR Confidence</span>
+                            <span class="text-emerald-400 font-semibold text-lg">{{ "%.1f"|format(avg_ocr_confidence) }}%</span>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Confidence Levels -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-blue-400 mb-3">
-                            <span role="img" aria-label="confidence">📊</span> Confidence Levels
-                        </h3>
+                <!-- Confidence Levels -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">Confidence Levels</h3>
+                    </div>
+                    <div class="space-y-4">
                         <div class="space-y-2">
-                            <div class="flex items-center">
-                                <span class="w-32 text-gray-300">High (≥85%):</span>
-                                <div class="flex-1 bg-slate-700 rounded-full h-2 mr-2">
-                                    <div class="bg-green-500 h-2 rounded-full" style="width: {{ (confidence_stats.high_confidence_count / analysis_result.summary.successful_extractions * 100)|round }}%"></div>
-                                </div>
-                                <span class="text-white">{{ confidence_stats.high_confidence_count }}</span>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-300 font-medium">High Confidence (≥85%)</span>
+                                <span class="text-emerald-400 font-semibold">{{ confidence_stats.high_confidence_count|default(0) }}</span>
                             </div>
-                            <div class="flex items-center">
-                                <span class="w-32 text-gray-300">Medium (70-84%):</span>
-                                <div class="flex-1 bg-slate-700 rounded-full h-2 mr-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: {{ (confidence_stats.medium_confidence_count / analysis_result.summary.successful_extractions * 100)|round }}%"></div>
-                                </div>
-                                <span class="text-white">{{ confidence_stats.medium_confidence_count }}</span>
+                            <div class="w-full bg-white/10 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full"></div>
                             </div>
-                            <div class="flex items-center">
-                                <span class="w-32 text-gray-300">Low (<70%):</span>
-                                <div class="flex-1 bg-slate-700 rounded-full h-2 mr-2">
-                                    <div class="bg-red-500 h-2 rounded-full" style="width: {{ (confidence_stats.low_confidence_count / analysis_result.summary.successful_extractions * 100)|round }}%"></div>
-                                </div>
-                                <span class="text-white">{{ confidence_stats.low_confidence_count }}</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-300 font-medium">Medium Confidence (70-84%)</span>
+                                <span class="text-yellow-400 font-semibold">{{ confidence_stats.medium_confidence_count|default(0) }}</span>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 h-2 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-300 font-medium">Low Confidence (<70%)</span>
+                                <span class="text-red-400 font-semibold">{{ confidence_stats.low_confidence_count|default(0) }}</span>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Processed Files -->
         {% if analysis_result.analyzer_data.extracted_texts %}
-        <div class="mb-8">
-            <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-2xl font-semibold text-indigo-400">
-                        <span role="img" aria-label="folder">📁</span> Processed Files
-                    </h2>
-                    <button @click="sectionsCollapsed.files = !sectionsCollapsed.files" 
-                            class="text-gray-400 hover:text-white transition-colors">
-                        <span x-text="sectionsCollapsed.files ? '▼' : '▲'"></span>
-                    </button>
-                </div>
-                
-                <div x-show="!sectionsCollapsed.files" x-transition class="grid gap-4">
-                    {% for file_data in analysis_result.analyzer_data.extracted_texts %}
-                    {% set confidence_icon = '🟢' if file_data.confidence >= 85 else '🟡' if file_data.confidence >= 70 else '🔴' %}
-                    {% set confidence_class = 'bg-green-500' if file_data.confidence >= 85 else 'bg-yellow-500' if file_data.confidence >= 70 else 'bg-red-500' %}
-                    
-                    <div class="bg-slate-700 rounded-lg p-4 flex items-center justify-between">
-                        <div>
-                            <h3 class="font-semibold text-white">{{ file_data.filename }}</h3>
-                            <p class="text-gray-400 text-sm">
-                                Confidence: {{ "%.1f"|format(file_data.confidence) }}% | 
-                                Words: {{ file_data.word_count }} | 
-                                Method: {{ file_data.method }}
-                            </p>
-                        </div>
-                        <span class="px-2 py-1 rounded text-xs text-white {{ confidence_class }}">
-                            {{ confidence_icon }}
-                        </span>
+        <section class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl overflow-hidden">
+            <div class="flex items-center justify-between p-8 border-b border-white/10">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        </svg>
                     </div>
-                    {% endfor %}
+                    <div>
+                        <h2 class="text-2xl font-semibold text-white">Processed Files</h2>
+                        <p class="text-slate-400 text-sm">Overview of analyzed documents and their quality metrics</p>
+                    </div>
                 </div>
+                <button @click="sectionsCollapsed.files = !sectionsCollapsed.files" 
+                        class="p-3 hover:bg-white/10 rounded-xl transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 transform transition-transform duration-300" 
+                         :class="sectionsCollapsed.files ? 'rotate-180' : ''" 
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div x-show="!sectionsCollapsed.files" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform -translate-y-4"
+                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                 class="p-8 space-y-4">
+                {% for file_data in analysis_result.analyzer_data.extracted_texts %}
+                {% set confidence_class = 'from-emerald-500 to-emerald-600' if file_data.confidence >= 85 else 'from-yellow-500 to-yellow-600' if file_data.confidence >= 70 else 'from-red-500 to-red-600' %}
+                {% set status_color = 'emerald' if file_data.confidence >= 85 else 'yellow' if file_data.confidence >= 70 else 'red' %}
+                
+                <div class="bg-white/5 rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">{{ file_data.filename }}</h3>
+                            <div class="flex items-center gap-6 text-sm text-slate-400">
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Confidence: {{ "%.1f"|format(file_data.confidence) }}%
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2h-5l-4-4z"></path>
+                                    </svg>
+                                    Words: {{ "{:,}".format(file_data.word_count) }}
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    Method: {{ file_data.method }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <div class="w-3 h-3 bg-gradient-to-r {{ confidence_class }} rounded-full shadow-lg"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-white/5 backdrop-blur-md mt-16">
+        <div class="max-w-7xl mx-auto px-6 py-12 text-center">
+            <div class="space-y-4">
+                <div class="flex items-center justify-center gap-2 text-lg font-medium text-white">
+                    <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4m-6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Analysis Powered by Papalyze
+                </div>
+                <p class="text-slate-400">Designed for Academic Success - Focus Smart, Study Less!</p>
             </div>
         </div>
-        {% endif %}
-
-        <!-- Footer Info -->
-        <div class="text-center text-gray-400 text-sm">
-            <p><span role="img" aria-label="chart">📈</span> Analysis Powered by Enhanced Topic Repetition Analyzer</p>
-            <p class="mt-1"><span role="img" aria-label="graduation cap">🎓</span> Designed for Academic Success - Focus Smart, Study Less!</p>
-            <p class="mt-1"><span role="img" aria-label="lightbulb">💡</span> Tip: Regular analysis of new materials improves prediction accuracy</p>
-        </div>
-    </div>
+    </footer>
 </div>
 
 <script>
@@ -409,8 +611,29 @@
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
         }
+        .bg-gradient-to-br, .bg-gradient-to-r {
+            background: #1e293b !important;
+        }
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.5);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(59, 130, 246, 0.7);
     }
 </style>
 
-</div>
 {% endblock %}

@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: papalyze_web
+    command: gunicorn -b 0.0.0.0:10000 run:app
+    ports:
+      - "10000:10000"
+    environment:
+      # Point to your local Postgres server
+      DATABASE_URL: "postgresql://postgres:%24ur%40jt%23%40kuR7@host.docker.internal:5432/papalyze_auth"

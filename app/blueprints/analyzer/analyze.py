@@ -73,7 +73,7 @@ def convert_pdf_to_images(pdf_path, output_folder=None, dpi=300):
 
 
 class EnhancedTopicRepetitionAnalyzer:
-    def __init__(self, output_dir="enhanced_repetition_analysis", use_lemmatization=True, verbose=False):
+    def __init__(self, output_dir="repetition_analysis", use_lemmatization=True, verbose=False):
         self.output_dir = output_dir
         self.extracted_texts = []
         self.processed_files = []
@@ -955,16 +955,14 @@ def analyze_enhanced_topic_repetitions(image_input, debug=False, use_lemmatizati
 
 
 
-# Example usage for backend integration
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))  # folder where analyze.py is
     project_root = os.path.abspath(os.path.join(base_dir, '..', '..', '..'))  # Adjust based on location
     image_folder_path = os.path.join(project_root, 'uploadfile')
     
-    # For backend use - set verbose=False to minimize console output
     result = analyze_enhanced_topic_repetitions(
         image_folder_path, 
-         debug=False,  # Set to False for production
+         debug=True,  # Set to False for production
         use_lemmatization=True,
         verbose=False  # Set to False for backend use
     )
