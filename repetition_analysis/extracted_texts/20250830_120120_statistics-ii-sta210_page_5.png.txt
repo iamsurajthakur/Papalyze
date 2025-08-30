@@ -1,0 +1,34 @@
+Source: C:\Users\ACER\AppData\Local\Temp\tmpqu8ktzfe\20250830_120120_statistics-ii-sta210_page_5.png
+Date: 2025-08-30
+Confidence: 85.4%
+Method: adaptive_psm6
+==================================================
+
+10.Consideracompletelyrandomizeddesignwith4treatmentswith7observationsineach.Forthe
+ANOVAsummarytablebelow,fillinallthemissingresults.Alsoindicateyourstatisticaldecision.
+Source , Degreesof SumofSquaresMeanSumof F-ratio_
+freedom Squares
+[Treatments]]]|? [ssa=? lize WE=?_lil
+Error ? SSE=590 ?
+FrotatM?CSTTSST=?OTC~C~SiTSTD
+11.Followingarethescoresobtainedby10universitystaffsonthecomputerproficiencyskills
+beforetrainingandaftertraining.Itwasassumedthattheproficiencyofcomputerskillsis
+expectedtobeincreasedaftertraining.
+Statts))||Scorc|
+1 _Beforetraining_Aftertraining
+2 50 55
+3 30 40
+4 15 30
+5 22 30
+6 34 36
+7 a) 45
+8 40 41
+9 _10 30
+10 26 40
+Testat5%levelofsignificancewhetherthetrainingiseffectivetoimprovethecomputer
+proficiencyskillsapplyingappropriatestatisticaltest.Assumethatthegivenscorefollows
+normaldistribution.
+12.Writeshortnotesonthefollowing.
+a)_ConceptofLatinSquareDesign
+b)Multiplecorrelation
+3

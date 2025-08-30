@@ -1,0 +1,53 @@
+Source: C:\Users\ACER\AppData\Local\Temp\tmpqu8ktzfe\20250830_120120_statistics-ii-sta210_page_0.png
+Date: 2025-08-30
+Confidence: 93.4%
+Method: otsu_psm3
+==================================================
+
+SyllabusforStatistics(B.Sc.CSIT)program
+
+TribhuvanUniversity
+InstituteofScience&Technology(IOST)
+
+Level:B.Sc. FullMarks:60+20+20
+CourseTitle:StatisticsIT PassMarks:24+8+8
+CourseCode:STA210 CreditHrs:3
+
+NatureoftheCourse:TheoryandPractical
+
+Courseobjectives:
+
+Toimpart_thetheoretical_aswellas_practical_knowledgeof_estimation,testingofhypothesis,
+applicationofparametricand_non-parametric_statisticaltests,designof_experiments,_multiple
+regression_analysis,andbasicconceptofstochastic_process_withspecialfocus_to_data/problems
+relatedwithcomputerscienceandinformationtechnology.
+
+1.SamplingDistributionandEstimation [6]
+
+Samplingdistributionofmeanandproportion;ConceptofCentralLimitTheorem;Conceptof
+inferential_Statistics;_pointestimation:Propertiesof_a"Good"estimator:unbiasedness.
+consistency,efficiencyandsufficiency;Methodsofestimation:Maximumlikelihoodestimation,
+Method_ofmoments;Intervalestimation:Confidenceinterval_and_confidencecoefficient,
+confidence_limits,confidenceintervalofmeanfornormalpopulation.Confidenceinterval_for
+proportion;Determinationofsamplesize,relationshipofsamplesizewithdesiredleveloferror.
+
+ProblemsandillustrativeexamplesrelatedtocomputerScienceandIT
+2.Testingofhypothesis [8]
+
+Typesofstatisticalhypotheses-nullandalternativehypothesis,typeIandtypeIIerrors,levelof
+significance,criticalvalueandcriticalregion,powerofthetest,conceptofp-valueanduseofp-
+value_indecisionmaking,stepsusedintestingofhypothesis,onesampletestsformeanof
+normal_population(for_knownand_unknownvariance),test_forsingle_proportion,testfor
+differencebetweentwomeans_andtwoproportions,pairedsamplet-test;Linkagebetween
+confidenceintervalandtestingofhypothesis;Assumptionsforapplyingindependent_t-test,
+pairedt-test;Testofequalityoftwovariances
+
+ProblemsandillustrativeexamplesrelatedtocomputerScienceandIT
+
+3.Nonparametrictest [8]
+Parametric_vs.non-parametric_test;Needsofapplying_non-parametric_tests;One-sampletest:
+Runtest,Binomialtest,Kolmogorov-Smirnovtest;Twoindependentsampletest:Mediantest,
+
+Kolmogorov-Smirnov_test,WilcoxonMannWhitneytest,Chi-squaretest;Paired-sampletest:
+
+1

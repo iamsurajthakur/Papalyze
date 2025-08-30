@@ -90,50 +90,80 @@ extractBtn.addEventListener('click', () => {
     extractBtn.disabled = true;
 
     // Simulate extraction process
-    setTimeout(() => {
-        document.getElementById('ocrText').textContent = 'Sample extracted text from your exam paper would appear here...';
-        document.getElementById('ocrSection').style.display = 'block';
+    // Real extraction process
+    const file = fileInput.files[0];
+    if (!file) return;
 
-        spinner.style.display = 'none';
-        text.textContent = 'Extract Text';
-        extractBtn.disabled = false;
-        updateStep(3);
-        // Scroll to OCR section
-        document.getElementById('ocrSection').scrollIntoView({ behavior: 'smooth' });
-    }, 2000);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('/extract_text', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.text) {
+                document.getElementById('ocrText').textContent = data.text;
+                document.getElementById('ocrSection').style.display = 'block';
+                updateStep(3);
+                document.getElementById('ocrSection').scrollIntoView({ behavior: 'smooth' });
+            } else if (data.error) {
+                document.getElementById('ocrText').textContent = 'Error: ' + data.error;
+                document.getElementById('ocrSection').style.display = 'block';
+            }
+        })
+        .catch(err => {
+            document.getElementById('ocrText').textContent = 'Error: ' + err.message;
+            document.getElementById('ocrSection').style.display = 'block';
+        })
+        .finally(() => {
+            spinner.style.display = 'none';
+            text.textContent = 'Extract Text';
+            extractBtn.disabled = false;
+        });
+
 });
 
 // Predict topics functionality
 document.getElementById('predictBtn').addEventListener('click', () => {
     const spinner = document.getElementById('predictSpinner');
-    const text = document.getElementById('predictText');
+    const textEl = document.getElementById('predictText');
+    const ocrText = document.getElementById('ocrText').textContent;
 
     spinner.style.display = 'block';
-    text.textContent = 'Analyzing...';
+    textEl.textContent = 'Analyzing...';
 
-    // Simulate prediction process
-    setTimeout(() => {
-        const topics = ['Machine Learning', 'Data Structures', 'Algorithms', 'Database Systems', 'Software Engineering'];
+    fetch('/predict_topics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: ocrText })
+    })
+    .then(res => res.json())
+    .then(data => {
         const container = document.getElementById('topicsContainer');
         container.innerHTML = '';
-
-        topics.forEach((topic, index) => {
-            setTimeout(() => {
+        if (data.topics) {
+            data.topics.forEach(topic => {
                 const tag = document.createElement('span');
                 tag.className = 'topic-tag px-4 py-2 rounded-full text-white font-medium text-sm';
                 tag.textContent = topic;
                 container.appendChild(tag);
-            }, index * 200);
-        });
-
-        document.getElementById('topicsSection').style.display = 'block';
+            });
+            document.getElementById('topicsSection').style.display = 'block';
+            updateStep(4);
+            setTimeout(() => {
+                document.getElementById('topicsSection').scrollIntoView({ behavior: 'smooth' });
+            }, 200);
+        } else if (data.error) {
+            container.textContent = 'Error: ' + data.error;
+        }
+    })
+    .catch(err => {
+        document.getElementById('topicsContainer').textContent = 'Error: ' + err.message;
+    })
+    .finally(() => {
         spinner.style.display = 'none';
-        text.textContent = '🔮 Predict Topics';
-        updateStep(4);
-
-        // Scroll to topics section
-        setTimeout(() => {
-            document.getElementById('topicsSection').scrollIntoView({ behavior: 'smooth' });
-        }, 1000);
-    }, 2000);
+        textEl.textContent = '🔮 Predict Topics';
+    });
 });

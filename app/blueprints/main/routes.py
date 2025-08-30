@@ -15,6 +15,11 @@ import uuid
 from app.blueprints.analyzer import analyze_enhanced_topic_repetitions
 from app.centralizepath import config
 from pathlib import Path
+import PyPDF2
+from app.services.summarize import generate_summary
+import pytesseract
+from PIL import Image
+from keybert import KeyBERT
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
@@ -284,3 +289,88 @@ def upload_avatar():
     db.session.commit()
     return redirect(url_for('main.dashboard'))
 
+@bp.route("/api/summarize", methods=["POST"])
+def summarize():
+    input_mode = request.form.get("input_mode")
+
+    # Get text input
+    if input_mode == "text":
+        text = request.form.get("noteInput", "")
+        if not text.strip():
+            return jsonify({"error": "No text provided"}), 400
+
+    # Get file input
+    elif input_mode == "file":
+        file = request.files.get("fileUpload")
+        if not file:
+            return jsonify({"error": "No file uploaded"}), 400
+        if file.filename.endswith(".pdf"):
+            reader = PyPDF2.PdfReader(file)
+            text = "".join([page.extract_text() for page in reader.pages])
+        else:
+            return jsonify({"error": "Unsupported file type"}), 400
+    else:
+        return jsonify({"error": "Invalid input mode"}), 400
+
+    # Generate real AI summary
+    summary_result = generate_summary(text)
+    return jsonify({"summary": summary_result})
+
+@bp.route('/extract_text', methods=["POST"])
+@login_required  # optional, if you want only logged-in users
+def extract_text():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No file selected"}), 400
+
+    if not allowed_file(file.filename):
+        return jsonify({"error": "File type not allowed"}), 400
+
+    filename = secure_filename(file.filename)
+    unique_filename = f"{uuid.uuid4()}_{filename}"
+    filepath = os.path.join(image_folder_path, unique_filename)
+
+    try:
+        # Save the uploaded file
+        file.save(filepath)
+
+        # Extract text with pytesseract
+        if filename.lower().endswith('pdf'):
+            from pdf2image import convert_from_path
+            pages = convert_from_path(filepath, dpi=300)
+            text = ""
+            for page in pages:
+                text += pytesseract.image_to_string(page)
+        else:
+            text = pytesseract.image_to_string(Image.open(filepath))
+
+        return jsonify({"text": text})
+
+    except Exception as e:
+        print(f"[OCR Error] {e}")
+        return jsonify({"error": str(e)}), 500
+    
+@bp.route('/predict_topics', methods=['POST'])
+@login_required
+def predict_topics():
+
+
+    data = request.get_json()
+    text = data.get('text', '')
+
+    if not text:
+        return jsonify({"error": "No text provided"}), 400
+
+    kw_model = KeyBERT()
+    keywords = kw_model.extract_keywords(
+        text,
+        keyphrase_ngram_range=(1, 2),  # allow single + bi-grams
+        stop_words='english',
+        top_n=10
+    )
+    topics = [k[0] for k in keywords]
+
+    return jsonify({"topics": topics})

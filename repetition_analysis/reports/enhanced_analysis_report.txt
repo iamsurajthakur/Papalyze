@@ -1,7 +1,7 @@
 ================================================================================
 ENHANCED TOPIC REPETITION & PREDICTION ANALYSIS REPORT
 ================================================================================
-Generated on: 2025-08-24 08:34:23
+Generated on: 2025-08-30 13:50:39
 
 📋 EXECUTIVE SUMMARY
 ----------------------------------------
@@ -22,203 +22,203 @@ Average Words per Document: 44
 🔥 PRIORITY TOPICS (Focus Your Study Here!):
 ---------------------------------------------
 
-1. Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest Apidevelopment Testing Postman
+1. Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-2. Testing Jest Apidevelopment Testing Postman Devops Tool Git Github Docker Datafetchingandcaching Tanstackquery
+2. Project Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-3. Project Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations
+3. Testing Jest Apidevelopment Testing Postman Devops Tool Git Github Docker Datafetchingandcaching Tanstackquery
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-4. Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations Pizza-Ui-Amber Vercel App Medrepo
+4. Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-5. Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations Pizza-Ui-Amber Vercel App
+5. Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi Tutorappapi Anestjs-Basedbackendapplicationwithauthentication Usermanagementandtutor-Student
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-6. Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest Apidevelopment Testing Postman Devops Tool Git Github Docker
+6. Project Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-7. Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest
+7. Statemanagement Reduxtoolkit Contextapi Zustand Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-8. Testing Jest Apidevelopment Testing Postman Devops Tool Git Github Docker
+8. Statemanagement Reduxtoolkit Contextapi Zustand Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-9. Quizapi Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi
+9. Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations Pizza-Ui-Amber Vercel App
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-10. Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest Apidevelopment Testing Postman
+10. Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest Apidevelopment Testing Postman Devops Tool Git Github Docker
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-11. Apidevelopment Testing Postman Devops Tool Git Github Docker Datafetchingandcaching Tanstackquery
+11. Testing Jest Apidevelopment Testing Postman
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-12. Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations Pizza-Ui-Amber Vercel App
+12. Apidevelopment Testing Postman Devops Tool Git Github Docker Datafetchingandcaching Tanstackquery Project
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
 13. Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-14. Apidevelopment Testing Postman Devops Tool Git Github Docker
+14. Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi Tutorappapi
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-15. Statemanagement Reduxtoolkit Contextapi Zustand Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm
+15. Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Pizza-App
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-16. Earobustapithatallowsuserstocreatequizzes Itincludesadminfunctionalitywithauthenticationandauthorization Participateinquizzesandviewtheirresults
+16. Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-17. Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Pizza-App
+17. Medrepo Vercel App Quizapi Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-18. Apidevelopment Testing Postman Devops Tool Git Github Docker Datafetchingandcaching Tanstackquery Project
+18. Apidevelopment Testing Postman Devops Tool Git Github Docker
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-19. Testing Jest Apidevelopment Testing Postman
+19. Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest Apidevelopment Testing Postman
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-20. Statemanagement Reduxtoolkit Contextapi Zustand Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest
+20. Testing Jest Apidevelopment Testing Postman Devops Tool Git Github Docker
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-21. Quizapi Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization
+21. Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi Tutorappapi
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-22. Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations
+22. Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations Pizza-Ui-Amber Vercel App Medrepo
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-23. Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations
+23. Quizapi Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-24. Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi
+24. Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-25. Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi Tutorappapi
+25. Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
 26. Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-27. Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi Tutorappapi Anestjs-Basedbackendapplicationwithauthentication Usermanagementandtutor-Student
+27. Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses Zustandtomanagethecomplexstatemanagementanddoallthecalculations Pizza-Ui-Amber Vercel App
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
 28. Frontendtechnologies React Nextjs Typescript Tailwindcss Statemanagement Reduxtoolkit Contextapi Zustand Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-29. Project Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses
+29. Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm Testing Jest Apidevelopment Testing Postman
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-30. Backendtechnologies Node Express Nestjs Database Orms Postgresql Mongodb Drizzleorm Prismaorm
+30. Quizapi Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-31. Itincludesadminfunctionalitywithauthenticationandauthorization Github Com Nischal1101 Quizapi Tutorappapi
+31. Datafetchingandcaching Tanstackquery Project Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-32. Datafetchingandcaching Tanstackquery Project Pizza-App Asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality Ituses
+32. Apidevelopment Testing Postman Devops Tool Git Github Docker Datafetchingandcaching Tanstackquery
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-33. Medrepo Vercel App Quizapi Earobustapithatallowsuserstocreatequizzes Participateinquizzesandviewtheirresults Itincludesadminfunctionalitywithauthenticationandauthorization
+33. Earobustapithatallowsuserstocreatequizzes Itincludesadminfunctionalitywithauthenticationandauthorization Participateinquizzesandviewtheirresults
    ✅ Likelihood: Very High (1.00)
    📈 Appeared: 1 times across 1 documents
    📊 Coverage: 100.0% of all documents
-   📁 Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+   📁 Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 📚 PERSONALIZED STUDY RECOMMENDATIONS
 =============================================
 🎯 STUDY PRIORITY BREAKDOWN:
@@ -241,65 +241,65 @@ Average Words per Document: 44
 ========================================
 Top 15 Most Repeated Topics:
 ------------------------------
- 1. backendtechnologies node express nestjs database orms postgresql mongodb drizzleorm prismaorm testing jest apidevelopment testing postman
+ 1. backendtechnologies node express nestjs database orms postgresql mongodb drizzleorm prismaorm
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
- 2. testing jest apidevelopment testing postman devops tool git github docker datafetchingandcaching tanstackquery
+ 2. project pizza-app asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
- 3. project pizza-app asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses zustandtomanagethecomplexstatemanagementanddoallthecalculations
+ 3. testing jest apidevelopment testing postman devops tool git github docker datafetchingandcaching tanstackquery
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
- 4. asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses zustandtomanagethecomplexstatemanagementanddoallthecalculations pizza-ui-amber vercel app medrepo
+ 4. asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses zustandtomanagethecomplexstatemanagementanddoallthecalculations
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
- 5. asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses zustandtomanagethecomplexstatemanagementanddoallthecalculations pizza-ui-amber vercel app
+ 5. itincludesadminfunctionalitywithauthenticationandauthorization github com nischal1101 quizapi tutorappapi anestjs-basedbackendapplicationwithauthentication usermanagementandtutor-student
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
- 6. database orms postgresql mongodb drizzleorm prismaorm testing jest apidevelopment testing postman devops tool git github docker
+ 6. project pizza-app asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses zustandtomanagethecomplexstatemanagementanddoallthecalculations
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
- 7. backendtechnologies node express nestjs database orms postgresql mongodb drizzleorm prismaorm testing jest
+ 7. statemanagement reduxtoolkit contextapi zustand backendtechnologies node express nestjs database orms postgresql mongodb drizzleorm prismaorm
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
- 8. testing jest apidevelopment testing postman devops tool git github docker
+ 8. statemanagement reduxtoolkit contextapi zustand backendtechnologies node express nestjs database orms postgresql mongodb drizzleorm prismaorm testing jest
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
- 9. quizapi earobustapithatallowsuserstocreatequizzes participateinquizzesandviewtheirresults itincludesadminfunctionalitywithauthenticationandauthorization github com nischal1101 quizapi
+ 9. pizza-app asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses zustandtomanagethecomplexstatemanagementanddoallthecalculations pizza-ui-amber vercel app
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-10. database orms postgresql mongodb drizzleorm prismaorm testing jest apidevelopment testing postman
+10. database orms postgresql mongodb drizzleorm prismaorm testing jest apidevelopment testing postman devops tool git github docker
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-11. apidevelopment testing postman devops tool git github docker datafetchingandcaching tanstackquery
+11. testing jest apidevelopment testing postman
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-12. pizza-app asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses zustandtomanagethecomplexstatemanagementanddoallthecalculations pizza-ui-amber vercel app
+12. apidevelopment testing postman devops tool git github docker datafetchingandcaching tanstackquery project
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
 13. itincludesadminfunctionalitywithauthenticationandauthorization github com nischal1101 quizapi
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-14. apidevelopment testing postman devops tool git github docker
+14. itincludesadminfunctionalitywithauthenticationandauthorization github com nischal1101 quizapi tutorappapi
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
-15. statemanagement reduxtoolkit contextapi zustand backendtechnologies node express nestjs database orms postgresql mongodb drizzleorm prismaorm
+15. asimplepizzaselectingappwhichhasbeautifuluiandaddtocartfunctionality ituses pizza-app
      Frequency: 1 | Documents: 1 | Coverage: 100.0%
-     Sources: 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
+     Sources: 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
 
 
 🔬 ANALYSIS QUALITY METRICS
@@ -311,8 +311,8 @@ Top 15 Most Repeated Topics:
 
 📁 PROCESSED FILES DETAILS
 ------------------------------
- 1. 20250824_083350_NISCHAL_MERN_RESUME_page_0.png
-     🟢 Confidence: 94.0% | Words: 44 | Date: 2025-08-24
+ 1. 20250830_135004_NISCHAL_MERN_RESUME_page_0.png
+     🟢 Confidence: 94.0% | Words: 44 | Date: 2025-08-30
      Method: enhanced_psm3
 
 
